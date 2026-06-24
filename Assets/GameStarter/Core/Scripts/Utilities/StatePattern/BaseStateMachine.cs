@@ -1,40 +1,26 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public abstract class BaseStateMachine : MonoBehaviour
 {
-    public readonly Dictionary<System.Type, BaseState> States = new();
-
+    private Dictionary<Type, BaseState> _states = new();
     private BaseState _currentState;
-    public BaseState CurrentState => _currentState;
 
     #region Initialization
     protected virtual void Awake() 
     {
-        RecordStates(GetInitialStates());
+        ConstructStates(GetInitialStates());
     }
 
     protected virtual void Start()
     {
-        SetState(States.Values.FirstOrDefault());
+        SetState(_states.Values.FirstOrDefault());
     }
 
-    protected abstract BaseState[] GetInitialStates();
+    protected abstract Type[] GetInitialStates();
     #endregion
-
-    private void RecordStates(BaseState[] states)
-    {
-        foreach (var state in states)
-        {
-            var type = state.GetType();
-
-            if (!States.ContainsKey(type))
-            {
-                States.Add(type, state);
-            }
-        }
-    }
 
     #region Update
     protected virtual void Update() 
@@ -44,7 +30,28 @@ public abstract class BaseStateMachine : MonoBehaviour
     #endregion
 
     #region API
-    public void SetState(BaseState newState) 
+    public void ChangeState(Type stateType) 
+    {
+        if (!TypeLibrary.IsSubclassOf<BaseState>(stateType)) return;
+        
+        SetState(_states[stateType]);
+    }
+    #endregion
+
+    private void ConstructStates(Type[] stateTypes)
+    {
+        _states = new Dictionary<Type, BaseState>();
+
+        foreach (var stateType in stateTypes)
+        {
+            if (!TypeLibrary.IsSubclassOf<BaseState>(stateType)) continue;
+
+            var state = (BaseState)TypeLibrary.CreateInstance(stateType);
+            _states.Add(stateType, state);
+        }
+    }
+
+    private void SetState(BaseState newState) 
     {
         if (newState == null) 
         {
@@ -56,5 +63,4 @@ public abstract class BaseStateMachine : MonoBehaviour
         _currentState = newState;
         _currentState.EnterState();
     }
-    #endregion
 }

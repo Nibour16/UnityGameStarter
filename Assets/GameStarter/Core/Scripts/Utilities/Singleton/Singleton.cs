@@ -13,7 +13,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 _instance = FindAnyObjectByType<T>(); //Find any active object in the scene that has the specific script type
 
                 if (_instance == null)  //if cannot find it
-                    Debug.LogError("{typeof(T)} is not found in the scene!");
+                    Debug.LogError($"{typeof(T)} is not found in the scene!");
             }
             return _instance;
         }

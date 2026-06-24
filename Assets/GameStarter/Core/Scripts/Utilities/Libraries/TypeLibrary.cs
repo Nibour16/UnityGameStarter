@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public static class TypeLibrary
+{
+    public static bool IsSubclassOf<TBase>(Type type, bool printError = true)
+    {
+        if (type == null) 
+        {
+            if (printError)
+                Debug.LogError("TypeLibrary: Invalid type detected!");
+
+            return false;
+        }
+
+        if (type.IsInterface || type.IsAbstract)
+        {
+            if (printError)
+                Debug.LogError($"TypeLibrary: {type.Name} is interface or abstract");
+            return false;
+        }
+
+        if (!typeof(TBase).IsAssignableFrom(type))
+        {
+            if (printError)
+                Debug.LogError($"TypeLibrary: {type.Name} is not a {typeof(TBase).Name}");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static IEnumerable<Type> GetValidSubTypes<TBase>()
+    {
+        return AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
+        {
+            try { return a.GetTypes(); }
+            catch { return Array.Empty<Type>(); }
+
+        }).Where(t => IsSubclassOf<TBase>(t));
+    }
+
+    public static object CreateInstance(Type type)
+    {
+        if (!IsSubclassOf<object>(type, false))
+            throw new Exception($"TypeLibrary: {type.Name} is not valid");
+
+        DebugTypeCreate(type);
+        return Activator.CreateInstance(type);
+    }
+
+    public static T CreateInstance<T>(Type type)
+    {
+        if (!IsSubclassOf<object>(type, false))
+            throw new Exception($"TypeLibrary: {type.Name} is not valid");
+
+        DebugTypeCreate(type);
+        return (T)Activator.CreateInstance(type);
+    }
+    
+    private static void DebugTypeCreate(Type type) 
+    {
+    #if UNITY_EDITOR
+        Debug.Log($"TypeLibrary: Create: {type.Name}");
+    #endif
+    }
+}
