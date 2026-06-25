@@ -5,6 +5,12 @@ using UnityEngine;
 
 public static class TypeLibrary
 {
+    public static bool TryCast<T>(object obj, out T result) where T : class 
+    {
+        result = obj as T;
+        return result != null;
+    }
+    
     public static bool IsSubclassOf<TBase>(Type type, bool printError = true)
     {
         if (type == null) 
@@ -34,6 +40,8 @@ public static class TypeLibrary
 
     public static IEnumerable<Type> GetValidSubTypes<TBase>()
     {
+        // return all valid child types of the base type in the project
+
         return AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
         {
             try { return a.GetTypes(); }

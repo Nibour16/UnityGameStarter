@@ -30,11 +30,22 @@ public abstract class BaseStateMachine : MonoBehaviour
     #endregion
 
     #region API
-    public void ChangeState(Type stateType) 
+    public void SetState(Type stateType) 
     {
-        if (!TypeLibrary.IsSubclassOf<BaseState>(stateType)) return;
-        
         SetState(_states[stateType]);
+    }
+
+    public void SetState(BaseState newState)
+    {
+        if (newState == null)
+        {
+            Debug.LogError("State Machine: Unassigned new state detected!");
+            return;
+        }
+
+        _currentState?.ExitState();
+        _currentState = newState;
+        _currentState.EnterState();
     }
     #endregion
 
@@ -49,18 +60,5 @@ public abstract class BaseStateMachine : MonoBehaviour
             var state = (BaseState)TypeLibrary.CreateInstance(stateType);
             _states.Add(stateType, state);
         }
-    }
-
-    private void SetState(BaseState newState) 
-    {
-        if (newState == null) 
-        {
-            Debug.LogError("State Machine: Unassigned new state detected!");
-            return;
-        }
-        
-        _currentState?.ExitState();
-        _currentState = newState;
-        _currentState.EnterState();
     }
 }
