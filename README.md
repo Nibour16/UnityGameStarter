@@ -24,6 +24,7 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 | Feature | Description |
 |---|---|
 | Type Library | A library with methods that resolves the class type and its validation |
+| String Library | A library with methods that manipulates string |
 | State Machine | State Pattern Logic (FSM) |
 
 ## ⚙️ Engine System Features
