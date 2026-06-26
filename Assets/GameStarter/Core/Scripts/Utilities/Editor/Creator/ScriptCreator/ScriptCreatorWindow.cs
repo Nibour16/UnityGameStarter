@@ -9,7 +9,16 @@ namespace UnityGameStarter.EditorWindowUtilities.Creator
     public abstract class ScriptCreatorWindow : CreatorWindow
     {
         protected abstract string FileNameLabel { get; }
-        
+        protected abstract ContentDefinition File { get; }
+        protected virtual Dictionary<string, ContentDefinition> InitialCreatorContent => new();
+
+        protected override Dictionary<string, ContentDefinition> Content() 
+        {
+            var initialCreatorContent = InitialCreatorContent;
+            initialCreatorContent.Add(FileNameLabel, File);
+            return initialCreatorContent;
+        }
+
         protected override void OnCreate(Dictionary<string, ContentDefinition> content)
         {
             List<object> args = new();

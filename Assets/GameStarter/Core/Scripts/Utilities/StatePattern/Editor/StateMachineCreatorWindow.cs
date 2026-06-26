@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using UnityGameStarter.EditorUtilities.ScriptCreator;
 using UnityGameStarter.EditorWindowUtilities.Creator;
 using UnityGameStarter.EditorWindowUtilities.Data;
 
-namespace UnityGameStarter.StateMachine 
+namespace UnityGameStarter.StateMachine.EditorUtilities
 {
     public class StateMachineCreatorWindow : ScriptCreatorWindow
     {
@@ -11,10 +10,7 @@ namespace UnityGameStarter.StateMachine
 
         protected override string FileNameLabel => "State Machine Name";
 
-        protected override Dictionary<string, ContentDefinition> Content => new()
-        {
-            { FileNameLabel, new ContentDefinition { value = "NewStateMachine" } }
-        };
+        protected override ContentDefinition File => new() { value = "NewStateMachine" };
 
         protected override BaseScriptCreator GetScriptCreator()
         {

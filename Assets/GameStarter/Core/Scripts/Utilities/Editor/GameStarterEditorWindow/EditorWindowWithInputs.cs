@@ -12,7 +12,7 @@ namespace UnityGameStarter.EditorWindowUtilities
         #endregion
 
         #region Definitions (immutable config)
-        protected abstract Dictionary<string, ContentDefinition> Content { get; }   // Initial
+        protected abstract Dictionary<string, ContentDefinition> Content();   // Initial
         private Dictionary<string, ContentDefinition> _content; // Resolved
         private bool _contentInitialized;
 
@@ -93,7 +93,7 @@ namespace UnityGameStarter.EditorWindowUtilities
         {
             if (_contentInitialized) return;
 
-            _content = Content ?? new Dictionary<string, ContentDefinition>();
+            _content = Content() ?? new Dictionary<string, ContentDefinition>();
             _contentInitialized = true;
         }
 

@@ -7,10 +7,19 @@ namespace UnityGameStarter.TypeLibrary
 {
     public static class TypeLibrary
     {
-        public static bool TryCast<T>(object obj, out T result) where T : class
+        public static bool TryCast<T>(object obj, out T result, bool printInvalid = true) where T : class
         {
             result = obj as T;
-            return result != null;
+
+            if (result == null) 
+            {
+                if (printInvalid)
+                    Debug.LogWarning($"TypeLibrary: cast failed, input object is not valid type of {typeof(T)}");
+
+                return false;
+            }
+
+            return true;
         }
 
         public static bool IsSubclassOf<TBase>(Type type, bool printError = true)

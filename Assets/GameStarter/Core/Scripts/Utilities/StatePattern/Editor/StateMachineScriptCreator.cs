@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityGameStarter.EditorUtilities.ScriptCreator;
 using UnityGameStarter.EditorWindowUtilities;
 
-namespace UnityGameStarter.StateMachine 
+namespace UnityGameStarter.StateMachine.EditorUtilities
 {
     public class StateMachineScriptCreator : BaseScriptCreator
     {
