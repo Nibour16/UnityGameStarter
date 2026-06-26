@@ -5,8 +5,20 @@ using System.IO;
 namespace UnityGameStarter.EditorUtilities.ScriptCreator 
 {
     /// <summary>
+    /// Data of the script creator
+    /// </summary>
+    public class ScriptCreatorData 
+    {
+        public string fileName;
+        public object[] templateArgs;
+    }
+
+    /// <summary>
     /// Base class of all script creators
-    /// Only works for defining file path, file creating, and project refresh
+    /// 
+    /// IMPORTANT:
+    /// Unity MenuItem cannot be inherited or auto-registered.
+    /// Each derived creator MUST provide its own static MenuItem entry.
     /// </summary>
     public abstract class BaseScriptCreator
     {
@@ -16,36 +28,25 @@ namespace UnityGameStarter.EditorUtilities.ScriptCreator
         protected abstract string Template { get; }
 
         /// <summary>
-        /// All children must offer the file name creation method£¨Do not include .cs£©
-        /// </summary>
-        protected abstract string GetFileName();
-
-        /// <summary>
-        /// All children must offer the module parameters
-        /// </summary>
-        protected abstract object[] GetTemplateArgs();
-
-        /// <summary>
         /// All children will have the same method - creating script
         /// </summary>
-        public void CreateScript()
+        public void CreateScript(ScriptCreatorData creatorData)
         {
             string folder = GetSelectedFolderPath();
-            string fileName = GetFileName();
 
-            if (string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(creatorData.fileName))
                 return;
 
-            string path = Path.Combine(folder, fileName + ".cs");
+            string path = Path.Combine(folder, creatorData.fileName + ".cs");
 
             if (File.Exists(path))
             {
                 EditorUtility.DisplayDialog(
-                    "Error", $"File '{fileName}.cs' already exists!", "OK");
+                    "Error", $"File '{creatorData.fileName}.cs' already exists!", "OK");
                 return;
             }
 
-            string content = string.Format(Template, GetTemplateArgs());
+            string content = string.Format(Template, creatorData.templateArgs);
             File.WriteAllText(path, content);
 
             AssetDatabase.Refresh();

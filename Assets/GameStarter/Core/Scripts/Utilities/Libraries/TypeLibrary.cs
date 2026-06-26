@@ -3,75 +3,78 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public static class TypeLibrary
+namespace UnityGameStarter.TypeLibrary 
 {
-    public static bool TryCast<T>(object obj, out T result) where T : class 
+    public static class TypeLibrary
     {
-        result = obj as T;
-        return result != null;
-    }
-    
-    public static bool IsSubclassOf<TBase>(Type type, bool printError = true)
-    {
-        if (type == null) 
+        public static bool TryCast<T>(object obj, out T result) where T : class
         {
-            if (printError)
-                Debug.LogError("TypeLibrary: Invalid type detected!");
-
-            return false;
+            result = obj as T;
+            return result != null;
         }
 
-        if (type.IsInterface || type.IsAbstract)
+        public static bool IsSubclassOf<TBase>(Type type, bool printError = true)
         {
-            if (printError)
-                Debug.LogError($"TypeLibrary: {type.Name} is interface or abstract");
-            return false;
+            if (type == null)
+            {
+                if (printError)
+                    Debug.LogError("TypeLibrary: Invalid type detected!");
+
+                return false;
+            }
+
+            if (type.IsInterface || type.IsAbstract)
+            {
+                if (printError)
+                    Debug.LogError($"TypeLibrary: {type.Name} is interface or abstract");
+                return false;
+            }
+
+            if (!typeof(TBase).IsAssignableFrom(type))
+            {
+                if (printError)
+                    Debug.LogError($"TypeLibrary: {type.Name} is not a {typeof(TBase).Name}");
+                return false;
+            }
+
+            return true;
         }
 
-        if (!typeof(TBase).IsAssignableFrom(type))
+        public static IEnumerable<Type> GetValidSubTypes<TBase>()
         {
-            if (printError)
-                Debug.LogError($"TypeLibrary: {type.Name} is not a {typeof(TBase).Name}");
-            return false;
+            // return all valid child types of the base type in the project
+
+            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
+            {
+                try { return a.GetTypes(); }
+                catch { return Array.Empty<Type>(); }
+
+            }).Where(t => IsSubclassOf<TBase>(t));
         }
 
-        return true;
-    }
-
-    public static IEnumerable<Type> GetValidSubTypes<TBase>()
-    {
-        // return all valid child types of the base type in the project
-
-        return AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
+        public static object CreateInstance(Type type)
         {
-            try { return a.GetTypes(); }
-            catch { return Array.Empty<Type>(); }
+            if (!IsSubclassOf<object>(type, false))
+                throw new Exception($"TypeLibrary: {type.Name} is not valid");
 
-        }).Where(t => IsSubclassOf<TBase>(t));
-    }
+            DebugTypeCreate(type);
+            return Activator.CreateInstance(type);
+        }
 
-    public static object CreateInstance(Type type)
-    {
-        if (!IsSubclassOf<object>(type, false))
-            throw new Exception($"TypeLibrary: {type.Name} is not valid");
+        public static T CreateInstance<T>(Type type)
+        {
+            if (!IsSubclassOf<object>(type, false))
+                throw new Exception($"TypeLibrary: {type.Name} is not valid");
 
-        DebugTypeCreate(type);
-        return Activator.CreateInstance(type);
-    }
+            DebugTypeCreate(type);
+            return (T)Activator.CreateInstance(type);
+        }
 
-    public static T CreateInstance<T>(Type type)
-    {
-        if (!IsSubclassOf<object>(type, false))
-            throw new Exception($"TypeLibrary: {type.Name} is not valid");
-
-        DebugTypeCreate(type);
-        return (T)Activator.CreateInstance(type);
-    }
-    
-    private static void DebugTypeCreate(Type type) 
-    {
-    #if UNITY_EDITOR
-        Debug.Log($"TypeLibrary: Create: {type.Name}");
-    #endif
+        private static void DebugTypeCreate(Type type)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"TypeLibrary: Create: {type.Name}");
+#endif
+        }
     }
 }

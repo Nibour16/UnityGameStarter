@@ -7,16 +7,16 @@ namespace UnityGameStarter.EditorWindowUtilities.Creator
     public abstract class CreatorWindow : EditorWindowWithInputs
     {
         protected override Dictionary<string, ButtonDefinition> Buttons => new()
-    {
         {
-            "Create",
-            new ButtonDefinition()
             {
-                closeOnClick = true, onClicked = values => OnCreate(values)
+                "Create",
+                new ButtonDefinition()
+                {
+                    closeOnClick = true, onClicked = content => OnCreate(content)
+                }
             }
-        }
-    };
+        };
 
-        protected abstract void OnCreate(Dictionary<string, ContentDefinition> values);
+        protected abstract void OnCreate(Dictionary<string, ContentDefinition> content);
     }
 }

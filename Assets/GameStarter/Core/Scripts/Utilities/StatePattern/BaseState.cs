@@ -1,13 +1,16 @@
-public abstract class BaseState
+namespace UnityGameStarter.FiniteStateMachine 
 {
-    protected readonly BaseStateMachine stateMachine;
-    
-    public BaseState(BaseStateMachine stateMachine)
+    public abstract class BaseState
     {
-        this.stateMachine = stateMachine;
-    }
+        protected readonly BaseStateMachine stateMachine;
 
-    public abstract void EnterState();
-    public abstract void UpdateState();
-    public abstract void ExitState();
+        public BaseState(BaseStateMachine stateMachine)
+        {
+            this.stateMachine = stateMachine;
+        }
+
+        public abstract void EnterState();
+        public abstract void UpdateState();
+        public abstract void ExitState();
+    }
 }

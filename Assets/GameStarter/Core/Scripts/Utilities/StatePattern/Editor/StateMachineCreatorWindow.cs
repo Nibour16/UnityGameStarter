@@ -3,17 +3,22 @@ using UnityGameStarter.EditorUtilities.ScriptCreator;
 using UnityGameStarter.EditorWindowUtilities.Creator;
 using UnityGameStarter.EditorWindowUtilities.Data;
 
-public class StateMachineCreatorWindow : ScriptCreatorWindow
+namespace UnityGameStarter.StateMachine 
 {
-    protected override string Title => "State Machine Creator";
-
-    protected override Dictionary<string, ContentDefinition> Content => new()
+    public class StateMachineCreatorWindow : ScriptCreatorWindow
     {
-        { "State Machine Name", new ContentDefinition { value = "NewStateMachine" } }
-    };
+        protected override string Title => "State Machine Creator";
 
-    protected override BaseScriptCreator GetScriptCreator(Dictionary<string, ContentDefinition> values)
-    {
-        return new StateMachineScriptCreator { stateMachineName = values["State Machine Name"].value };
+        protected override string FileNameLabel => "State Machine Name";
+
+        protected override Dictionary<string, ContentDefinition> Content => new()
+        {
+            { FileNameLabel, new ContentDefinition { value = "NewStateMachine" } }
+        };
+
+        protected override BaseScriptCreator GetScriptCreator()
+        {
+            return new StateMachineScriptCreator();
+        }
     }
 }

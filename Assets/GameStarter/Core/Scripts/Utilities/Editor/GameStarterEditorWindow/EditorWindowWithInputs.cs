@@ -12,12 +12,12 @@ namespace UnityGameStarter.EditorWindowUtilities
         #endregion
 
         #region Definitions (immutable config)
-        protected abstract Dictionary<string, ContentDefinition> Content { get; }
-        private Dictionary<string, ContentDefinition> _content;
+        protected abstract Dictionary<string, ContentDefinition> Content { get; }   // Initial
+        private Dictionary<string, ContentDefinition> _content; // Resolved
         private bool _contentInitialized;
 
-        protected abstract Dictionary<string, ButtonDefinition> Buttons { get; }
-        private Dictionary<string, ButtonDefinition> _buttons;
+        protected abstract Dictionary<string, ButtonDefinition> Buttons { get; }   // Initial
+        private Dictionary<string, ButtonDefinition> _buttons; // Resolved
         private bool _buttonsInitialized;
 
         protected virtual float VerticalSpace => 10f;
