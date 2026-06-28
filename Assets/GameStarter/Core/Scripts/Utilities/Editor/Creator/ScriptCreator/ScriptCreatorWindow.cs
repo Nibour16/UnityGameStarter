@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityGameStarter.EditorUtilities.ScriptCreator;
 using UnityGameStarter.EditorWindowUtilities.Data;
 
@@ -14,9 +16,11 @@ namespace UnityGameStarter.EditorWindowUtilities.Creator
 
         protected override Dictionary<string, ContentDefinition> Content() 
         {
-            var initialCreatorContent = InitialCreatorContent;
-            initialCreatorContent.Add(FileNameLabel, File);
-            return initialCreatorContent;
+            var list = new List<KeyValuePair<string, ContentDefinition>> { new(FileNameLabel, File) };
+
+            list.AddRange(InitialCreatorContent);
+
+            return list.ToDictionary(x => x.Key, x => x.Value);
         }
 
         protected override void OnCreate(Dictionary<string, ContentDefinition> content)

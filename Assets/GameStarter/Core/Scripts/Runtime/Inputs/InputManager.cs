@@ -23,4 +23,6 @@ namespace UnityGameStarter.InputSystem
             _core?.Disable();
         }
     }
+
+    public class InputManager : InputManager<InputManager> { }
 }
