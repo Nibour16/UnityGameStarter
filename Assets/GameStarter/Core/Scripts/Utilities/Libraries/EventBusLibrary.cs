@@ -41,10 +41,5 @@ namespace UnityGameStarter.EventSystem
         {
             _events.Clear();
         }
-
-        public static void Remove<T>()
-        {
-            _events.Remove(typeof(T));
-        }
     }
 }
