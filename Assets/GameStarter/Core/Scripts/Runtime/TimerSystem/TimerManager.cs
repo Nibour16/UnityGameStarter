@@ -7,35 +7,67 @@ namespace UnityGameStarter.TimerSystem
     public class TimerManager : Singleton<TimerManager>
     {
         private readonly List<Timer> _timers = new();
-        public List<Timer> Timers => _timers;
 
-        private readonly List<Timer> _addBuffer = new();
-        private readonly List<Timer> _removeBuffer = new();
+        private readonly Dictionary<object, HashSet<Timer>> _ownerIndex = new();
+        public Dictionary<object, HashSet<Timer>> OwnerIndex => _ownerIndex;
+
+        private readonly Dictionary<object, HashSet<Timer>> _tagIndex = new();
+        public Dictionary<object, HashSet<Timer>> TagIndex => _tagIndex;
 
         #region API
-        public Timer EnqueueCreateTimer(
-            object owner, float duration, string tag = "Default Timer", bool autoRemove = true)
+        public void Register(Timer timer)
         {
-            var timer = new Timer(owner, duration, tag, autoRemove);
-            _addBuffer.Add(timer);
-            return timer;
+            _timers.Add(timer);
+
+            // Owner index
+            if (timer.Owner != null)
+            {
+                if (!_ownerIndex.TryGetValue(timer.Owner, out var set))
+                {
+                    set = new HashSet<Timer>();
+                    _ownerIndex[timer.Owner] = set;
+                }
+
+                set.Add(timer);
+            }
+
+            // Tag index
+            if (timer.Tag != null)
+            {
+                if (!_tagIndex.TryGetValue(timer.Tag, out var set))
+                {
+                    set = new HashSet<Timer>();
+                    _tagIndex[timer.Tag] = set;
+                }
+
+                set.Add(timer);
+            }
         }
 
-        public void EnqueueRemoveTimer(Timer timer)
+        public void Unregister(Timer timer)
         {
-            _removeBuffer.Add(timer);
+            _timers.Remove(timer);
+
+            if (timer.Owner != null &&
+                _ownerIndex.TryGetValue(timer.Owner, out var set1))
+            {
+                set1.Remove(timer);
+                if (set1.Count == 0)
+                    _ownerIndex.Remove(timer.Owner);
+            }
+
+            if (timer.Tag != null &&
+                _tagIndex.TryGetValue(timer.Tag, out var set2))
+            {
+                set2.Remove(timer);
+                if (set2.Count == 0)
+                    _tagIndex.Remove(timer.Tag);
+            }
         }
         #endregion
 
         #region Update
         private void Update()
-        {
-            ProcessPendingCreates();
-            UpdateTimers();
-            ProcessPendingRemovals();
-        }
-
-        private void UpdateTimers()
         {
             float dt = Time.deltaTime;
 
@@ -45,29 +77,7 @@ namespace UnityGameStarter.TimerSystem
 
                 if ((_timers[i].TimerState == TimerState.Completed || _timers[i].TimerState == TimerState.Cancelled)
                     && _timers[i].AutoRemove)
-                    _removeBuffer.Add(_timers[i]);
-            }
-        }
-        #endregion
-
-        #region Process Pending items
-        private void ProcessPendingCreates() 
-        {
-            if (_addBuffer.Count > 0)
-            {
-                _timers.AddRange(_addBuffer);
-                _addBuffer.Clear();
-            }
-        }
-
-        private void ProcessPendingRemovals() 
-        {
-            if (_removeBuffer.Count > 0)
-            {
-                for (int i = 0; i < _removeBuffer.Count; i++)
-                    _timers.Remove(_removeBuffer[i]);
-
-                _removeBuffer.Clear();
+                    Unregister(_timers[i]);
             }
         }
         #endregion
