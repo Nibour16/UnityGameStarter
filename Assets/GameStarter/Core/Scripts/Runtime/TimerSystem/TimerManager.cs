@@ -7,6 +7,7 @@ namespace UnityGameStarter.TimerSystem
     public class TimerManager : Singleton<TimerManager>
     {
         private readonly List<Timer> _timers = new();
+        public List<Timer> Timers => _timers;
 
         private readonly List<Timer> _addBuffer = new();
         private readonly List<Timer> _removeBuffer = new();
