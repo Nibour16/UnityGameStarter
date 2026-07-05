@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.SingletonPattern;
+using UnityGameStarter.DefferedDataStructure;
 
 namespace UnityGameStarter.TimerSystem 
 {
     public class TimerManager : Singleton<TimerManager>
     {
-        private readonly List<Timer> _timers = new();
+        private readonly DefferedList<Timer> _timers = new();
 
         private readonly Dictionary<object, HashSet<Timer>> _ownerIndex = new();
         public Dictionary<object, HashSet<Timer>> OwnerIndex => _ownerIndex;
@@ -17,57 +18,28 @@ namespace UnityGameStarter.TimerSystem
         #region API
         public void Register(Timer timer)
         {
-            _timers.Add(timer);
-
-            // Owner index
-            if (timer.Owner != null)
-            {
-                if (!_ownerIndex.TryGetValue(timer.Owner, out var set))
-                {
-                    set = new HashSet<Timer>();
-                    _ownerIndex[timer.Owner] = set;
-                }
-
-                set.Add(timer);
-            }
-
-            // Tag index
-            if (timer.Tag != null)
-            {
-                if (!_tagIndex.TryGetValue(timer.Tag, out var set))
-                {
-                    set = new HashSet<Timer>();
-                    _tagIndex[timer.Tag] = set;
-                }
-
-                set.Add(timer);
-            }
+            _timers.EnqueueAdd(timer);
         }
 
         public void Unregister(Timer timer)
         {
-            _timers.Remove(timer);
-
-            if (timer.Owner != null &&
-                _ownerIndex.TryGetValue(timer.Owner, out var set1))
-            {
-                set1.Remove(timer);
-                if (set1.Count == 0)
-                    _ownerIndex.Remove(timer.Owner);
-            }
-
-            if (timer.Tag != null &&
-                _tagIndex.TryGetValue(timer.Tag, out var set2))
-            {
-                set2.Remove(timer);
-                if (set2.Count == 0)
-                    _tagIndex.Remove(timer.Tag);
-            }
+            _timers.EnqueueRemove(timer);
         }
         #endregion
 
-        #region Update
+        #region Life Cycle
         private void Update()
+        {
+            UpdateTimers();
+
+            _timers.ApplyRemovals();
+            OnTimersRemoved();
+
+            _timers.ApplyAdditions();
+            OnTimersAdded();
+        }
+
+        private void UpdateTimers() 
         {
             float dt = Time.deltaTime;
 
@@ -78,6 +50,66 @@ namespace UnityGameStarter.TimerSystem
                 if ((_timers[i].TimerState == TimerState.Completed || _timers[i].TimerState == TimerState.Cancelled)
                     && _timers[i].AutoRemove)
                     Unregister(_timers[i]);
+            }
+        }
+
+        private void OnTimersAdded()
+        {
+            foreach (var t in _timers.PendingAdds)
+            {
+                AddToIndex(t);
+            }
+        }
+
+        private void OnTimersRemoved()
+        {
+            foreach (var t in _timers.PendingRemoves)
+            {
+                RemoveFromIndex(t);
+            }
+        }
+        #endregion
+
+        #region Index Collection
+        private void AddToIndex(Timer t)
+        {
+            if (t.Owner != null)
+            {
+                if (!_ownerIndex.TryGetValue(t.Owner, out var set))
+                {
+                    set = new HashSet<Timer>();
+                    _ownerIndex[t.Owner] = set;
+                }
+                set.Add(t);
+            }
+
+            if (t.Tag != null)
+            {
+                if (!_tagIndex.TryGetValue(t.Tag, out var set))
+                {
+                    set = new HashSet<Timer>();
+                    _tagIndex[t.Tag] = set;
+                }
+                set.Add(t);
+            }
+        }
+
+        private void RemoveFromIndex(Timer t)
+        {
+            if (t.Owner != null &&
+                _ownerIndex.TryGetValue(t.Owner, out var set1))
+            {
+                set1.Remove(t);
+                if (set1.Count == 0)
+                    _ownerIndex.Remove(t.Owner);
+            }
+
+            if (t.Tag != null &&
+                _tagIndex.TryGetValue(t.Tag, out var set2))
+            {
+                set2.Remove(t);
+                if (set2.Count == 0)
+                    _tagIndex.Remove(t.Tag);
             }
         }
         #endregion

@@ -9,6 +9,9 @@ namespace UnityGameStarter.DefferedDataStructure
         private readonly List<T> _addBuffer = new();
         private readonly HashSet<T> _removeBuffer = new();
 
+        public IReadOnlyList<T> PendingAdds => _addBuffer;
+        public IReadOnlyCollection<T> PendingRemoves => _removeBuffer;
+
         public int Count => _list.Count;
         public int PendingAddCount => _addBuffer.Count;
         public int PendingRemoveCount => _removeBuffer.Count;
@@ -31,7 +34,7 @@ namespace UnityGameStarter.DefferedDataStructure
             _removeBuffer.Add(item);
         }
 
-        public void Flush()
+        public void ApplyAll()
         {
             ApplyRemovals();
             ApplyAdditions();
