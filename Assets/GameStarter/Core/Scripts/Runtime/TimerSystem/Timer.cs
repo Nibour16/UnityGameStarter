@@ -13,9 +13,21 @@ namespace UnityGameStarter.TimerSystem
 
     public class Timer 
     {
+#nullable enable
+
+        #region Identity
+        /// <summary> Entity that owns the timer </summary>
+        private readonly object? _owner;
+        public object? Owner => _owner;
+
+        /// <summary> Tag that indetifies the timer </summary>
+        private readonly string? _tag;
+        public string? Tag => _tag;
+        #endregion
+
         #region Time in sec
         /// <summary> Total time </summary>
-        private float _duration;
+        private readonly float _duration;
         public float Duration => _duration;
 
         /// <summary> Running time </summary>
@@ -29,18 +41,24 @@ namespace UnityGameStarter.TimerSystem
         #region Timer States
         private TimerState _timerState;
         public TimerState TimerState => _timerState;
+
+        private readonly bool _autoRemove;
+        public bool AutoRemove => _autoRemove;
         #endregion
 
         #region Progress
         public float Progress => _duration <= 0f ? 1f : _elapsedTime / _duration;
 
-        #nullable enable
         public event Action? Completed;
         #endregion
 
         #region Initialization
-        public Timer(float duration)
+        public Timer(object owner, float duration, string tag = "Default Timer", bool autoRemove = true)
         {
+            _owner = owner;
+            _tag = tag;
+            _autoRemove = autoRemove;
+
             _duration = MathF.Max(0f, duration);
             _timerState = TimerState.Idle;
         }
@@ -65,9 +83,9 @@ namespace UnityGameStarter.TimerSystem
 
             _elapsedTime += deltaTime;
 
-            if (_elapsedTime >= Duration)
+            if (_elapsedTime >= _duration)
             {
-                _elapsedTime = Duration;
+                _elapsedTime = _duration;
                 _timerState = TimerState.Completed;
 
                 Completed?.Invoke();

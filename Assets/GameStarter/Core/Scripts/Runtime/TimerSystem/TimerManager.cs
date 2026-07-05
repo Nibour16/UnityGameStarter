@@ -11,40 +11,56 @@ namespace UnityGameStarter.TimerSystem
         private readonly List<Timer> _addBuffer = new();
         private readonly List<Timer> _removeBuffer = new();
 
-        public Timer CreateTimer(float duration)
+        #region API
+        public Timer EnqueueCreateTimer(
+            object owner, float duration, string tag = "Default Timer", bool autoRemove = true)
         {
-            var timer = new Timer(duration);
+            var timer = new Timer(owner, duration, tag, autoRemove);
             _addBuffer.Add(timer);
             return timer;
         }
 
-        public void RemoveTimer(Timer timer)
+        public void EnqueueRemoveTimer(Timer timer)
         {
             _removeBuffer.Add(timer);
         }
+        #endregion
 
+        #region Update
         private void Update()
+        {
+            ProcessPendingCreates();
+            UpdateTimers();
+            ProcessPendingRemovals();
+        }
+
+        private void UpdateTimers()
         {
             float dt = Time.deltaTime;
 
-            // Add a list of new timers
+            for (int i = 0; i < _timers.Count; i++)
+            {
+                _timers[i].Update(dt);
+
+                if ((_timers[i].TimerState == TimerState.Completed || _timers[i].TimerState == TimerState.Cancelled)
+                    && _timers[i].AutoRemove)
+                    _removeBuffer.Add(_timers[i]);
+            }
+        }
+        #endregion
+
+        #region Process Pending items
+        private void ProcessPendingCreates() 
+        {
             if (_addBuffer.Count > 0)
             {
                 _timers.AddRange(_addBuffer);
                 _addBuffer.Clear();
             }
+        }
 
-            // Update timers
-            for (int i = 0; i < _timers.Count; i++)
-            {
-                _timers[i].Update(dt);
-
-                if (_timers[i].TimerState == TimerState.Completed ||
-                    _timers[i].TimerState == TimerState.Cancelled)
-                    _removeBuffer.Add(_timers[i]);
-            }
-
-            // Remove timers
+        private void ProcessPendingRemovals() 
+        {
             if (_removeBuffer.Count > 0)
             {
                 for (int i = 0; i < _removeBuffer.Count; i++)
@@ -53,5 +69,6 @@ namespace UnityGameStarter.TimerSystem
                 _removeBuffer.Clear();
             }
         }
+        #endregion
     }
 }
