@@ -23,6 +23,10 @@ namespace UnityGameStarter.TimerSystem
         /// <summary> Tag that indetifies the timer </summary>
         private readonly string? _tag;
         public string? Tag => _tag;
+
+        /// <summary> Should remove the timer automatically when completed/cancelled </summary>
+        private readonly bool _autoRemove;
+        public bool AutoRemove => _autoRemove;
         #endregion
 
         #region Time in sec
@@ -41,15 +45,13 @@ namespace UnityGameStarter.TimerSystem
         #region Timer States
         private TimerState _timerState;
         public TimerState TimerState => _timerState;
-
-        private readonly bool _autoRemove;
-        public bool AutoRemove => _autoRemove;
         #endregion
 
         #region Progress
         public float Progress => _duration <= 0f ? 1f : _elapsedTime / _duration;
 
-        public event Action? Completed;
+        private event Action? Completed;
+        private event Action? Cancelled;
         #endregion
 
         #region Initialization
@@ -64,6 +66,16 @@ namespace UnityGameStarter.TimerSystem
         }
         #endregion
 
+        #region Event Life Cycle
+        public void BindCompleted(Action completed) => Completed += completed;
+        public void UnbindCompleted(Action completed) => Completed -= completed;
+        public void UnbindCompletedAll() => Completed = null;
+
+        public void BindCancelled(Action cancelled) => Cancelled += cancelled;
+        public void UnbindCancelled(Action cancelled) => Cancelled -= cancelled;
+        public void UnbindCancelledAll() => Cancelled = null;
+        #endregion
+
         #region Life Cycle
         public void Reset()
         {
@@ -75,6 +87,12 @@ namespace UnityGameStarter.TimerSystem
             if (reset) Reset();
 
             _timerState = TimerState.Running;
+        }
+
+        public void Start(Action completed, bool reset = true) 
+        {
+            BindCompleted(completed);
+            Start(reset);
         }
 
         public void Update(float deltaTime)
@@ -105,6 +123,7 @@ namespace UnityGameStarter.TimerSystem
         public void Cancel()
         {
             _timerState = TimerState.Cancelled;
+            Cancelled?.Invoke();
         }
 
         public void Restart(bool keepState = true)
