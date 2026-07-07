@@ -33,7 +33,7 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 | Feature | Description |
 |---|---|
-| Editor Utilities | A starter editor utility framework that helps to make editor windows with inputs and creators like script creators |
+| Starter Editor Utilities | A starter editor utility framework that helps to make editor windows with inputs and creators like script creators |
 
 ---
 
