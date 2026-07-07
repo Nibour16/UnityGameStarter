@@ -27,6 +27,7 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 | String Library | A library with methods that manipulates string |
 | State Machine | State Pattern Logic (FSM) |
 | Event System | System with Event Bus Pattern and Event Manager for event-driven logic support |
+| Timer System | System that can manage time delays like skill CD |
 
 ## ⚙️ Engine System Features
 
