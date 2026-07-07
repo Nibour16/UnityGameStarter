@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityGameStarter.SingletonPattern;
 using UnityGameStarter.DefferedDataStructure;
 
-namespace UnityGameStarter.TimerSystem 
+namespace UnityGameStarter.TimerSystem
 {
     public class TimerManager : Singleton<TimerManager>
     {
