@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityGameStarter.EventSystem 
+namespace UnityGameStarter.EventSystem.AutoEventFeature
 {
     public abstract class AutoEvent<T, U> : MonoBehaviour, IEventListener<U> 
         where T : MonoBehaviour where U : AutoEvent<T, U> 
