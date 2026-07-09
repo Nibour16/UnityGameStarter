@@ -58,33 +58,32 @@ namespace UnityGameStarter.TypeLibrary
             {
                 try { return a.GetTypes(); }
                 catch { return Array.Empty<Type>(); }
-
             }).Where(t => IsSubclassOf<TBase>(t));
         }
 
-        public static object CreateInstance(Type type)
+        public static object CreateInstance(Type type, params object[] args)
         {
             if (!IsSubclassOf<object>(type, false))
                 throw new Exception($"TypeLibrary: {type.Name} is not valid");
 
-            DebugTypeCreate(type);
-            return Activator.CreateInstance(type);
+            #if UNITY_EDITOR
+            Debug.Log($"TypeLibrary: Attempt to create: {type.Name}");
+            #endif
+
+            try { return Activator.CreateInstance(type, args); }
+
+            catch (Exception e)
+            {
+                string provided = string.Join(", ",
+                args.Select(a => a?.GetType().Name ?? "null"));
+
+                throw new InvalidOperationException(
+                    $"TypeLibrary: Cannot create '{type.FullName}'. " +
+                    $"Arguments: ({provided})", e);
+            }
         }
 
-        public static T CreateInstance<T>(Type type)
-        {
-            if (!IsSubclassOf<object>(type, false))
-                throw new Exception($"TypeLibrary: {type.Name} is not valid");
-
-            DebugTypeCreate(type);
-            return (T)Activator.CreateInstance(type);
-        }
-
-        private static void DebugTypeCreate(Type type)
-        {
-#if UNITY_EDITOR
-            Debug.Log($"TypeLibrary: Create: {type.Name}");
-#endif
-        }
+        public static T CreateInstance<T>(Type type, params object[] args)
+            => (T)CreateInstance(type, args);
     }
 }

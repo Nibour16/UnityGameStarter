@@ -61,7 +61,7 @@ namespace UnityGameStarter.FiniteStateMachine
             {
                 if (!TypeLibrary.IsSubclassOf<BaseState>(stateType)) continue;
 
-                var state = (BaseState)TypeLibrary.CreateInstance(stateType);
+                var state = (BaseState)TypeLibrary.CreateInstance(stateType, this);
                 _states.Add(stateType, state);
             }
         }
