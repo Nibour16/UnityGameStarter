@@ -1,4 +1,5 @@
 using System;
+using static UnityEditorInternal.ReorderableList;
 
 namespace UnityGameStarter.TimerSystem 
 {
@@ -9,6 +10,13 @@ namespace UnityGameStarter.TimerSystem
         Paused,
         Completed,
         Cancelled
+    }
+
+    public enum TimerType 
+    {
+        Default,
+        AutoRemovable,
+        Loopable
     }
 
     public class Timer 
@@ -25,8 +33,8 @@ namespace UnityGameStarter.TimerSystem
         public string? Tag => _tag;
 
         /// <summary> Should remove the timer automatically when completed/cancelled </summary>
-        private readonly bool _autoRemove;
-        public bool AutoRemove => _autoRemove;
+        private readonly TimerType _timerType;
+        public TimerType TimerType => _timerType;
         #endregion
 
         #region Time in sec
@@ -56,11 +64,12 @@ namespace UnityGameStarter.TimerSystem
         #endregion
 
         #region Initialization
-        public Timer(object owner, float duration, string tag = "Default Timer", bool autoRemove = true)
+        public Timer(
+            object owner, float duration, string tag = "Default Timer", TimerType timerType = TimerType.Default)
         {
             _owner = owner;
             _tag = tag;
-            _autoRemove = autoRemove;
+            _timerType = timerType;
 
             _duration = MathF.Max(0f, duration);
             _timerState = TimerState.Idle;
@@ -118,6 +127,9 @@ namespace UnityGameStarter.TimerSystem
                 _timerState = TimerState.Completed;
 
                 Completed?.Invoke();
+
+                if (_timerType == TimerType.Loopable)
+                    Restart();
             }
         }
 
@@ -145,7 +157,7 @@ namespace UnityGameStarter.TimerSystem
                 Start(false);
         }
 
-        public void OnRemoved() 
+        public void OnRemoved()
         {
             Removed?.Invoke();
         }

@@ -51,7 +51,7 @@ namespace UnityGameStarter.TimerSystem
                 _timers[i].Update(dt);
 
                 if ((_timers[i].TimerState == TimerState.Completed || _timers[i].TimerState == TimerState.Cancelled)
-                    && _timers[i].AutoRemove)
+                    && _timers[i].TimerType == TimerType.AutoRemovable)
                     Unregister(_timers[i]);
             }
         }

@@ -10,11 +10,11 @@ namespace UnityGameStarter.TestOnlyScripts.TimerSystem
         private bool _isPaused = false;
 
         [SerializeField] private float timerDuration = 3f;
-        [SerializeField] private bool autoRemoveTimer = true;
+        [SerializeField] private TimerType timerType;
 
         private void Awake() 
         {
-            _timer = new Timer(this, timerDuration, "Test Timer", autoRemoveTimer);
+            _timer = new Timer(this, timerDuration, "Test Timer", timerType);
         }
 
         private void OnEnable() 
