@@ -1,7 +1,9 @@
+using UnityGameStarter.SingletonPattern;
+using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
+
 namespace UnityGameStarter.InputSystem 
 {
-    using UnityGameStarter.SingletonPattern;
-
+    [RuntimeSingleton]
     public abstract class InputManager<T> : Singleton<T> where T : InputManager<T>
     {
         private PlayerInputs_Core _core;
