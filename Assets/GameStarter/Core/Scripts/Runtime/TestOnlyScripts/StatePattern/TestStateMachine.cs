@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityGameStarter.FiniteStateMachine;        
 
-namespace UnityGameStarter.TestOnlyScripts 
+namespace UnityGameStarter.TestOnlyScripts.StateMachine
 {
     public class TestStateMachine : BaseStateMachine
     {

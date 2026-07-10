@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityGameStarter.EventSystem.EventManagement;
 
-namespace UnityGameStarter.TestOnlyScripts 
+namespace UnityGameStarter.TestOnlyScripts.Event
 {
     public class TestEvent : MonoBehaviour
     {

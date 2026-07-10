@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityGameStarter.FiniteStateMachine;
 
-namespace UnityGameStarter.TestOnlyScripts 
+namespace UnityGameStarter.TestOnlyScripts.StateMachine
 {
     public class TestStateA : BaseState
     {

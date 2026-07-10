@@ -52,6 +52,7 @@ namespace UnityGameStarter.TimerSystem
 
         private event Action? Completed;
         private event Action? Cancelled;
+        private event Action? Removed;
         #endregion
 
         #region Initialization
@@ -74,6 +75,10 @@ namespace UnityGameStarter.TimerSystem
         public void BindCancelled(Action cancelled) => Cancelled += cancelled;
         public void UnbindCancelled(Action cancelled) => Cancelled -= cancelled;
         public void UnbindCancelledAll() => Cancelled = null;
+
+        public void BindRemoved(Action removed) => Removed += removed;
+        public void UnbindRemoved(Action removed) => Removed -= removed;
+        public void UnbindRemovedAll() => Removed = null;
         #endregion
 
         #region Life Cycle
@@ -93,6 +98,12 @@ namespace UnityGameStarter.TimerSystem
         {
             BindCompleted(completed);
             Start(reset);
+        }
+
+        public void Start(Action completed, Action cancelled, bool reset = true)
+        {
+            BindCancelled(cancelled);
+            Start(completed, reset);
         }
 
         public void Update(float deltaTime)
@@ -130,7 +141,13 @@ namespace UnityGameStarter.TimerSystem
         {
             Reset();
 
-            if (!keepState) Start(false);
+            if (!keepState || _timerState == TimerState.Completed || _timerState == TimerState.Cancelled) 
+                Start(false);
+        }
+
+        public void OnRemoved() 
+        {
+            Removed?.Invoke();
         }
         #endregion
     }

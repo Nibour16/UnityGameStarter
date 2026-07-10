@@ -25,6 +25,7 @@ namespace UnityGameStarter.TimerSystem
 
         public void Unregister(Timer timer)
         {
+            timer.OnRemoved();
             _timers.EnqueueRemove(timer);
         }
         #endregion
@@ -34,11 +35,11 @@ namespace UnityGameStarter.TimerSystem
         {
             UpdateTimers();
 
-            _timers.ApplyRemovals();
             OnTimersRemoved();
+            _timers.ApplyRemovals();
 
-            _timers.ApplyAdditions();
             OnTimersAdded();
+            _timers.ApplyAdditions();
         }
 
         private void UpdateTimers() 

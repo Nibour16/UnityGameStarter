@@ -1,7 +1,7 @@
 using UnityGameStarter.EventSystem.EventManagement;
 using UnityGameStarter.EventSystem.EventManagement.AutoEventFeature;
 
-namespace UnityGameStarter.TestOnlyScripts 
+namespace UnityGameStarter.TestOnlyScripts.Event
 {
     public class TestAutoEventListener : AutoEventListener<TestEvent>
     {
