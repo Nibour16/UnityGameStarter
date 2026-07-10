@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.SingletonPattern;
+using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 using UnityGameStarter.DefferedDataStructure;
 
 namespace UnityGameStarter.TimerSystem
 {
+    [RuntimeSingleton]
     public class TimerManager : Singleton<TimerManager>
     {
         private readonly DefferedList<Timer> _timers = new();
