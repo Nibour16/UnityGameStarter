@@ -4,7 +4,7 @@ using UnityGameStarter.DefferedDataStructure;
 using UnityGameStarter.SingletonPattern;
 using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 
-namespace UnityGameStarter.CustomUpdate.Advanced
+namespace UnityGameStarter.NewUpdateSystem.Advanced
 {
     [RuntimeSingleton]
     public class UpdateManager : Singleton<UpdateManager>

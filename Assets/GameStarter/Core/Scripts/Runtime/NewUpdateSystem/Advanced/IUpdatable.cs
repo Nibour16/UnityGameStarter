@@ -1,4 +1,4 @@
-namespace UnityGameStarter.CustomUpdate.Advanced 
+namespace UnityGameStarter.NewUpdateSystem.Advanced 
 {
     public interface IUpdatable
     {

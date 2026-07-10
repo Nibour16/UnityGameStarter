@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityGameStarter.TimerSystem;
 
-namespace UnityGameStarter.CustomUpdate 
+namespace UnityGameStarter.NewUpdateSystem 
 {
-    public abstract class BaseCustomUpdatable : MonoBehaviour
+    public abstract class LazyUpdatable : MonoBehaviour
     {
-        [SerializeField, Min(0f)] private float interval = 1f;
+        [SerializeField, Min(0f)] private float interval = 0.02f;
         [SerializeField] private string timerName = "Default Timer";
 
         protected Timer Timer { get; private set; }
@@ -17,16 +17,16 @@ namespace UnityGameStarter.CustomUpdate
 
         protected virtual void OnEnable()
         {
-            Timer.BindCompleted(OnIntervalUpdate);
+            Timer.BindCompleted(LazyUpdate);
             Timer.Start();
         }
 
         protected virtual void OnDisable()
         {
             Timer.Cancel();
-            Timer.UnbindCompleted(OnIntervalUpdate);
+            Timer.UnbindCompleted(LazyUpdate);
         }
 
-        protected abstract void OnIntervalUpdate();
+        protected abstract void LazyUpdate();
     }
 }
