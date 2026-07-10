@@ -29,6 +29,7 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 | Starter Singleton Pattern | Singleton Pattern framework for singleton entities like game manager with runtime singleton bootstrap for additional support |
 | Event System | System with Event Bus Pattern and Event Manager for event-driven logic support |
 | Timer System | System that can manage time delays like skill CD |
+| New Update System | System that includes base Monobehaviour with lazy update logic and starter custom update management |
 
 ## ⚙️ Engine System Features
 
