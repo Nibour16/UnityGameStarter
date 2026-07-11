@@ -1,5 +1,4 @@
 using System;
-using static UnityEditorInternal.ReorderableList;
 
 namespace UnityGameStarter.TimerSystem 
 {
@@ -90,7 +89,7 @@ namespace UnityGameStarter.TimerSystem
         public void UnbindRemovedAll() => Removed = null;
         #endregion
 
-        #region Life Cycle
+        #region API
         public void Reset()
         {
             _elapsedTime = 0f;
@@ -113,24 +112,6 @@ namespace UnityGameStarter.TimerSystem
         {
             BindCancelled(cancelled);
             Start(completed, reset);
-        }
-
-        public void Update(float deltaTime)
-        {
-            if (_timerState != TimerState.Running) return;
-
-            _elapsedTime += deltaTime;
-
-            if (_elapsedTime >= _duration)
-            {
-                _elapsedTime = _duration;
-                _timerState = TimerState.Completed;
-
-                Completed?.Invoke();
-
-                if (_timerType == TimerType.Loopable)
-                    Restart();
-            }
         }
 
         public void Pause()
@@ -156,8 +137,28 @@ namespace UnityGameStarter.TimerSystem
             if (!keepState || _timerState == TimerState.Completed || _timerState == TimerState.Cancelled) 
                 Start(false);
         }
+        #endregion
 
-        public void OnRemoved()
+        #region Life Cycle
+        internal void Update(float deltaTime)
+        {
+            if (_timerState != TimerState.Running) return;
+
+            _elapsedTime += deltaTime;
+
+            if (_elapsedTime >= _duration)
+            {
+                _elapsedTime = _duration;
+                _timerState = TimerState.Completed;
+
+                Completed?.Invoke();
+
+                if (_timerType == TimerType.Loopable)
+                    Restart();
+            }
+        }
+
+        internal void OnRemoved()
         {
             Removed?.Invoke();
         }
