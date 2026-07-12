@@ -24,7 +24,9 @@ namespace UnityGameStarter.TestOnlyScripts.ProjectileSimulation
 
         public void OnSpawn()
         {
-            _timer = new Timer(this, remainingTime, "Projectile Timer", TimerType.AutoRemovable);
+            _timer = TimerManager.Instance.CreateTimer(
+                this, remainingTime, "Projectile Timer", TimerType.Default, false);
+
             _timer.Start(Despawn);
         }
 

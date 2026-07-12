@@ -18,6 +18,18 @@ namespace UnityGameStarter.TimerSystem
         public Dictionary<object, HashSet<Timer>> TagIndex => _tagIndex;
 
         #region API
+        public Timer CreateTimer(
+            object owner, float duration, string tag = "Default Timer", 
+            TimerType timerType = TimerType.Default, bool autoStart = true) 
+        {
+            var timer = new Timer(owner, duration, tag, timerType);
+
+            Register(timer);
+
+            if (autoStart) timer.Start();
+            return timer;
+        }
+
         public void Register(Timer timer)
         {
             _timers.EnqueueAdd(timer);
