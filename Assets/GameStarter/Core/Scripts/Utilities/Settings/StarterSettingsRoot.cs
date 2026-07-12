@@ -7,8 +7,7 @@ namespace UnityGameStarter.StarterSettings
         menuName = "Scriptable Objects/Unity Game Starter/Advanced/Starter Settings Root")]
     public sealed class StarterSettingsRoot : ScriptableObject
     {
-        [SerializeField]
-        private List<ScriptableObject> settings = new();
+        [SerializeField] private List<ScriptableObject> settings = new();
 
         public IReadOnlyList<ScriptableObject> Settings => settings;
     }

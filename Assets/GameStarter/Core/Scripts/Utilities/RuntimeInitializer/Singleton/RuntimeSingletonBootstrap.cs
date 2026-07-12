@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
-using UnityEngine;
+using UnityGameStarter.RuntimeCore;
 
 namespace UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap
 {
@@ -11,9 +11,8 @@ namespace UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap
 
     public static class RuntimeSingletonBootstrap
     {
-        [RuntimeInitializeOnLoadMethod(
-            RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Initialize()
+        [GameStarterInitialize(-290)]
+        public static void Initialize()
         {
             var types = TypeCache.GetTypesWithAttribute<RuntimeSingletonAttribute>().Where(t => !t.IsAbstract);
 

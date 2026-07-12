@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityGameStarter.StarterSettings;
 
-namespace UnityGameStarter.Quality 
+namespace UnityGameStarter.StarterSettings.Quality
 {
     [CreateAssetMenu(fileName = "NewFPSSetting", 
         menuName = "Scriptable Objects/Unity Game Starter/Quality/FPS Setting")]

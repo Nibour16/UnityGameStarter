@@ -8,15 +8,21 @@ namespace UnityGameStarter.StarterSettings
 
     public static class StarterSettingsProvider
     {
-        private static readonly Dictionary<Type, ScriptableObject> cache = new();
+        private static readonly Dictionary<Type, IStarterSetting> cache = new();
         private static bool _initialized;
 
-        public static void Initialize(StarterSettingsRoot root)
+        public static bool Initialize(StarterSettingsRoot root)
         {
             if (_initialized)
             {
                 Debug.LogWarning("SettingsProvider already initialized.");
-                return;
+                return false;
+            }
+
+            if (root == null)
+            {
+                Debug.LogError( "StarterSettingsRoot is null.");
+                return false;
             }
 
             foreach (var setting in root.Settings)
@@ -35,10 +41,11 @@ namespace UnityGameStarter.StarterSettings
                     continue;
                 }
 
-                cache.Add(type, setting);
+                cache.Add(type, (IStarterSetting)setting);
             }
 
             _initialized = true;
+            return true;
         }
 
         public static T Get<T>() where T : ScriptableObject, IStarterSetting
