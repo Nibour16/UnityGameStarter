@@ -146,15 +146,18 @@ namespace UnityGameStarter.TimerSystem
 
             _elapsedTime += deltaTime;
 
-            if (_elapsedTime >= _duration)
+            if (_elapsedTime < _duration) return;
+
+            if (_timerType == TimerType.Loopable)
+            {
+                _elapsedTime -= _duration;
+                Completed?.Invoke();
+            }
+            else
             {
                 _elapsedTime = _duration;
                 _timerState = TimerState.Completed;
-
                 Completed?.Invoke();
-
-                if (_timerType == TimerType.Loopable)
-                    Restart();
             }
         }
 
