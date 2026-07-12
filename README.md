@@ -36,7 +36,10 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 | Feature | Description |
 |---|---|
+| Starter Engine Runtime Management | Manages runtime of all logics that needs to be initialzed before scene construction, 
+  where they don't require to manually putting into the scene |
 | Starter Editor Utilities | A starter editor utility framework that helps to make editor windows with inputs and creators like script creators |
+| Starter Customizable Project Settings | A framework that serves Unity's Project Setting, allows users to design custom project settings more confortable |
 
 ---
 
