@@ -29,6 +29,7 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 | Timer System | System that can manage time delays like skill CD |
 | New Update System | System that includes base Monobehaviour with lazy update logic and starter custom update management |
 | Object Pool Management | Manages Unity Object Pooling for users to understand and use easier |
+| Service Locator Pattern | Design pattern logic that supports for large/complex systems connections|
 
 ## ⚙️ Engine System Features
 
