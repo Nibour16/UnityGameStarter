@@ -23,8 +23,6 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 | Feature | Description |
 |---|---|
-| Type Library | A library with methods that resolves the class type and its validation |
-| String Library | A library with methods that manipulates string |
 | State Machine | State Pattern Logic (FSM) |
 | Starter Singleton Pattern | Singleton Pattern framework for singleton entities like game manager with runtime singleton bootstrap for additional support |
 | Event System | System with Event Bus Pattern and Event Manager for event-driven logic support |
