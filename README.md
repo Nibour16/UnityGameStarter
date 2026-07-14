@@ -16,6 +16,7 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 | Feature | Description |
 |---|---|
 | Starter Input System | Input system that is suitable for any types of games, which does not matter whether 2D or 3D |
+| Scene Facade | A facade script that makes Unity Scene Management easier to use and suitable to be applied by other features and systems |
 
 ## 🛠️ Framework Features
 
