@@ -3,7 +3,7 @@ using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 
 namespace UnityGameStarter.InputSystem 
 {
-    [RuntimeSingleton]
+    [RuntimeSingleton(-100)]
     public abstract class InputManager<T> : Singleton<T> where T : InputManager<T>
     {
         private PlayerInputs_Core _core;

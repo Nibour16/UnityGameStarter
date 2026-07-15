@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7814223018932167141
+--- !u!1 &4014847365545503394
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1642216390229623829}
-  - component: {fileID: 6089890381662751995}
-  - component: {fileID: 2139599854728377981}
+  - component: {fileID: 5198395351945322266}
+  - component: {fileID: 6653010741881347285}
   m_Layer: 0
-  m_Name: TestEvent
+  m_Name: TestEventListener
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1642216390229623829
+--- !u!4 &5198395351945322266
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7814223018932167141}
+  m_GameObject: {fileID: 4014847365545503394}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,27 +32,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6089890381662751995
+--- !u!114 &6653010741881347285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7814223018932167141}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0f056e99520b034a9ed63a388b94939, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.TestOnlyScripts.TestEvent
---- !u!114 &2139599854728377981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7814223018932167141}
+  m_GameObject: {fileID: 4014847365545503394}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2df9c4d79415af040b132591cb644716, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.TestOnlyScripts.TestAutoEventListener
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.TestOnlyScripts.Event.TestAutoEventListener

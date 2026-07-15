@@ -5,7 +5,7 @@ namespace UnityGameStarter.StarterSettings.Quality
 {
     public static class FPSLimiter
     {
-        [GameStarterInitialize(-490)]
+        [GameStarter(RuntimeInitializeLoadType.BeforeSceneLoad, -490)]
         public static void Initialize()
         {
             var settings = StarterSettingsProvider.Get<FPSSettings>();

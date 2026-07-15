@@ -9,8 +9,8 @@ namespace UnityGameStarter.EventSystem.EventManagement
     [AttributeUsage(AttributeTargets.Method)]
     public class EventListenerAttribute : Attribute { }
 
-    [RuntimeSingleton]
-    public abstract class EventManager<T> : Singleton<T> where T : EventManager<T>
+    [RuntimeSingleton(-300)]
+    public abstract class EventManager<T> : Singleton<EventManager> where T : EventManager<T>
     {
         private readonly Dictionary<Type, List<object>> _listeners = new();
         protected Dictionary<Type, List<object>> Listeners => _listeners;

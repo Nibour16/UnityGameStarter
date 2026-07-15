@@ -6,7 +6,7 @@ namespace UnityGameStarter.StarterSettings
 {
     public static class StarterSettingsRootBootstrap
     {
-        [GameStarterInitialize(-500)]
+        [GameStarter(RuntimeInitializeLoadType.BeforeSceneLoad, -500)]
         public static void Initialize()
         {
             StarterSettingsProvider.Initialize(FindSettingsRoot());
