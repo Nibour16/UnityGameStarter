@@ -4,7 +4,7 @@ using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 
 namespace UnityGameStarter.SingletonPattern
 {
-    public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+    public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;
         private static bool _isQuitting = false;
