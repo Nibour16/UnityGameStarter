@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 
 namespace UnityGameStarter.SingletonPattern
 {
@@ -26,10 +25,7 @@ namespace UnityGameStarter.SingletonPattern
         protected virtual void Awake()
         {
             if (_instance == null)
-            {
                 _instance = this as T;
-                DontDestroyOnLoad(gameObject);
-            }
             else if (_instance != this)
                 Destroy(gameObject);
         }
@@ -44,7 +40,6 @@ namespace UnityGameStarter.SingletonPattern
 
             var obj = new GameObject(typeof(T).Name);
             _instance = obj.AddComponent<T>();
-            DontDestroyOnLoad(obj);
         }
 
         [SingletonReset]

@@ -1,12 +1,38 @@
 using UnityEngine;
 using UnityGameStarter.SingletonPattern;
-using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 
 namespace UnityGameStarter.Gameplay.Core
 {
-    [RuntimeSingleton(-290)]
     public class GameManager : Singleton<GameManager>
     {
+        public void SaveGame() 
+        {
+            
+        }
         
+        public void LoadGame() 
+        {
+            
+        }
+        
+        public void PauseGame() 
+        {
+            
+        }
+
+        public void ResumeGame() 
+        {
+            
+        }
+
+        public void RestartGame() 
+        {
+            
+        }
+
+        public void QuitGame() 
+        {
+            
+        }
     }
 }

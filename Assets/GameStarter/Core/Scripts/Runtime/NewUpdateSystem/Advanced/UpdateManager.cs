@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityGameStarter.DefferedDataStructure;
 using UnityGameStarter.SingletonPattern;
-using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 
 namespace UnityGameStarter.NewUpdateSystem.Advanced
 {

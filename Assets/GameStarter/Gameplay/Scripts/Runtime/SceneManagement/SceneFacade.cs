@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 using UnityGameStarter.ServiceLocatorPattern;
 using UnityGameStarter.SingletonPattern;
-using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 
 namespace UnityGameStarter.SceneManagement
 {

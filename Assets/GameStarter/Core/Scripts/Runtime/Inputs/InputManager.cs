@@ -1,5 +1,4 @@
 using UnityGameStarter.SingletonPattern;
-using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 
 namespace UnityGameStarter.InputSystem 
 {

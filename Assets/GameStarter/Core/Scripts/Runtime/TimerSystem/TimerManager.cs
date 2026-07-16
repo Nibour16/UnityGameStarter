@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.SingletonPattern;
-using UnityGameStarter.SingletonPattern.RuntimeSingletonBootstrap;
 using UnityGameStarter.DefferedDataStructure;
 
 namespace UnityGameStarter.TimerSystem
