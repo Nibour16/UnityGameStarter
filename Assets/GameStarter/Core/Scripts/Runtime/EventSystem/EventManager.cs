@@ -1,6 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
+
+using UnityEngine;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.EventSystem.EventManagement
@@ -9,37 +10,26 @@ namespace UnityGameStarter.EventSystem.EventManagement
     public class EventListenerAttribute : Attribute { }
 
     [RuntimeSingleton(-300)]
-    public abstract class EventManager<T> : Singleton<EventManager> where T : EventManager<T>
+    public sealed class EventManager : Singleton<EventManager>
     {
-        private readonly Dictionary<Type, List<object>> _listeners = new();
-        protected Dictionary<Type, List<object>> Listeners => _listeners;
-
-        protected virtual void OnEnable() { }
-
-        protected virtual void OnDisable()
+        private void OnDisable()
         {
-            ClearAll();
+            EventBus.Clear();
         }
 
-        public virtual void Register(object listener)
+        public void Register(object listener)
         {
             ProcessListener(listener, (type, callback) => { EventBus.Subscribe(type, callback); });
         }
 
-        public virtual void Unregister(object listener)
+        public void Unregister(object listener)
         {
             ProcessListener(listener, (type, callback) => { EventBus.Unsubscribe(type, callback); });
         }
 
-        public virtual void Publish<TEvent>(TEvent e) => EventBus.Publish(e);
+        public void Publish<TEvent>(TEvent e) => EventBus.Publish(e);
 
-        public virtual void ClearAll()
-        {
-            _listeners.Clear();
-            EventBus.Clear();
-        }
-
-        protected void ProcessListener(object listener, Action<Type, Delegate> action)
+        private void ProcessListener(object listener, Action<Type, Delegate> action)
         {
             var methods = listener.GetType().GetMethods
                 (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -51,7 +41,12 @@ namespace UnityGameStarter.EventSystem.EventManagement
 
                 var parameter = method.GetParameters();
 
-                if (parameter.Length != 1) continue;
+                if (parameter.Length != 1) 
+                {
+                    Debug.LogError(
+                        "Event Manager: Invalid listener detected: method must contain only one parameter");
+                    continue; 
+                }
 
                 Type eventType = parameter[0].ParameterType;
 
@@ -62,7 +57,4 @@ namespace UnityGameStarter.EventSystem.EventManagement
             }
         }
     }
-
-    [RuntimeSingleton(-300)]
-    public class EventManager : EventManager<EventManager> { }
 }

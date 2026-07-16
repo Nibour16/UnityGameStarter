@@ -1,5 +1,5 @@
-using UnityEngine;
 using UnityGameStarter.FiniteStateMachine;
+using UnityGameStarter.Gameplay.PauseManagement;
 
 namespace UnityGameStarter.Gameplay.Core
 {
@@ -9,17 +9,14 @@ namespace UnityGameStarter.Gameplay.Core
 
         public override void EnterState()
         {
-            // TODO: Enter logic for PauseState
+            PauseManager.Instance.SetPause(true);
         }
 
-        public override void UpdateState()
-        {
-            // TODO: Update logic for PauseState
-        }
+        public override void UpdateState() { }
 
         public override void ExitState()
         {
-            // TODO: Exit logic for PauseState
+            PauseManager.Instance.SetPause(false);
         }
     }
 }

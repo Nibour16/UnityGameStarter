@@ -18,6 +18,8 @@ namespace UnityGameStarter.SingletonPattern
             }
         }
 
+        public static bool HasInstance => _instance != null;
+
         protected static bool IsValidSingletonType(Type type) => typeof(T) == type;
 
         protected virtual void Awake()

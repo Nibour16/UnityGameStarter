@@ -5,6 +5,8 @@ namespace UnityGameStarter.Gameplay.Core
 {
     public class GameManager : Singleton<GameManager>
     {
+        public GameplayData data;
+        
         [SerializeField] private GameStateMachine stateMachine;
 
         protected override void Awake()

@@ -1,10 +1,11 @@
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityGameStarter.EventSystem.EventManagement;
-using UnityGameStarter.EventSystem.EventManagement.AutoEventFeature;
 
 namespace UnityGameStarter.TestOnlyScripts.Event
 {
-    public class TestAutoEventListener : AutoEventListener<TestEvent>
+    [RequireComponent(typeof(EventListenerRegister))]
+    public class TestAutoEventListener : MonoBehaviour, IAutoEventListener
     {
         private TestEvent _testEvent;
         
