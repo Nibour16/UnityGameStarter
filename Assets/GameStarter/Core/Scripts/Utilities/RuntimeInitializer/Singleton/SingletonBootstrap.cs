@@ -54,18 +54,7 @@ namespace UnityGameStarter.SingletonPattern
         }
 
         private static bool IsValidRuntimeSingleton(Type type)
-        {
-            if (IsValidSingleton(type) && typeof(MonoBehaviour).IsAssignableFrom(type)) 
-            {
-                Debug.LogError(
-                    $"RuntimeSingletonBootstrap: " +
-                    $"{type.FullName} is marked with RuntimeSingletonAttribute but is invalid.");
-
-                return false;
-            }
-
-            return true;
-        }
+            => IsValidSingleton(type) && typeof(MonoBehaviour).IsAssignableFrom(type);
 
         private static bool IsValidSingleton(Type type)
         {

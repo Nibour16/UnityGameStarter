@@ -11,7 +11,10 @@ namespace UnityGameStarter.EventSystem.EventManagement.AutoEventFeature
 
         protected virtual void OnDisable()
         {
-            EventManager.Instance.Unregister(this);
+            var manager = EventManager.Instance;
+
+            if (manager)
+                manager.Unregister(this);
         }
     }
 }

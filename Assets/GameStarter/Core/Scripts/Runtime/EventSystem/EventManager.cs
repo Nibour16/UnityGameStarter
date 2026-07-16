@@ -63,5 +63,6 @@ namespace UnityGameStarter.EventSystem.EventManagement
         }
     }
 
+    [RuntimeSingleton(-300)]
     public class EventManager : EventManager<EventManager> { }
 }

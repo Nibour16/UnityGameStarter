@@ -12,8 +12,6 @@ namespace UnityGameStarter.SingletonPattern
         {
             get
             {
-                if (_isQuitting || !Application.isPlaying) return null;
-
                 if (_instance == null) CreateInstance();
 
                 return _instance;
