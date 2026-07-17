@@ -99,5 +99,10 @@ namespace UnityGameStarter.SceneManagement
         #region Reload
         public Task ReloadAsync() => LoadAsync(ActiveScene);
         #endregion
+
+        #region Other API
+        public Scene GetSceneByName(string sceneName)
+            => SceneManager.GetSceneByName(sceneName);
+        #endregion
     }
 }

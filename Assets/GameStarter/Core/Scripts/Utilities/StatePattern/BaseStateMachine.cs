@@ -10,7 +10,9 @@ namespace UnityGameStarter.FiniteStateMachine
     public abstract class BaseStateMachine : MonoBehaviour
     {
         private Dictionary<Type, BaseState> _states = new();
+        
         private BaseState _currentState;
+        public BaseState CurrentState => _currentState;
 
         #region Initialization
         protected virtual void Awake()
@@ -34,9 +36,28 @@ namespace UnityGameStarter.FiniteStateMachine
         #endregion
 
         #region API
+        public bool TryGetStateByType<T>(out T state) where T : BaseState
+        {
+            if (!_states.TryGetValue(typeof(T), out var foundState)) 
+            {
+                state = null;
+                Debug.LogError($"Does not contain type of {typeof(T)} in the State Machine");
+                return false;
+            }
+
+            state = foundState as T;
+            return true;
+        }
+
         public void SetState(Type stateType)
         {
-            SetState(_states[stateType]);
+            if (!_states.TryGetValue(stateType, out var state)) 
+            {
+                Debug.LogError($"Does not contain type of {stateType} in the State Machine");
+                return;
+            }
+
+            SetState(state);
         }
 
         public void SetState(BaseState newState)

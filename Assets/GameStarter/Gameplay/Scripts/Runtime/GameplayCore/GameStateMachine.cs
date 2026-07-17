@@ -9,10 +9,10 @@ namespace UnityGameStarter.Gameplay.Core
         {
             return new[]
             {
-                typeof(InitialGameState),
                 typeof(LoadingState),
                 typeof(GameplayState),
-                typeof(PauseState)
+                typeof(PauseState),
+                typeof(ExitGameState)
             };
         }
     }

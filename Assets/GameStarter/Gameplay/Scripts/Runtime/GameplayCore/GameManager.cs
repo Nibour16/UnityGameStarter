@@ -48,7 +48,7 @@ namespace UnityGameStarter.Gameplay.Core
 
         public void LeaveGame() 
         {
-            // TODO: Quit Game
+            stateMachine.SetState(typeof(ExitGameState));
         }
     }
 }
