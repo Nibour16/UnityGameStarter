@@ -14,8 +14,10 @@ namespace UnityGameStarter.EventSystem.EventManagement
     {
         private void OnDisable()
         {
-            EventBus.Clear();
+            EventBus.ClearAll();
         }
+
+        public int GetListenerCount<TEvent>() => EventBus.GetListenerCount<TEvent>();
 
         public void Register(object listener)
         {
@@ -28,6 +30,10 @@ namespace UnityGameStarter.EventSystem.EventManagement
         }
 
         public void Publish<TEvent>(TEvent e) => EventBus.Publish(e);
+
+        public void PublishAndClear<TEvent>(TEvent e) => EventBus.PublishAndClear(e);
+
+        public void Clear<TEvent>() => EventBus.Clear<TEvent>();
 
         private void ProcessListener(object listener, Action<Type, Delegate> action)
         {

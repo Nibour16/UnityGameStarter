@@ -14,6 +14,8 @@ namespace UnityGameStarter.FiniteStateMachine
         private BaseState _currentState;
         public BaseState CurrentState => _currentState;
 
+        protected virtual bool SetDefault => true;
+
         #region Initialization
         protected virtual void Awake()
         {
@@ -22,7 +24,8 @@ namespace UnityGameStarter.FiniteStateMachine
 
         protected virtual void Start()
         {
-            SetState(_states.Values.FirstOrDefault());
+            if (SetDefault)
+                SetState(_states.Values.FirstOrDefault());
         }
 
         protected abstract Type[] GetInitialStates();
@@ -49,18 +52,7 @@ namespace UnityGameStarter.FiniteStateMachine
             return true;
         }
 
-        public void SetState(Type stateType)
-        {
-            if (!_states.TryGetValue(stateType, out var state)) 
-            {
-                Debug.LogError($"Does not contain type of {stateType} in the State Machine");
-                return;
-            }
-
-            SetState(state);
-        }
-
-        public void SetState(BaseState newState)
+        public void SetState(BaseState newState, bool reset = false)
         {
             if (newState == null)
             {
@@ -68,9 +60,22 @@ namespace UnityGameStarter.FiniteStateMachine
                 return;
             }
 
+            if (!reset && _currentState == newState) return;
+
             _currentState?.ExitState();
             _currentState = newState;
             _currentState.EnterState();
+        }
+
+        public void SetState(Type stateType, bool reset = false)
+        {
+            if (!_states.TryGetValue(stateType, out var state)) 
+            {
+                Debug.LogError($"Does not contain type of {stateType} in the State Machine");
+                return;
+            }
+
+            SetState(state, reset);
         }
         #endregion
 

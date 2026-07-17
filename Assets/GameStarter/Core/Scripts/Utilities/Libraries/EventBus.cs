@@ -99,7 +99,29 @@ namespace UnityGameStarter.EventSystem
             }
         }
 
-        public static void Clear()
+        public static void PublishAndClear<TEvent>(TEvent e) 
+        {
+            Publish(e);
+            Clear<TEvent>();
+        }
+
+        public static int GetListenerCount<TEvent>()
+        {
+            var type = typeof(TEvent);
+
+            if (!_events.TryGetValue(type, out var list))
+                return 0;
+
+            return list.Count;
+        }
+
+        public static void Clear<TEvent>()
+        {
+            _events.Remove(typeof(TEvent));
+            _cache.Clear();
+        }
+
+        public static void ClearAll()
         {
             _events.Clear();
             _cache.Clear();

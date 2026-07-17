@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay.Core
@@ -21,12 +22,17 @@ namespace UnityGameStarter.Gameplay.Core
                     "Please assign it in the inspector or ensure one exists in the scene.");
         }
 
+        private void Start() 
+        {
+            LoadGame();
+        }
+
         public void SaveGame() 
         {
             // TODO: Save the game by using Save Manager
         }
         
-        public void LoadGame() 
+        private void LoadGame() 
         {
             stateMachine.SetState(typeof(LoadingState));
         }

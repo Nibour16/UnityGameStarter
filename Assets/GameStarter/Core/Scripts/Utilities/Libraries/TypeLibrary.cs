@@ -66,10 +66,6 @@ namespace UnityGameStarter.TypeLibrary
             if (!IsSubclassOf<object>(type, false))
                 throw new Exception($"TypeLibrary: {type.Name} is not valid");
 
-            #if UNITY_EDITOR
-            Debug.Log($"TypeLibrary: Attempt to create: {type.Name}");
-            #endif
-
             try { return Activator.CreateInstance(type, args); }
 
             catch (Exception e)
