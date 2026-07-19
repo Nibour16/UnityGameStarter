@@ -50,10 +50,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       propertyPath: m_Name
-      value: SimpleCharacter
+      value: SamplePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4165909853800532715}
   m_SourcePrefab: {fileID: 100100000, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+--- !u!1 &4044829040705874678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+  m_PrefabInstance: {fileID: 5000907396497197867}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4165909853800532715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044829040705874678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4840c9cb4e3ee49806311de112ca5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.Sample.Player.SamplePlayer3D
+  moveSpeed: 2
+  turnSpeed: 10
+  useControlRotation: 1

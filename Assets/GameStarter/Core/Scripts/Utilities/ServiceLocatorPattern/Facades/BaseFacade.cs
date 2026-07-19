@@ -17,9 +17,5 @@ namespace UnityGameStarter.ServiceLocatorPattern.FacadeModule
         }
 
         protected virtual void OnDestroy() => _module.UnregisterService();
-
-        #if UNITY_EDITOR
-        protected virtual void OnValidate() => _module.IsValidateService();
-        #endif
     }
 }

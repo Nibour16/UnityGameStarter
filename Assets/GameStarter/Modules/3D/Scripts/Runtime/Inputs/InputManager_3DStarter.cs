@@ -1,4 +1,4 @@
-namespace UnityGameStarter.InputSystem.Player_3D 
+namespace UnityGameStarter.InputSystem.Player.Player_3D 
 {
     public class InputManager_3DStarter : InputManager<InputManager_3DStarter>
     {

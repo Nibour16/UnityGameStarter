@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace UnityGameStarter.InputSystem.Player_3D
+namespace UnityGameStarter.InputSystem.Player.Player_3D
 {
     /// <summary>
     /// Provides programmatic access to <see cref="InputActionAsset" />, <see cref="InputActionMap" />, <see cref="InputAction" /> and <see cref="InputControlScheme" /> instances defined in asset "Assets/GameStarter/Modules/3D/Scripts/Runtime/Inputs/PlayerInputs_3D_Starter.inputactions".

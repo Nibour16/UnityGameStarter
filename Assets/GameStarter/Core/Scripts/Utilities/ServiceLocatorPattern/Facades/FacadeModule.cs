@@ -12,6 +12,7 @@ namespace UnityGameStarter.ServiceLocatorPattern.FacadeModule
         public FacadeModule(MonoBehaviour facade, out TManager manager) 
         {
             _facade = facade;
+            IsValidateService();
             manager = ResolveManager();
             RegisterService();
         }

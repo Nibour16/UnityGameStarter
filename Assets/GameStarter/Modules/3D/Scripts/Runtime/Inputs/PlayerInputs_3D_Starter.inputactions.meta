@@ -11,4 +11,4 @@ ScriptedImporter:
   generateWrapperCode: 1
   wrapperCodePath: 
   wrapperClassName: 
-  wrapperCodeNamespace: UnityGameStarter.InputSystem.Player_3D
+  wrapperCodeNamespace: UnityGameStarter.InputSystem.Player.Player_3D
