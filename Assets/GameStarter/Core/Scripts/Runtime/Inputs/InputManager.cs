@@ -1,8 +1,10 @@
+using UnityGameStarter.ServiceLocatorPattern;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.InputSystem 
 {
-    [RuntimeSingleton(-100)]
+    public interface IInputService : IService { }
+    
     public abstract class InputManager<T> : Singleton<T> where T : InputManager<T>
     {
         private PlayerInputs_Core _core;
@@ -11,6 +13,8 @@ namespace UnityGameStarter.InputSystem
         protected override void Awake()
         {
             base.Awake();
+            EnableDontDestroyOnLoad();
+
             _core = new PlayerInputs_Core();
         }
 

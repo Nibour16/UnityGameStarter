@@ -30,6 +30,14 @@ namespace UnityGameStarter.SingletonPattern
                 Destroy(gameObject);
         }
 
+        protected void EnableDontDestroyOnLoad() 
+        {
+            if (Instance != this)
+                return;
+
+            DontDestroyOnLoad(gameObject);
+        }
+
         private static void CreateInstance()
         {
             if (_isQuitting || !Application.isPlaying) return;
