@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityGameStarter.Math.Kinematics;
-using UnityGameStarter.Math.QuaternionStrategy;
+using UnityGameStarter.Math.Transform.QuaternionStatics;
 
 namespace UnityGameStarter.Gameplay.CharacterMovement 
 {

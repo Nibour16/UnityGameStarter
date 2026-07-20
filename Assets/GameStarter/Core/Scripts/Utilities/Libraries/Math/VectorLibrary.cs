@@ -1,13 +1,13 @@
 using UnityEngine;
 
-namespace UnityGameStarter.Math.Vector 
+namespace UnityGameStarter.Math.Transform.Vector 
 {
     public static class VectorLibrary
     {
         public static Vector3 ToVector3(this Vector2 vector, float z = 0)
             => new(vector.x, vector.y, z);
 
-        public static Vector2 ToVector2XZ(this Vector3 vector)
+        public static Vector2 XZToVector2(this Vector3 vector)
             => new(vector.x, vector.z);
 
         public static Vector3 ToVector3XZ(this Vector2 vector, float y = 0)
@@ -41,6 +41,8 @@ namespace UnityGameStarter.Math.Vector
 
         public static Vector3 OffsetComponents(this Vector3 vector, float value)
             => new (vector.x + value, vector.y + value, vector.z + value);
+
+        public static Vector3 ToOffset(this Vector3 target, Vector3 offset)
+            => target + offset;
     }
 }
-
