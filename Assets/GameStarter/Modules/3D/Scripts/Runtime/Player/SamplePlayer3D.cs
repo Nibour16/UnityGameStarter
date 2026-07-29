@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.InputSystem.Player.Player_3D;
+using UnityGameStarter.Math.TransformStatics;
 
 namespace UnityGameStarter.Gameplay.Player3D.Sample
 {
     [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(CameraController))]
     public class SamplePlayer3D : MonoBehaviour
     {
         [Header("Movement")]
@@ -16,10 +19,12 @@ namespace UnityGameStarter.Gameplay.Player3D.Sample
         [SerializeField] private bool useControlRotation = true;
 
         private Rigidbody _rb;
+        private CameraController _cameraController;
 
         private void Awake() 
         {
             _rb = GetComponent<Rigidbody>();
+            _cameraController = GetComponent<CameraController>();
         }
 
         private void FixedUpdate() 
@@ -29,9 +34,12 @@ namespace UnityGameStarter.Gameplay.Player3D.Sample
 
         private void Move() 
         {
-            Vector2 direction = InputFacade3D.Instance.Movement;
+            Vector2 input = InputFacade3D.Instance.Movement;
+            Transform source = _cameraController.TargetSource;
 
-            MovementLibrary.CalculateMovement(direction, moveSpeed, out var result, useControlRotation);
+            Vector3 direction = source.GetControlDirection(input);
+
+            MovementLibrary.CalculateMovement(direction.XZToVector2(), moveSpeed, out var result, useControlRotation);
             _rb.linearVelocity = result.velocity;
 
             if (result.hasRotation) 

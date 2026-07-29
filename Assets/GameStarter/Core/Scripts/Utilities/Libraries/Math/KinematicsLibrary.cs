@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityGameStarter.Math.Transform.Vector;
+using UnityGameStarter.Math.TransformStatics;
 
 namespace UnityGameStarter.Math.Kinematics 
 {

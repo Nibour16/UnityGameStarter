@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityGameStarter.Math.Transform.Vector 
+namespace UnityGameStarter.Math.TransformStatics
 {
     public static class VectorLibrary
     {

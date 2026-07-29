@@ -1,21 +1,20 @@
 using UnityEngine;
-using UnityGameStarter.Math.Transform.Vector;
 
-namespace UnityGameStarter.Math.Transform.QuaternionStatics
+namespace UnityGameStarter.Math.TransformStatics
 {
+    public class QuaternionAxis
+    {
+        public Vector3 forward = Vector3.forward;
+        public Vector3 right = Vector3.right;
+        public Vector3 up = Vector3.up;
+    }
+
     public static class QuaternionLibrary
     {
         #region Quaternion Axis
-        public struct QuanterionAxis
+        public static QuaternionAxis GetAxis(this Quaternion rotation)
         {
-            public Vector3 forward;
-            public Vector3 right;
-            public Vector3 up;
-        }
-
-        public static QuanterionAxis GetAxis(this Quaternion rotation)
-        {
-            return new QuanterionAxis
+            return new QuaternionAxis
             {
                 forward = rotation * Vector3.forward,
                 right = rotation * Vector3.right,
@@ -47,25 +46,22 @@ namespace UnityGameStarter.Math.Transform.QuaternionStatics
         #endregion
 
         #region Quaternion Angle
-        public static float GetYaw(this Quaternion rotation)
-        {
-            Vector3 euler = rotation.eulerAngles;
-            return euler.y;
-        }
-
         public static float GetPitch(this Quaternion rotation)
         {
             Vector3 euler = rotation.eulerAngles;
             return euler.x;
         }
 
-        public static Quaternion ClampPitch(this Quaternion rotation, float min, float max)
+        public static float GetYaw(this Quaternion rotation)
         {
-            float pitch = rotation.GetPitch();
+            Vector3 euler = rotation.eulerAngles;
+            return euler.y;
+        }
 
-            pitch = Mathf.Clamp(pitch, min, max);
-
-            return Quaternion.Euler(pitch, rotation.GetYaw(), 0);
+        public static float GetRoll(this Quaternion rotation)
+        {
+            Vector3 euler = rotation.eulerAngles;
+            return euler.z;
         }
 
         public static float NormalizeAngle(this float angle)
