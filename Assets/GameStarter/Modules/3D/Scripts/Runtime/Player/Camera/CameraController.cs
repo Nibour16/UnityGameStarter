@@ -16,7 +16,22 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
 
         public Quaternion CameraRotation => camera.rotation;
 
+        private void OnEnable() 
+        {
+            CursorLibrary.Lock();
+        }
+
+        private void OnDisable() 
+        {
+            CursorLibrary.Unlock();
+        }
+
         private void LateUpdate()
+        {
+            UpdateCamera();
+        }
+
+        private void UpdateCamera() 
         {
             state.targetPos = targetSource.position;
 
@@ -24,7 +39,6 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
                 ref camera, InputFacade3D.Instance.Look, ref state, setting);
 
             targetSource.rotation = camera.rotation;
-            CursorLibrary.Lock();
         }
     }
 }
