@@ -37,9 +37,7 @@ namespace UnityGameStarter.Gameplay.Player3D.Sample
             Vector2 input = InputFacade3D.Instance.Movement;
             Transform source = _cameraController.TargetSource;
 
-            Vector3 direction = source.GetControlDirection(input);
-
-            MovementLibrary.CalculateMovement(direction.XZToVector2(), moveSpeed, out var result, useControlRotation);
+            MovementLibrary.CalculateMovement(source, input, moveSpeed, out var result, useControlRotation);
             _rb.linearVelocity = result.velocity;
 
             if (result.hasRotation) 

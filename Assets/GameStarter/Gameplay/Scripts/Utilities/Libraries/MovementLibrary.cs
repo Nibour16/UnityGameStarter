@@ -1,5 +1,6 @@
-using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Windows;
+using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Math.Kinematics;
 using UnityGameStarter.Math.TransformStatics;
 
@@ -29,6 +30,13 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
                 movement.rotation = Quaternion.identity;
                 movement.hasRotation = false;
             }
+        }
+
+        public static void CalculateMovement(
+            Transform source, Vector2 input, float moveSpeed, out MovementResult movement, bool updateTurn = true)
+        {
+            Vector2 direction = source.GetControlDirection(input).XZToVector2();
+            CalculateMovement(direction, moveSpeed, out movement, updateTurn);
         }
 
         public static Quaternion GetTurnRotation(this Quaternion current, Quaternion target,
