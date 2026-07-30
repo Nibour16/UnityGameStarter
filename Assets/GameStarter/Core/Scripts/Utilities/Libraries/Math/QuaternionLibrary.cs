@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace UnityGameStarter.Math.TransformStatics
 {
-    public class QuaternionAxis
+    public enum EulerAxis { X = 0, Y = 1, Z = 2}
+    
+    public class QuaternionBasis
     {
         public Vector3 forward = Vector3.forward;
         public Vector3 right = Vector3.right;
@@ -11,10 +14,45 @@ namespace UnityGameStarter.Math.TransformStatics
 
     public static class QuaternionLibrary
     {
-        #region Quaternion Axis
-        public static QuaternionAxis GetAxis(this Quaternion rotation)
+        #region Euler Axis
+        public static Quaternion SetEulerComponent(this Quaternion rotation, EulerAxis axis, float value)
         {
-            return new QuaternionAxis
+            Vector3 euler = rotation.eulerAngles;
+            euler[(int)axis] = value;
+
+            return Quaternion.Euler(euler);
+        }
+
+        public static Quaternion SetEulerComponent(this Quaternion targetRot, EulerAxis axis, Quaternion desiredRot)
+        {
+            var value = axis switch
+            {
+                EulerAxis.X => desiredRot.GetPitch(),
+                EulerAxis.Y => desiredRot.GetYaw(),
+                EulerAxis.Z => desiredRot.GetRoll(),
+                _ => throw new ArgumentOutOfRangeException(nameof(axis))
+            };
+
+            return targetRot.SetEulerComponent(axis, value);
+        }
+
+        public static Quaternion SetEulerComponent(this Quaternion rotation, EulerAxis axis, Transform trans)
+            => rotation.SetEulerComponent(axis, trans.rotation);
+
+        public static void SetEulerComponent(ref Quaternion rotation, EulerAxis axis, float value)
+            => rotation = rotation.SetEulerComponent(axis, value);
+
+        public static void SetEulerComponent(ref Quaternion targetRot, EulerAxis axis, Quaternion desiredRot)
+            => targetRot = targetRot.SetEulerComponent(axis, desiredRot);
+
+        public static void SetEulerComponent(ref Quaternion rotation, EulerAxis axis, Transform trans)
+            => rotation = rotation.SetEulerComponent(axis, trans);
+        #endregion
+
+        #region Quaternion Basis
+        public static QuaternionBasis GetAxis(this Quaternion rotation)
+        {
+            return new QuaternionBasis
             {
                 forward = rotation * Vector3.forward,
                 right = rotation * Vector3.right,

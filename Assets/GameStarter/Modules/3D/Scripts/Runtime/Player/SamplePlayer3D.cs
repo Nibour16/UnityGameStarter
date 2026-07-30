@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.InputSystem.Player.Player_3D;
-using UnityGameStarter.Math.TransformStatics;
 
 namespace UnityGameStarter.Gameplay.Player3D.Sample
 {
