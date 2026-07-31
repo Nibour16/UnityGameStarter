@@ -1,8 +1,5 @@
-using System.IO;
 using UnityEditor;
-using UnityEngine;
-using UnityGameStarter.Config;
-using UnityGameStarter.ProjectSettings;
+using UnityGameStarter.BuildCore;
 using UnityGameStarter.StarterSettings.Config;
 
 namespace UnityGameStarter.StarterSettings.Editor
@@ -13,23 +10,24 @@ namespace UnityGameStarter.StarterSettings.Editor
     {
         static StarterSettingsRootEditorBootstrap()
         {
-            if (!File.Exists(ConfigLibrary.GetBootstrapAssetPath("StarterSettingsRootConfig")))
+            EditorApplication.playModeStateChanged += OnPlayModeChanged;
+        }
+
+        private static void OnPlayModeChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.ExitingEditMode)
                 BakeStarterSettings();
         }
 
         private static void BakeStarterSettings()
         {
-            var root = ProjectSettingReference<StarterSettingsRoot>.Get("UnityGameStarter.SettingsRoot");
+            StarterSettingsRootConfigGenerator.Sync();
+        }
 
-            if (!root) return;
-
-            var config =
-                ScriptableObject.CreateInstance<StarterSettingsRootConfig>();
-
-            config.SetConfig(root);
-
-            AssetDatabase.CreateAsset(
-                config, ConfigLibrary.GetBootstrapAssetPath("StarterSettingsRootConfig"));
+        [GameStarterBuild(GameStarterBuildPhase.Prebake, -500)]
+        private static void BakeStarterSettingsForBuild()
+        {
+            StarterSettingsRootConfigGenerator.Sync();
         }
     }
     #endif

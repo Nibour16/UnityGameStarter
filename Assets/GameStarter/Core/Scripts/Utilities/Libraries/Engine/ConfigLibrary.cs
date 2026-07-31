@@ -2,7 +2,8 @@ namespace UnityGameStarter.Config
 {
     public static class ConfigLibrary
     {
-        private const string BootstrapConfigFolder = "BootstrapConfigs";
+        public const string BootstrapConfigFolder = "BootstrapConfigs";
+        public const string BootstrapRootFolder = "Assets/Resources";
 
         public static string GetBootstrapAssetPath(string configName, string customFolderPath = "")
         {
