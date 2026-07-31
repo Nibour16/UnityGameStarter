@@ -10,10 +10,25 @@ namespace UnityGameStarter.StarterSettings.Runtime
         [GameStarterRuntime(RuntimeInitializeLoadType.BeforeSceneLoad, -500)]
         private static void RuntimeInitialize()
         {
-            var config = Resources.Load<StarterSettingsRootConfig>(
-                ConfigLibrary.GetBootstrapResourcePath("StarterSettingsRootConfig"));
+            var root = GetRoot();
 
-            StarterSettingsProvider.Initialize(config.Config);
+            if (!root) return;
+            
+            StarterSettingsProvider.Initialize(root);
+        }
+
+        private static StarterSettingsRoot GetRoot() 
+        {
+            var config = Resources.Load<StarterSettingsRootConfig>(
+                            ConfigLibrary.GetBootstrapResourcePath("StarterSettingsRootConfig"));
+
+            if (!config) 
+            {
+                Debug.LogError("Runtime Bootstrap: Failed to load Starter Settings Root Config");
+                return null;
+            }
+
+            return config.Config;
         }
     }
 }

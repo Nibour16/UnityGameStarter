@@ -1,18 +1,27 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityGameStarter.BuildCore;
 using UnityGameStarter.Config;
 using UnityGameStarter.ProjectSettings;
 using UnityGameStarter.StarterSettings.Config;
 
-namespace UnityGameStarter.StarterSettings.Build
+namespace UnityGameStarter.StarterSettings.Editor
 {
-    static class StarterSettingsRootBuildBootstrap
+    #if UNITY_EDITOR
+    [InitializeOnLoad]
+    static class StarterSettingsRootEditorBootstrap
     {
-        [GameStarterBuild(GameStarterBuildPhase.Prebake, -500)]
+        static StarterSettingsRootEditorBootstrap()
+        {
+            if (!File.Exists(ConfigLibrary.GetBootstrapAssetPath("StarterSettingsRootConfig")))
+                BakeStarterSettings();
+        }
+
         private static void BakeStarterSettings()
         {
             var root = ProjectSettingReference<StarterSettingsRoot>.Get("UnityGameStarter.SettingsRoot");
+
+            if (!root) return;
 
             var config =
                 ScriptableObject.CreateInstance<StarterSettingsRootConfig>();
@@ -23,5 +32,5 @@ namespace UnityGameStarter.StarterSettings.Build
                 config, ConfigLibrary.GetBootstrapAssetPath("StarterSettingsRootConfig"));
         }
     }
+    #endif
 }
-
