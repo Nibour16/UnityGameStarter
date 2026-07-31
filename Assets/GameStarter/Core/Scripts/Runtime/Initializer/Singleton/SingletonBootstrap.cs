@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-using UnityEditor;
 using UnityEngine;
 using UnityGameStarter.RuntimeCore;
 
@@ -13,7 +12,8 @@ namespace UnityGameStarter.SingletonPattern
         [GameStarterRuntime(RuntimeInitializeLoadType.SubsystemRegistration, -290)]
         public static void Reset()
         {
-            var types = TypeCache.GetTypesWithAttribute<RuntimeSingletonAttribute>().Where(t => !t.IsAbstract);
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes())
+                .Where(t => !t.IsAbstract && t.GetCustomAttribute<RuntimeSingletonAttribute>() != null);
 
             foreach (var type in types)
             {
@@ -26,10 +26,11 @@ namespace UnityGameStarter.SingletonPattern
         [GameStarterRuntime(RuntimeInitializeLoadType.BeforeSceneLoad, -290)]
         public static void Initialize()
         {
-            var types = TypeCache
-                .GetTypesWithAttribute<RuntimeSingletonAttribute>()
-                .Where(t => !t.IsAbstract && IsValidRuntimeSingleton(t))
-                .OrderBy(t => t.GetCustomAttribute<RuntimeSingletonAttribute>().Order);
+            var types = AppDomain.CurrentDomain
+                .GetAssemblies().SelectMany(
+                    a => a.GetTypes()).Where(t =>!t.IsAbstract && IsValidRuntimeSingleton(t) &&
+                    t.GetCustomAttribute<RuntimeSingletonAttribute>() != null)
+                .OrderBy(t => t.GetCustomAttribute<RuntimeSingletonAttribute>()!.Order);
 
             foreach (var type in types)
                 InitializeRuntimeSingleton(type);
