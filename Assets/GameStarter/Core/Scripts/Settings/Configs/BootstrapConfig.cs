@@ -4,7 +4,7 @@ namespace UnityGameStarter.Config
 {
     public abstract class BootstrapConfig<T> : ScriptableObject
     {
-        [SerializeField] private T config;
+        [SerializeField, HideInInspector] private T config;
         public T Config => config;
 
         #if UNITY_EDITOR
