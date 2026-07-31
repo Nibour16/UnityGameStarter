@@ -14,3 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.StarterSettings.Quality.FPSSettings
   targetFrameRate: 60
   enableVSync: 0
+  showFPS: 0
+  overlayRect:
+    serializedVersion: 2
+    x: 10
+    y: 10
+    width: 200
+    height: 40
+  fontSize: 18
+  fontColor: {r: 1, g: 1, b: 1, a: 1}
