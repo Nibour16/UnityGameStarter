@@ -9,7 +9,7 @@ using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.SceneManagement
 {
-    [RuntimeSingleton]
+    [RuntimeSingleton(-200)]
     public class SceneFacade : Singleton<SceneFacade>, ISceneService
     {
         private event Action<Scene> SceneLoadStarted;
