@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityGameStarter.DefferedDataStructure;
+using UnityGameStarter.DataStructure;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.NewUpdateSystem.Advanced

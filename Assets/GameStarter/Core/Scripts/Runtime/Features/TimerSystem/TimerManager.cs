@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.SingletonPattern;
-using UnityGameStarter.DefferedDataStructure;
+using UnityGameStarter.DataStructure;
 
 namespace UnityGameStarter.TimerSystem
 {

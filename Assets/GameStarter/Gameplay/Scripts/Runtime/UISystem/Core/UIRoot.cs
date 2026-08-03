@@ -2,29 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityGameStarter.EventSystem.EventManagement;
-using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay.UI 
 {
-    [RequireComponent(typeof(RectTransform))]
-    public sealed class UIElement : MonoBehaviour 
-    {
-        public RectTransform Rect => (RectTransform)transform;
-    }
-
     [RequireComponent(typeof(EventListenerRegister))]
-    public sealed class UIRoot : Singleton<UIRoot>, IAutoEventListener
+    public class UIRoot : MonoBehaviour, IAutoEventListener
     {
         [SerializeField] private bool dontDestroyOnLoad = true;
-
-        [Header("Advanced")]
         [SerializeField] private bool useMarker = false;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
-            if (dontDestroyOnLoad) EnableDontDestroyOnLoad();
+            if (dontDestroyOnLoad)
+                DontDestroyOnLoad(gameObject);
         }
 
         [EventListener]
@@ -46,6 +36,8 @@ namespace UnityGameStarter.Gameplay.UI
 
             foreach (var rect in rects)
             {
+                if (rect.TryGetComponent<UIRoot>(out _)) continue;
+
                 if (rect.IsCanvasRoot()) continue;
                 
                 if (!rect.IsUI()) continue;
@@ -54,7 +46,7 @@ namespace UnityGameStarter.Gameplay.UI
                     Debug.LogWarning($"UI Root: Duplicate UI name: {rect.name}");
             }
 
-            request.Callback.Invoke(result);
+            request.Callback.Invoke(this, result);
         }
     }
 }
