@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 using UnityGameStarter.CommonData;
@@ -23,7 +21,7 @@ namespace UnityGameStarter.Gameplay.UI
     }
 
     [RuntimeSingleton]
-    public class UIManager : Singleton<UIManager>
+    public sealed class UIManager : Singleton<UIManager>
     {
         private Dictionary<string, RectTransform> _uiComponents = new(StringComparer.Ordinal);
 

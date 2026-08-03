@@ -13,7 +13,7 @@ namespace UnityGameStarter.Gameplay.UI
     }
 
     [RequireComponent(typeof(EventListenerRegister))]
-    public class UIRoot : Singleton<UIRoot>, IAutoEventListener
+    public sealed class UIRoot : Singleton<UIRoot>, IAutoEventListener
     {
         [SerializeField] private bool dontDestroyOnLoad = true;
 
