@@ -7,7 +7,7 @@ namespace UnityGameStarter.Config
 
         public static string GetBootstrapAssetPath(string configName, string customFolderPath = "")
         {
-            string folder = $"Assets/Resources/{BootstrapConfigFolder}";
+            string folder = $"{BootstrapRootFolder}/{BootstrapConfigFolder}";
 
             if (!string.IsNullOrEmpty(customFolderPath))
                 folder += "/" + customFolderPath;

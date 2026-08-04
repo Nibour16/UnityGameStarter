@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityGameStarter.EventSystem
+namespace UnityGameStarter.Events
 {
     public static class EventBus
     {

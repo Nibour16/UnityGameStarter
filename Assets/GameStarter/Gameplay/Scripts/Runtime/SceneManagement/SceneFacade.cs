@@ -9,11 +9,11 @@ using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.SceneManagement
 {
-    [RuntimeSingleton]
+    [RuntimeSingleton(-200)]
     public class SceneFacade : Singleton<SceneFacade>, ISceneService
     {
-        private event Action<Scene> SceneLoadStarted;
-        private event Action<Scene> SceneLoaded;
+        private event Action<Scene, LoadSceneMode> SceneLoadStarted;
+        private event Action<Scene, LoadSceneMode> SceneLoaded;
         private event Action<Scene> SceneUnloaded;
 
         public Scene ActiveScene => SceneManager.GetActiveScene();
@@ -38,11 +38,11 @@ namespace UnityGameStarter.SceneManagement
         #endregion
 
         #region Registration
-        public void BindSceneLoadStart(Action<Scene> e) => SceneLoadStarted += e;
-        public void UnbindSceneLoadStart(Action<Scene> e) => SceneLoadStarted -= e;
+        public void BindSceneLoadStart(Action<Scene, LoadSceneMode> e) => SceneLoadStarted += e;
+        public void UnbindSceneLoadStart(Action<Scene, LoadSceneMode> e) => SceneLoadStarted -= e;
 
-        public void BindSceneLoaded(Action<Scene> e) => SceneLoaded += e;
-        public void UnbindSceneLoaded(Action<Scene> e) => SceneLoaded -= e;
+        public void BindSceneLoaded(Action<Scene, LoadSceneMode> e) => SceneLoaded += e;
+        public void UnbindSceneLoaded(Action<Scene, LoadSceneMode> e) => SceneLoaded -= e;
 
         public void BindSceneUnloaded(Action<Scene> e) => SceneUnloaded += e;
         public void UnbindSceneUnloaded(Action<Scene> e) => SceneUnloaded -= e;
@@ -51,14 +51,14 @@ namespace UnityGameStarter.SceneManagement
         #region Load
         public void Load(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            SceneLoadStarted?.Invoke(scene);
+            SceneLoadStarted?.Invoke(scene, mode);
 
             SceneManager.LoadScene(scene.name, mode);
         }
 
         public async Task LoadAsync(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            SceneLoadStarted?.Invoke(scene);
+            SceneLoadStarted?.Invoke(scene, mode);
 
             AsyncOperation operation = SceneManager.LoadSceneAsync(scene.name, mode);
 
@@ -74,7 +74,7 @@ namespace UnityGameStarter.SceneManagement
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            SceneLoaded?.Invoke(scene);
+            SceneLoaded?.Invoke(scene, mode);
         }
         #endregion
 

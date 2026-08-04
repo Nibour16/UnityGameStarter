@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityGameStarter.SingletonPattern;
 
-namespace UnityGameStarter.EventSystem.EventManagement
+namespace UnityGameStarter.Events.EventManagement
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class EventListenerAttribute : Attribute { }

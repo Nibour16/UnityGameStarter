@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace UnityGameStarter.DefferedDataStructure 
+namespace UnityGameStarter.DataStructure 
 {
     public class DefferedList<T>
     {
