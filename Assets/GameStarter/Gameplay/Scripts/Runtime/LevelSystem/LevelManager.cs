@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityGameStarter.CommonData;
-using UnityGameStarter.EventSystem.EventManagement;
+using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.FiniteStateMachine.EventState;
 using UnityGameStarter.Gameplay.Core;
 using UnityGameStarter.SceneManagement;
@@ -13,7 +13,7 @@ namespace UnityGameStarter.Gameplay.LevelManagement
     {
         #region Serialized Fields
         [SerializeField] private string mainSceneName;
-        [SerializeField] private bool quitIfMainSceneMissing = true;
+        [SerializeField] private bool quitIfMissingMainScene = true;
         #endregion
 
         #region Private Fields with Properties
@@ -86,7 +86,7 @@ namespace UnityGameStarter.Gameplay.LevelManagement
 
             if (scene.IsValid())
                 sceneFacade.Load(scene);
-            else if (quitIfMainSceneMissing)
+            else if (quitIfMissingMainScene)
                 Application.Quit();
             else
                 Debug.LogWarning($"LevelManager: Main scene '{mainSceneName}' is not found.");
