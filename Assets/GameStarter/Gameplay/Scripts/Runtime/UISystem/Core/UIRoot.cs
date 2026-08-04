@@ -8,14 +8,35 @@ namespace UnityGameStarter.Gameplay.UI
     [RequireComponent(typeof(EventListenerRegister))]
     public class UIRoot : MonoBehaviour, IAutoEventListener
     {
+        [SerializeField] private Canvas rootCanvas;
+
         [SerializeField] private bool dontDestroyOnLoad = true;
         [SerializeField] private bool useMarker = false;
+
+        public Canvas RootCanvas 
+        {
+            get
+            {
+                if (rootCanvas == null)
+                    Debug.LogError("UI Root: Root Canvas is not assigned");
+                
+                return rootCanvas;
+            }
+        }
 
         private void Awake()
         {
             if (dontDestroyOnLoad)
                 DontDestroyOnLoad(gameObject);
         }
+
+        #if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (rootCanvas == null)
+                rootCanvas = GetComponentInChildren<Canvas>(true);
+        }
+        #endif
 
         [EventListener]
         private void Collect(UICollectRequest request) 

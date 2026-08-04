@@ -27,7 +27,7 @@ namespace UnityGameStarter.Gameplay.UI
     {
         private readonly Dictionary<UIRoot, Dictionary<string, RectTransform>> _uiComponents = new();
 
-        private Dictionary<Scene, InitializationState> _initializeStates;
+        private readonly Dictionary<Scene, InitializationState> _initializeStates = new();
         public Dictionary<Scene, InitializationState> InitializeStates => _initializeStates;
 
         #region Life Cycle
@@ -38,9 +38,11 @@ namespace UnityGameStarter.Gameplay.UI
 
             SceneFacade.Instance.BindSceneLoaded(Initialize);
             SceneFacade.Instance.BindSceneUnloaded(Deinitialize);
+
+            Initialize(SceneManager.GetActiveScene());
         }
 
-        private void Initialize(Scene e) 
+        private void Initialize(Scene e, LoadSceneMode mode = LoadSceneMode.Single) 
         {
             if (_initializeStates.TryGetValue(e, out var state)) 
             {
@@ -120,7 +122,7 @@ namespace UnityGameStarter.Gameplay.UI
                 rect = null;
 
                 if (printDebug)
-                    Debug.LogWarning($"UI Manager: the ui root {root.name} is not found");
+                    Debug.LogWarning($"UI Manager: the ui root '{root.name}' is not found");
 
                 return false;
             }
@@ -130,7 +132,7 @@ namespace UnityGameStarter.Gameplay.UI
                 rect = null;
 
                 if (printDebug)
-                    Debug.LogWarning($"UI Manager: the ui component {uiName} is not found");
+                    Debug.LogWarning($"UI Manager: the ui component '{uiName}' is not found");
 
                 return false;
             }
