@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.StarterSettings.Quality.FPSSettings
   targetFrameRate: 60
   enableVSync: 0
-  showFPS: 0
+  showFPS: 1
   overlayRect:
     serializedVersion: 2
     x: 10
