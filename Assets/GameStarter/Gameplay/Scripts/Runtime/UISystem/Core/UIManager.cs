@@ -38,7 +38,10 @@ namespace UnityGameStarter.Gameplay.UI
 
             SceneFacade.Instance.BindSceneLoaded(Initialize);
             SceneFacade.Instance.BindSceneUnloaded(Deinitialize);
+        }
 
+        private void Start() 
+        {
             Initialize(SceneManager.GetActiveScene());
         }
 

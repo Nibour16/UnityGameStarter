@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityGameStarter.CommonData;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.FiniteStateMachine.EventState;
-using UnityGameStarter.Gameplay.Core;
 using UnityGameStarter.SceneManagement;
 using UnityGameStarter.SingletonPattern;
 

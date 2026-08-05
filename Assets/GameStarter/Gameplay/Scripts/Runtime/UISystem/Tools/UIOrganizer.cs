@@ -5,11 +5,20 @@ namespace UnityGameStarter.Gameplay.UI
 {
     public class UIOrganizer : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private UIRoot root;
+
+        [Header("Settings")]
         [SerializeField] private bool stripCanvasComponents = true;
         [SerializeField] private bool normalizeLayout = true;
 
-        [Header("Editor")]
+        /// <Summary>
+        /// Automatically organizes UI elements under the UIRoot (e.g. huds, menus).
+        /// 
+        /// Warning:
+        /// May produce unexpected results when multiple UIRoots exist in the same scene.
+        /// Disable this option if manual organization is required.
+        /// </summary>
         [SerializeField] private bool autoOrganize = false;
         public bool AutoOrganize => autoOrganize;
 

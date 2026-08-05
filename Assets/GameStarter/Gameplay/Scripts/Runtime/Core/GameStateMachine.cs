@@ -1,7 +1,7 @@
 using System;
 using UnityGameStarter.FiniteStateMachine;
 
-namespace UnityGameStarter.Gameplay.Core
+namespace UnityGameStarter.Gameplay
 {
     public class GameStateMachine : BaseStateMachine
     {

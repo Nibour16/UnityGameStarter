@@ -1,8 +1,7 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityGameStarter.SingletonPattern;
 
-namespace UnityGameStarter.Gameplay.Core
+namespace UnityGameStarter.Gameplay
 {
     public class GameManager : Singleton<GameManager>
     {

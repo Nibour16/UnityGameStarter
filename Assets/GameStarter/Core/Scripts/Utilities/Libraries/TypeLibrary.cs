@@ -50,6 +50,14 @@ namespace UnityGameStarter.TypeLibrary
             return true;
         }
 
+        public static bool IsDirectSubclassOf<TBase>(Type type, bool printError = true)
+        {
+            if (!IsSubclassOf<TBase>(type, printError))
+                return false;
+
+            return type.BaseType == typeof(TBase);
+        }
+
         public static IEnumerable<Type> GetValidSubTypes<TBase>()
         {
             // return all valid child types of the base type in the project

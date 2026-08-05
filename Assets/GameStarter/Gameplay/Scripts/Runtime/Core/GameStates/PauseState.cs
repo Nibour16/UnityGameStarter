@@ -1,7 +1,7 @@
 using UnityGameStarter.FiniteStateMachine;
 using UnityGameStarter.FiniteStateMachine.EventState;
 
-namespace UnityGameStarter.Gameplay.Core
+namespace UnityGameStarter.Gameplay
 {
     public class PauseState : BaseEventState<PauseState>
     {

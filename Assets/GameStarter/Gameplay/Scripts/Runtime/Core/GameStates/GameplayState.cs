@@ -1,8 +1,7 @@
-using UnityEngine;
 using UnityGameStarter.FiniteStateMachine;
 using UnityGameStarter.FiniteStateMachine.EventState;
 
-namespace UnityGameStarter.Gameplay.Core
+namespace UnityGameStarter.Gameplay
 {
     public class GameplayState : BaseEventState<GameplayState>
     {

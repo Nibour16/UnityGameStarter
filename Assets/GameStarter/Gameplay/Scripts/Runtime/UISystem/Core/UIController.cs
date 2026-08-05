@@ -5,7 +5,7 @@ using UnityGameStarter.SingletonPattern;
 namespace UnityGameStarter.Gameplay.UI 
 {
     [RuntimeSingleton(-85)]
-    public sealed class UIFacade : Singleton<UIFacade>
+    public sealed class UIController : Singleton<UIController>
     {
         private UIRoot _defaultRoot;
 
@@ -20,6 +20,12 @@ namespace UnityGameStarter.Gameplay.UI
             }
         }
 
+        private RectTransform _lastOpenedUI;
+        private RectTransform _lastClosedUI;
+
+        public RectTransform LastOpenedUI => _lastOpenedUI;
+        public RectTransform LastClosedUI => _lastClosedUI;
+
         #region API
         public void OpenUI(UIRoot root, string uiName, bool printLogIfNotFound = false)
         {
@@ -29,11 +35,13 @@ namespace UnityGameStarter.Gameplay.UI
 
             rect.gameObject.SetActive(true);
 
+            _lastOpenedUI = rect;
+
             if (rect.TryGetComponent<IUIComponent>(out var component))
                 component.OnOpened();
         }
 
-        public void OpenUI(string uiName, bool printLogIfNotFound) 
+        public void OpenUI(string uiName, bool printLogIfNotFound = false) 
         {
             OpenUI(_defaultRoot, uiName, printLogIfNotFound);
         }
@@ -43,7 +51,7 @@ namespace UnityGameStarter.Gameplay.UI
             OpenUI(root, uiComponent.name, printLogIfNotFound);
         }
 
-        public void OpenUI<T>(T uiComponent, bool printLogIfNotFound) where T : Component
+        public void OpenUI<T>(T uiComponent, bool printLogIfNotFound = false) where T : Component
         {
             OpenUI(_defaultRoot, uiComponent, printLogIfNotFound);
         }
@@ -58,11 +66,23 @@ namespace UnityGameStarter.Gameplay.UI
                 component.OnClosed();
 
             rect.gameObject.SetActive(false);
+
+            _lastClosedUI = rect;
+        }
+
+        public void CloseUI(string uiName, bool printLogIfNotFound = false)
+        {
+            CloseUI(_defaultRoot, uiName, printLogIfNotFound);
         }
 
         public void CloseUI<T>(UIRoot root, T uiComponent, bool printLogIfNotFound = false) where T : Component
         {
             CloseUI(root, uiComponent.name, printLogIfNotFound);
+        }
+
+        public void CloseUI<T>(T uiComponent, bool printLogIfNotFound = false) where T : Component
+        {
+            CloseUI(_defaultRoot, uiComponent, printLogIfNotFound);
         }
 
         public bool TryGetUI<T>(UIRoot root, string uiName, out T ui, bool printLogIfNotFound = false) where T : Component
