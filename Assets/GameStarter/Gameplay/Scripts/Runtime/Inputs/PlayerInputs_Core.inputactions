@@ -3,6 +3,34 @@
     "name": "PlayerInputs_Core",
     "maps": [
         {
+            "name": "Player",
+            "id": "797a1701-87dd-4c3e-83f6-d5c5f6dbf67b",
+            "actions": [
+                {
+                    "name": "OpenPauseMenu",
+                    "type": "Button",
+                    "id": "36d1fd77-af41-4f09-b776-637035c7ff7d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ff29ff2b-dfb2-4c0b-bddb-f494519179bd",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenPauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "UI",
             "id": "272f6d14-89ba-496f-b7ff-215263d3219f",
             "actions": [
