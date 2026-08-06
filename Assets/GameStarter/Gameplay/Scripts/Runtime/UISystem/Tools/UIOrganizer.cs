@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityGameStarter.UnityObjectStatics;
 
 namespace UnityGameStarter.Gameplay.UI 
 {
@@ -30,10 +31,11 @@ namespace UnityGameStarter.Gameplay.UI
                 return;
             }
 
-            var rects = FindObjectsByType<RectTransform>(FindObjectsInactive.Include);
             Canvas canvas = root.RootCanvas;
 
             if (canvas == null) return;
+
+            var rects = ObjectLibrary.FindObjectsInCurrentStage<RectTransform>();
 
             foreach (var rect in rects)
             {

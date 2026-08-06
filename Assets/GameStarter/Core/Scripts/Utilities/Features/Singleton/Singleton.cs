@@ -8,6 +8,8 @@ namespace UnityGameStarter.SingletonPattern
         private static T _instance;
         private static bool _isQuitting = false;
 
+        public static bool IsQuitting => _isQuitting;
+
         public static T Instance
         {
             get
@@ -17,8 +19,6 @@ namespace UnityGameStarter.SingletonPattern
                 return _instance;
             }
         }
-
-        public static bool HasInstance => _instance != null;
 
         protected static bool IsValidSingletonType(Type type) => typeof(T) == type;
 
@@ -36,6 +36,26 @@ namespace UnityGameStarter.SingletonPattern
                 return;
 
             DontDestroyOnLoad(gameObject);
+        }
+
+        public static bool TryGetInstance(out T instance, bool printWarningIfFailed = false)
+        {
+            instance = _instance;
+
+            if (instance != null) return true;
+
+            instance = FindAnyObjectByType<T>();
+
+            if (instance == null) 
+            {
+                if (printWarningIfFailed)
+                    Debug.LogWarning($"The Singleton '{typeof(T)}' is not found");
+
+                return false;
+            }
+            
+            _instance = instance;
+            return true;
         }
 
         private static void CreateInstance()

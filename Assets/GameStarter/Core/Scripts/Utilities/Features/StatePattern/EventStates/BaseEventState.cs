@@ -9,6 +9,8 @@ namespace UnityGameStarter.FiniteStateMachine.EventState
 
         public override void EnterState()
         {
+            Debug.Log($"Enter {typeof(T)}");
+            
             EventManager.Instance.Publish(new EnterStateEvent<T>());
         }
 

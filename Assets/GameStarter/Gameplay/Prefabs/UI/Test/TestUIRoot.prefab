@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3375595762390698335, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_Name
-      value: UIRoot Variant
+      value: TestUIRoot
       objectReference: {fileID: 0}
     - target: {fileID: 7099594405747404948, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag

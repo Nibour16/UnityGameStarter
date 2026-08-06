@@ -27,11 +27,11 @@ namespace UnityGameStarter.Events.EventManagement
 
         private void OnDisable()
         {
-            if (!EventManager.HasInstance) return;
+            if (!EventManager.TryGetInstance(out var instance)) return;
 
             foreach (var listener in _listeners) 
             {
-                EventManager.Instance.Unregister(listener);
+                instance.Unregister(listener);
 
                 if (printLog)
                     Debug.Log($"{listener} has unregistered");

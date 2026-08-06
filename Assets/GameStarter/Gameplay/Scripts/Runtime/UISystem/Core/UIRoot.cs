@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.UI;
-
 using UnityGameStarter.Events.EventManagement;
 
 namespace UnityGameStarter.Gameplay.UI 
@@ -12,9 +9,7 @@ namespace UnityGameStarter.Gameplay.UI
     public class UIRoot : MonoBehaviour, IAutoEventListener
     {
         [SerializeField] private Canvas rootCanvas;
-
         [SerializeField] private bool dontDestroyOnLoad = true;
-        [SerializeField] private bool useMarker = false;
 
         public Canvas RootCanvas 
         {
@@ -46,25 +41,9 @@ namespace UnityGameStarter.Gameplay.UI
         {
             var result = new Dictionary<string, RectTransform>();
 
-            RectTransform[] rects;
-            if (useMarker) 
-            {
-                var elements = FindObjectsByType<UIElement>(FindObjectsInactive.Include);
-                rects = new RectTransform[elements.Length];
-
-                for (int i = 0; i < elements.Length; i++)
-                    rects[i] = elements[i].Rect;
-            }
-            else
-                rects = FindObjectsByType<RectTransform>(FindObjectsInactive.Include);
-
-            foreach (var rect in rects)
+            foreach (RectTransform rect in rootCanvas.transform)
             {
                 if (rect.TryGetComponent<UIRoot>(out _)) continue;
-
-                if (rect.IsCanvasRoot()) continue;
-                
-                if (!rect.IsUI()) continue;
 
                 if (!result.TryAdd(rect.name, rect))
                     Debug.LogWarning($"UI Root: Duplicate UI name: {rect.name}");
