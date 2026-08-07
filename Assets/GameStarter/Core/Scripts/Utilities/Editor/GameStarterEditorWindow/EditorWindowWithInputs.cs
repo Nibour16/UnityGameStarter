@@ -12,6 +12,8 @@ namespace UnityGameStarter.EditorWindowUtilities
         #endregion
 
         #region Definitions (immutable config)
+        protected virtual bool MakeSecondaryFileValuesEditable => false;
+
         protected abstract Dictionary<string, ContentDefinition> Content();   // Initial
         private Dictionary<string, ContentDefinition> _content; // Resolved
         private bool _contentInitialized;
@@ -58,7 +60,17 @@ namespace UnityGameStarter.EditorWindowUtilities
 
             foreach (var fd in _content)
             {
-                fd.Value.value = EditorGUILayout.TextField(fd.Key, fd.Value.value);
+                fd.Value.value =
+                    EditorGUILayout.TextField(fd.Key, fd.Value.value);
+
+                if (MakeSecondaryFileValuesEditable &&
+                    fd.Value.secondaryValues != null)
+                {
+                    foreach (var secondary in fd.Value.secondaryValues)
+                    {
+                        EditorGUILayout.TextField($"{fd.Key}.Sec", secondary);
+                    }
+                }
             }
         }
 

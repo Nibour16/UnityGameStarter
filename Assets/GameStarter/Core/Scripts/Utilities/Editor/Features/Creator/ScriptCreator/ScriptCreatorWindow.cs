@@ -12,15 +12,15 @@ namespace UnityGameStarter.EditorWindowUtilities.Creator
     {
         protected static readonly T Creator = new();
 
-        protected abstract string FileNameLabel { get; }
-        protected abstract ContentDefinition File { get; }
+        protected abstract string FilesLabel { get; }
+        protected abstract ContentDefinition Files { get; }
         protected virtual Dictionary<string, ContentDefinition> InitialCreatorContent => new();
 
         protected override Dictionary<string, ContentDefinition> Content() 
         {
             Dictionary<string, ContentDefinition> result = new()
             {
-                { FileNameLabel, File }
+                { FilesLabel, Files }
             };
 
             foreach (var pair in InitialCreatorContent)
@@ -44,7 +44,7 @@ namespace UnityGameStarter.EditorWindowUtilities.Creator
             {
                 primaryFile = new ScriptCreatorData
                 {
-                    fileName = content[FileNameLabel].value,
+                    fileName = content[FilesLabel].value,
                     templateArgs = args.ToArray()
                 },
 

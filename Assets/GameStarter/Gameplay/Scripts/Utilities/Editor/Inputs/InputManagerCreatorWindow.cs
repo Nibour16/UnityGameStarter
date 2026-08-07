@@ -8,9 +8,9 @@ namespace UnityGameStarter.InputSystem.EditorUtilities
     {
         protected override string Title => "Input Manager Creator";
 
-        protected override string FileNameLabel => "Class Name";
+        protected override string FilesLabel => "Class Name";
 
-        protected override ContentDefinition File => new() { value = "NewInputManager" };
+        protected override ContentDefinition Files => new() { value = "NewInputManager" };
 
         protected override Dictionary<string, ContentDefinition> InitialCreatorContent => new()
         {

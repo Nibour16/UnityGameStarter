@@ -6,11 +6,13 @@ namespace UnityGameStarter.EditorUtilities.ScriptCreator
 {
     public class MetaScriptCreatorWindow : ScriptCreatorWindow<MetaScriptCreator>
     {
+        protected override bool MakeSecondaryFileValuesEditable => true;
+        
         protected override string Title => "Meta Script Creator";
 
-        protected override string FileNameLabel => "Creator Name";
+        protected override string FilesLabel => "Creator Files";
 
-        protected override ContentDefinition File => new() 
+        protected override ContentDefinition Files => new() 
         {
             value = "NewScriptCreator",
 

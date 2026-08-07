@@ -7,8 +7,8 @@ namespace UnityGameStarter.StateMachine.EditorUtilities
     {
         protected override string Title => "State Machine Creator";
 
-        protected override string FileNameLabel => "State Machine Name";
+        protected override string FilesLabel => "State Machine Name";
 
-        protected override ContentDefinition File => new() { value = "NewStateMachine" };
+        protected override ContentDefinition Files => new() { value = "NewStateMachine" };
     }
 }
