@@ -3,14 +3,14 @@ using UnityGameStarter.EditorWindowUtilities;
 
 namespace UnityGameStarter.EditorUtilities.ScriptCreator
 {
-    public class MetaScriptCreator : BaseScriptCreator
+    public sealed class MetaScriptCreator : BaseScriptCreator
     {
         protected override string Template =>
 @"using UnityEditor;
 using UnityGameStarter.EditorUtilities.ScriptCreator;
 using UnityGameStarter.EditorWindowUtilities;
 
-public class {0} : BaseScriptCreator
+public sealed class {0} : BaseScriptCreator
 {{
     protected override string Template => 
 @""using UnityEngine;
@@ -33,7 +33,7 @@ public class New{2} : MonoBehaviour
 using UnityGameStarter.EditorWindowUtilities.Creator;
 using UnityGameStarter.EditorWindowUtilities.Data;
 
-public class {1} : ScriptCreatorWindow<{0}>
+public sealed class {1} : ScriptCreatorWindow<{0}>
 {{
     protected override string Title => ""{3}"";
 

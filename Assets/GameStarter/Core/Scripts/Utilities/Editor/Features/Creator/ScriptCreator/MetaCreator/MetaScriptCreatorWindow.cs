@@ -4,7 +4,7 @@ using UnityGameStarter.EditorWindowUtilities.Data;
 
 namespace UnityGameStarter.EditorUtilities.ScriptCreator 
 {
-    public class MetaScriptCreatorWindow : ScriptCreatorWindow<MetaScriptCreator>
+    public sealed class MetaScriptCreatorWindow : ScriptCreatorWindow<MetaScriptCreator>
     {
         protected override bool MakeSecondaryFileValuesEditable => true;
         
