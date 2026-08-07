@@ -1,25 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 
 namespace UnityGameStarter.EditorUtilities.ScriptCreator 
 {
-    /// <summary>
-    /// Data of the script creator
-    /// </summary>
-    public class MultipleScriptCreatorData 
-    {
-        public ScriptCreatorData primaryFile;
-
-        public ScriptCreatorData[] secondaryFiles = Array.Empty<ScriptCreatorData>();
-    }
-
-    public class ScriptCreatorData
-    {
-        public string fileName;
-        public object[] templateArgs;
-    }
-
     /// <summary>
     /// Base class of all script creators
     /// 
@@ -43,21 +28,20 @@ namespace UnityGameStarter.EditorUtilities.ScriptCreator
         {
             string folder = GetSelectedFolderPath();
 
-            if (string.IsNullOrEmpty(creatorData.primaryFile.fileName))
+            List<ScriptCreatorData> files = new() { creatorData.primaryFile };
+
+            files.AddRange(creatorData.secondaryFiles);
+
+            if (!ValidateFiles(folder, files))
                 return;
 
-            TryCreateFile(folder, creatorData.primaryFile.fileName, 
-                Template, creatorData.primaryFile.templateArgs, out var path);
-
-            if (SecondaryTemplates.Length != creatorData.secondaryFiles.Length)
-                throw new Exception("Secondary templates and file names count mismatch.");
+            string path = CreateFile(folder, creatorData.primaryFile.fileName,
+                Template, creatorData.primaryFile.templateArgs);
 
             for (int i = 0; i < SecondaryTemplates.Length; i++)
             {
-                ScriptCreatorData secondary = creatorData.secondaryFiles[i];
-
-                TryCreateFile(folder, secondary.fileName,
-                    SecondaryTemplates[i], secondary.templateArgs, out _);
+                CreateFile(folder, creatorData.secondaryFiles[i].fileName,
+                    SecondaryTemplates[i], creatorData.secondaryFiles[i].templateArgs);
             }
 
             AssetDatabase.Refresh();
@@ -70,21 +54,42 @@ namespace UnityGameStarter.EditorUtilities.ScriptCreator
         /// <summary>
         /// Logic to calculate file creation
         /// </summary>
-        private bool TryCreateFile(string folder, string fileName, string template, object[] args, out string path)
+        private string CreateFile(string folder, string fileName, string template, object[] args)
         {
-            path = Path.Combine(folder, fileName + ".cs");
+            string path = Path.Combine(folder, fileName + ".cs");
 
             if (File.Exists(path))
             {
                 EditorUtility.DisplayDialog(
                     "Error", $"File '{fileName}.cs' already exists!", "OK");
 
-                return false;
+                return "";
             }
 
             string content = string.Format(template, args);
 
             File.WriteAllText(path, content);
+            return path;
+        }
+
+        /// <summary>
+        /// Ensure files are all valid to prevent creating dirty files
+        /// </summary>
+        private bool ValidateFiles(string folder, IEnumerable<ScriptCreatorData> files)
+        {
+            foreach (var file in files)
+            {
+                string path = Path.Combine(folder, file.fileName + ".cs");
+
+                if (File.Exists(path))
+                {
+                    EditorUtility.DisplayDialog(
+                        "Error", $"File '{file.fileName}.cs' already exists!", "OK");
+
+                    return false;
+                }
+            }
+
             return true;
         }
 

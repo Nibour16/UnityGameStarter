@@ -8,19 +8,25 @@ namespace UnityGameStarter.EditorWindowUtilities.Creator
 {
     using UnityGameStarter.StringLibrary;
 
-    public abstract class ScriptCreatorWindow : CreatorWindow
+    public abstract class ScriptCreatorWindow<T> : CreatorWindow where T : BaseScriptCreator, new()
     {
+        protected static readonly T Creator = new();
+
         protected abstract string FileNameLabel { get; }
         protected abstract ContentDefinition File { get; }
         protected virtual Dictionary<string, ContentDefinition> InitialCreatorContent => new();
 
         protected override Dictionary<string, ContentDefinition> Content() 
         {
-            var list = new List<KeyValuePair<string, ContentDefinition>> { new(FileNameLabel, File) };
+            Dictionary<string, ContentDefinition> result = new()
+            {
+                { FileNameLabel, File }
+            };
 
-            list.AddRange(InitialCreatorContent);
+            foreach (var pair in InitialCreatorContent)
+                result.Add(pair.Key, pair.Value);
 
-            return list.ToDictionary(x => x.Key, x => x.Value);
+            return result;
         }
 
         protected override void OnCreate(Dictionary<string, ContentDefinition> content)
@@ -45,7 +51,7 @@ namespace UnityGameStarter.EditorWindowUtilities.Creator
                 secondaryFiles = ParseSecondary(content)
             };
 
-            GetScriptCreator().CreateScript(creatorData);
+            Creator.CreateScript(creatorData);
         }
 
         private ScriptCreatorData[] ParseSecondary(Dictionary<string, ContentDefinition> content)
@@ -71,7 +77,5 @@ namespace UnityGameStarter.EditorWindowUtilities.Creator
 
             return result.ToArray();
         }
-
-        protected abstract BaseScriptCreator GetScriptCreator();
     }
 }
