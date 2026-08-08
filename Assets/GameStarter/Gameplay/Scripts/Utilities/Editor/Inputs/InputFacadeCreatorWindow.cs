@@ -13,8 +13,8 @@ namespace UnityGameStarter.InputSystem.EditorUtilities
         protected override ContentDefinition Files => new() { value = "NewInputFacade" };
 
         protected override Dictionary<string, ContentDefinition> InitialCreatorContent => new()
-    {
-        { "Manager", new() { value = "InputManager"} }
-    };
+        {
+            { "Manager", new() { value = "InputManager"} }
+        };
     }
 }

@@ -13,6 +13,8 @@ using UnityGameStarter.ServiceLocatorPattern.FacadeModule;
 public sealed class {0} : BaseSingletonFacade
     <{0}, IInputService, {1}>, IInputService
 {{
+    // TODO: Map the required input actions from the manager to this facade.
+
     protected override void Awake()
     {{
         base.Awake();
