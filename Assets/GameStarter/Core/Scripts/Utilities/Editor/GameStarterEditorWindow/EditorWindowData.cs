@@ -6,6 +6,8 @@ namespace UnityGameStarter.EditorWindowUtilities.Data
     public class ContentDefinition
     {
         public string value;
+
+        public string[] secondaryValues;
     }
 
     public class ButtonDefinition

@@ -1,8 +1,7 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityGameStarter.SingletonPattern;
 
-namespace UnityGameStarter.Gameplay.Core
+namespace UnityGameStarter.Gameplay
 {
     public class GameManager : Singleton<GameManager>
     {
@@ -32,17 +31,17 @@ namespace UnityGameStarter.Gameplay.Core
             // TODO: Save the game by using Save Manager
         }
         
-        private void LoadGame() 
+        public void LoadGame() 
         {
             stateMachine.SetState(typeof(LoadingState));
         }
-        
+
         public void PauseGame() 
         {
             stateMachine.SetState(typeof(PauseState));
         }
 
-        public void ResumeGame() 
+        public void EnterGame() 
         {
             stateMachine.SetState(typeof(GameplayState));
         }

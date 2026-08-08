@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.FiniteStateMachine.EventState;
-using UnityGameStarter.Gameplay.Core;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay.PauseManagement 

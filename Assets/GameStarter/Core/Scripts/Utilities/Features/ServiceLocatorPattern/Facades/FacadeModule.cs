@@ -24,9 +24,8 @@ namespace UnityGameStarter.ServiceLocatorPattern.FacadeModule
             // Try singleton first (safe, no reflection)
             if (ManagerIsSingleton(out var singletonInstance))
                 manager = singletonInstance;
-
-            // Fallback: same GameObject
-            manager = _facade.GetComponent<TManager>();
+            else // Fallback: same GameObject
+                manager = _facade.GetComponent<TManager>();
 
             if (manager == null)
                 Debug.LogError($"{typeof(TManager).Name} could not be resolved on {_facade.name}");

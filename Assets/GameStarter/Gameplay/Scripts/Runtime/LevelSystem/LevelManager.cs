@@ -1,8 +1,8 @@
 using UnityEngine;
+using UnityGameStarter.ApplicationStatics;
 using UnityGameStarter.CommonData;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.FiniteStateMachine.EventState;
-using UnityGameStarter.Gameplay.Core;
 using UnityGameStarter.SceneManagement;
 using UnityGameStarter.SingletonPattern;
 
@@ -41,7 +41,11 @@ namespace UnityGameStarter.Gameplay.LevelManagement
             if (_initializationState != InitializationState.Uninitialized) return;
 
             _initializationState = InitializationState.Initializing;
-            EventManager.Instance.Publish(new InitializeLevelEvent());
+
+            if (EventManager.Instance.GetListenerCount<InitializeLevelEvent>() > 0)
+                EventManager.Instance.Publish(new InitializeLevelEvent());
+            else if(GameManager.TryGetInstance(out var instance))
+                instance.EnterGame();
         }
 
         [EventListener]
@@ -54,6 +58,8 @@ namespace UnityGameStarter.Gameplay.LevelManagement
         [EventListener]
         private void EnterLevel(EnterStateEvent<GameplayState> e)
         {
+            Debug.Log("Attempt to enter level");
+            
             if (_initializationState != InitializationState.Initialized)
             {
                 Debug.LogWarning("Cannot enter level before initialization.");
@@ -70,8 +76,10 @@ namespace UnityGameStarter.Gameplay.LevelManagement
         }
 
         [EventListener]
-        private void ExitLevel(ExitStateEvent<GameplayState> e)
+        private void ExitLevel(EnterStateEvent<ExitGameState> e)
         {
+            Debug.Log("Attempt to exit level");
+
             if (_initializationState != InitializationState.Initialized)
             {
                 Debug.LogWarning("Cannot exit level before initialization.");
@@ -87,7 +95,7 @@ namespace UnityGameStarter.Gameplay.LevelManagement
             if (scene.IsValid())
                 sceneFacade.Load(scene);
             else if (quitIfMissingMainScene)
-                Application.Quit();
+                ApplicationLibrary.QuitApp();
             else
                 Debug.LogWarning($"LevelManager: Main scene '{mainSceneName}' is not found.");
         }
@@ -96,8 +104,9 @@ namespace UnityGameStarter.Gameplay.LevelManagement
         #region On Application Quit
         protected override void OnApplicationQuit()
         {
-            if (EventManager.HasInstance && _initializationState == InitializationState.Initialized)
-                EventManager.Instance.Publish(new ExitLevelEvent());
+            if (EventManager.TryGetInstance(out var instance) && 
+                _initializationState == InitializationState.Initialized)
+                instance.Publish(new ExitLevelEvent());
 
             ResetState();
             base.OnApplicationQuit();

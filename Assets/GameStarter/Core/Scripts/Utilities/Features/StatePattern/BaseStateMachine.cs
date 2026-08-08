@@ -54,6 +54,8 @@ namespace UnityGameStarter.FiniteStateMachine
 
         public void SetState(BaseState newState, bool reset = false)
         {
+            if (_currentState.Lock) return;
+            
             if (newState == null)
             {
                 Debug.LogError("State Machine: Unassigned new state detected!");

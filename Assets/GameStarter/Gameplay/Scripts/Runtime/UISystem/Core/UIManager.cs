@@ -38,7 +38,10 @@ namespace UnityGameStarter.Gameplay.UI
 
             SceneFacade.Instance.BindSceneLoaded(Initialize);
             SceneFacade.Instance.BindSceneUnloaded(Deinitialize);
+        }
 
+        private void Start() 
+        {
             Initialize(SceneManager.GetActiveScene());
         }
 
@@ -62,9 +65,7 @@ namespace UnityGameStarter.Gameplay.UI
             }));
 
             foreach (var root in collectedRoots)
-            {
                 InitializeRoot(root);
-            }
 
             _initializeStates[e] = InitializationState.Initialized;
         }
