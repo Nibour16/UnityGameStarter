@@ -2,7 +2,7 @@ using UnityGameStarter.EditorWindowUtilities.Creator;
 using UnityGameStarter.EditorWindowUtilities.Data;
 using System.Collections.Generic;
 
-namespace UnityGameStarter.InputSystem.EditorUtilities
+namespace UnityGameStarter.EditorUtilities.InputSystem
 {
     public class InputManagerCreatorWindow : ScriptCreatorWindow<InputManagerCreator>
     {

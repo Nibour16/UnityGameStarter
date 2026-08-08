@@ -58,13 +58,7 @@ namespace UnityGameStarter.Gameplay.LevelManagement
         [EventListener]
         private void EnterLevel(EnterStateEvent<GameplayState> e)
         {
-            Debug.Log("Attempt to enter level");
-            
-            if (_initializationState != InitializationState.Initialized)
-            {
-                Debug.LogWarning("Cannot enter level before initialization.");
-                return;
-            }
+            if (_initializationState != InitializationState.Initialized) return;
 
             EventManager.Instance.Publish(new EnterLevelEvent());
         }
@@ -78,13 +72,7 @@ namespace UnityGameStarter.Gameplay.LevelManagement
         [EventListener]
         private void ExitLevel(EnterStateEvent<ExitGameState> e)
         {
-            Debug.Log("Attempt to exit level");
-
-            if (_initializationState != InitializationState.Initialized)
-            {
-                Debug.LogWarning("Cannot exit level before initialization.");
-                return;
-            }
+            if (_initializationState != InitializationState.Initialized) return;
 
             EventManager.Instance.Publish(new ExitLevelEvent());
             ResetState();

@@ -43,7 +43,7 @@ namespace UnityGameStarter.Gameplay.UI
 
         public void OpenUI(string uiName, bool printLogIfNotFound = false) 
         {
-            OpenUI(_defaultRoot, uiName, printLogIfNotFound);
+            OpenUI(DefaultRoot, uiName, printLogIfNotFound);
         }
 
         public void OpenUI<T>(UIRoot root, T uiComponent, bool printLogIfNotFound = false) where T : Component
@@ -53,7 +53,7 @@ namespace UnityGameStarter.Gameplay.UI
 
         public void OpenUI<T>(T uiComponent, bool printLogIfNotFound = false) where T : Component
         {
-            OpenUI(_defaultRoot, uiComponent, printLogIfNotFound);
+            OpenUI(DefaultRoot, uiComponent, printLogIfNotFound);
         }
 
         public void CloseUI(UIRoot root, string uiName, bool printLogIfNotFound = false)
@@ -72,7 +72,7 @@ namespace UnityGameStarter.Gameplay.UI
 
         public void CloseUI(string uiName, bool printLogIfNotFound = false)
         {
-            CloseUI(_defaultRoot, uiName, printLogIfNotFound);
+            CloseUI(DefaultRoot, uiName, printLogIfNotFound);
         }
 
         public void CloseUI<T>(UIRoot root, T uiComponent, bool printLogIfNotFound = false) where T : Component
@@ -82,7 +82,7 @@ namespace UnityGameStarter.Gameplay.UI
 
         public void CloseUI<T>(T uiComponent, bool printLogIfNotFound = false) where T : Component
         {
-            CloseUI(_defaultRoot, uiComponent, printLogIfNotFound);
+            CloseUI(DefaultRoot, uiComponent, printLogIfNotFound);
         }
 
         public bool TryGetUI<T>(UIRoot root, string uiName, out T ui, bool printLogIfNotFound = false) where T : Component

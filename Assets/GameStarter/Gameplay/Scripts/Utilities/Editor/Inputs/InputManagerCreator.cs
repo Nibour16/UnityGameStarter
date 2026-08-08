@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityGameStarter.EditorUtilities.ScriptCreator;
 using UnityGameStarter.EditorWindowUtilities;
 
-namespace UnityGameStarter.InputSystem.EditorUtilities 
+namespace UnityGameStarter.EditorUtilities.InputSystem
 {
     public class InputManagerCreator : BaseScriptCreator
     {

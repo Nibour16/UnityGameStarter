@@ -219,13 +219,33 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6906696559292159622, guid: ce678cb4b970a7240abf2adaba3dfe51, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9149393666512486207}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7572197065223354663, guid: ce678cb4b970a7240abf2adaba3dfe51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6169058318827890637}
   m_SourcePrefab: {fileID: 100100000, guid: ce678cb4b970a7240abf2adaba3dfe51, type: 3}
 --- !u!224 &4649375533945050458 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6906696559292159622, guid: ce678cb4b970a7240abf2adaba3dfe51, type: 3}
   m_PrefabInstance: {fileID: 2259792744671757276}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8523551147268438779 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7572197065223354663, guid: ce678cb4b970a7240abf2adaba3dfe51, type: 3}
+  m_PrefabInstance: {fileID: 2259792744671757276}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6169058318827890637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8523551147268438779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e00363b2671eae84191cf24fd46e2a65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.UI.Menu.PauseMenuBehaviour
 --- !u!1001 &4732307482397064589
 PrefabInstance:
   m_ObjectHideFlags: 0
