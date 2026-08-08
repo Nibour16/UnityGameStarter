@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityGameStarter.Gameplay.CharacterMovement;
-using UnityGameStarter.Math.TransformStatics;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SamplePlayerCameraController))]

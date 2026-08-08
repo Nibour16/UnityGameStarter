@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityGameStarter.InputSystem;
 using UnityGameStarter.ServiceLocatorPattern.FacadeModule;
 
-
 public sealed class InputFacade3D : BaseSingletonFacade
     <InputFacade3D, IInputService, InputManager_3DStarter>, IInputService
 {
