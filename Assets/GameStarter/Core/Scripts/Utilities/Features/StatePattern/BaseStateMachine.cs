@@ -54,7 +54,7 @@ namespace UnityGameStarter.FiniteStateMachine
 
         public void SetState(BaseState newState, bool reset = false)
         {
-            if (_currentState.Lock) return;
+            if (_currentState != null && _currentState.Lock) return;
             
             if (newState == null)
             {

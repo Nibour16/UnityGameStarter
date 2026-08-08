@@ -1,24 +1,27 @@
 using UnityEngine;
+using UnityGameStarter.CommonData;
+using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay
 {
+    [RequireComponent(typeof(GameStateMachine))]
     public class GameManager : Singleton<GameManager>
     {
-        public GameplayData data;
-        
-        [SerializeField] private GameStateMachine stateMachine;
+        [SerializeField] private GameplayData data;
+        private GameStateMachine stateMachine;
+
+        public GameplayData Data => data;
+
+        public bool IsPaused => stateMachine.CurrentState.GetType() == typeof(PauseState);
 
         protected override void Awake()
         {
             base.Awake();
+            stateMachine = GetComponent<GameStateMachine>();
 
-            if (!stateMachine) stateMachine = FindAnyObjectByType<GameStateMachine>();
-
-            if (!stateMachine) 
-                Debug.LogError(
-                    "Game Manager: Cannot find Game State Machine in the scene." +
-                    "Please assign it in the inspector or ensure one exists in the scene.");
+            if (data != null)
+                EventManager.Instance.Publish(new RuntimeScale(data.gameTimeScale));
         }
 
         private void Start() 

@@ -8,7 +8,9 @@ namespace UnityGameStarter.Events.EventManagement
     {
         [SerializeField] private bool printLog = false;
         private IAutoEventListener[] _listeners;
-        
+
+        private bool _isRegistered = false;
+
         private void Awake() 
         {
             _listeners = GetComponents<IAutoEventListener>();
@@ -16,26 +18,46 @@ namespace UnityGameStarter.Events.EventManagement
 
         private void OnEnable()
         {
-            foreach (var listener in _listeners) 
-            {
-                EventManager.Instance.Register(listener);
-
-                if (printLog)
-                    Debug.Log($"{listener} has registered");
-            }
+            Register();
         }
 
         private void OnDisable()
         {
+            Unregister();
+        }
+
+        private void Register() 
+        {
+            if (_isRegistered) return;
+            
+            if (!EventManager.TryGetInstance(out var instance)) return;
+            
+            foreach (var listener in _listeners)
+            {
+                instance.Register(listener);
+
+                if (printLog)
+                    Debug.Log($"{listener} has registered");
+            }
+
+            _isRegistered = true;
+        }
+
+        private void Unregister() 
+        {
+            if (!_isRegistered) return;
+            
             if (!EventManager.TryGetInstance(out var instance)) return;
 
-            foreach (var listener in _listeners) 
+            foreach (var listener in _listeners)
             {
                 instance.Unregister(listener);
 
                 if (printLog)
                     Debug.Log($"{listener} has unregistered");
             }
+
+            _isRegistered = false;
         }
     }
 }

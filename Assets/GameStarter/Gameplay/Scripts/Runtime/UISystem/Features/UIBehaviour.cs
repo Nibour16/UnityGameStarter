@@ -8,24 +8,9 @@ namespace UnityGameStarter.Gameplay.UI
         {
             if (gameObject.activeSelf)
                 OnOpened();
-            else
-                OnClosed();
         }
 
-        public virtual void Deinit() 
-        {
-            OnClosed();
-        }
-
-        protected virtual void OnEnable() 
-        {
-            OnOpened();
-        }
-
-        protected virtual void OnDisable()
-        {
-            OnClosed();
-        }
+        public virtual void Deinit() { }
 
         public abstract void OnOpened();
 
