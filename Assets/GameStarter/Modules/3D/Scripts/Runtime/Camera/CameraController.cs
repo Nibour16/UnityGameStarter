@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityGameStarter.CursorStatics;
-using UnityGameStarter.InputSystem.Player.Player_3D;
 
 namespace UnityGameStarter.Gameplay.Camera.Spatial3D
 {
-    public class CameraController : MonoBehaviour
+    public abstract class CameraController : MonoBehaviour
     {
         [SerializeField] private Transform camera;
         [SerializeField] private Transform targetSource;
@@ -14,14 +13,16 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
         [SerializeField] private CameraSettings setting;
         [SerializeField] private CameraRuntimeState state;
 
+        protected abstract Vector2 LookInput { get; }
+
         public Quaternion CameraRotation => camera.rotation;
 
-        private void OnEnable() 
+        protected virtual void OnEnable() 
         {
             CursorLibrary.Lock();
         }
 
-        private void OnDisable() 
+        protected virtual void OnDisable() 
         {
             CursorLibrary.Unlock();
         }
@@ -34,11 +35,12 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
         private void UpdateCamera() 
         {
             state.targetPos = targetSource.position;
-
-            CameraControlLibrary.CalculateCameraTransform(
-                ref camera, InputFacade3D.Instance.Look, ref state, setting);
-
+            CameraControlLibrary.CalculateCameraTransform(ref camera, LookInput, ref state, setting);
             targetSource.rotation = camera.rotation;
+
+            OnCameraUpdate();
         }
+
+        protected virtual void OnCameraUpdate() { }
     }
 }

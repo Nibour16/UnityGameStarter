@@ -39,6 +39,14 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
             CalculateMovement(direction, moveSpeed, out movement, updateTurn);
         }
 
+        public static void CalculateMovementVelocity(
+            Transform source, Vector2 input, float moveSpeed, ref Vector3 targetVelocity, 
+            out MovementResult movement, bool updateTurn = true)
+        {
+            CalculateMovement(source, input, moveSpeed, out movement, updateTurn);
+            targetVelocity = new Vector3(movement.velocity.x, targetVelocity.y, movement.velocity.z);
+        }
+
         public static Quaternion GetTurnRotation(this Quaternion current, Quaternion target,
             float turnSpeed, float deltaTime)
             => current.TurnTowards(target, turnSpeed, deltaTime);

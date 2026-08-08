@@ -2,10 +2,12 @@ using UnityEditor;
 using UnityGameStarter.EditorUtilities.ScriptCreator;
 using UnityGameStarter.EditorWindowUtilities;
 
-public sealed class InputFacadeCreator : BaseScriptCreator
+namespace UnityGameStarter.InputSystem.EditorUtilities 
 {
-    protected override string Template =>
-@"using UnityEngine;
+    public sealed class InputFacadeCreator : BaseScriptCreator
+    {
+        protected override string Template =>
+    @"using UnityEngine;
 using UnityGameStarter.ServiceLocatorPattern.FacadeModule;
 
 public sealed class {0} : BaseSingletonFacade
@@ -18,9 +20,10 @@ public sealed class {0} : BaseSingletonFacade
     }}
 }}";
 
-    [MenuItem("Assets/Create/Scripting/InputFacade")]
-    private static void Create()
-    {
-        EditorWindowWithInputs.ShowWindow<InputFacadeCreatorWindow>();
+        [MenuItem("Assets/Create/Scripting/InputFacade")]
+        private static void Create()
+        {
+            EditorWindowWithInputs.ShowWindow<InputFacadeCreatorWindow>();
+        }
     }
 }
