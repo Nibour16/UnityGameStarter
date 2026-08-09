@@ -1,12 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.Gameplay;
 using UnityGameStarter.Gameplay.CharacterMovement;
-using UnityGameStarter.PauseManagement;
 using UnityGameStarter.Gameplay.UI;
+using UnityGameStarter.PauseManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CameraController3D))]
+[RequireComponent(typeof(RigidbodyJumpModule))]
 [RequireComponent(typeof(EventListenerRegister))]
 public class Player3D : MonoBehaviour, IAutoEventListener
 {
@@ -16,9 +18,9 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     [SerializeField] private Transform controlSource;
 
     [Header("Movement")]
-    [SerializeField, Min(0.01f)] private float moveSpeed = 2f;
-    //[SerializeField, Min(0.01f)] private float jumpIntensity = 1f;
+    [SerializeField, Min(0.01f)] private float moveSpeed = 4f;
     [SerializeField, Min(0.01f)] private float turnSpeed = 10f;
+    [SerializeField] private bool instantTurn = false;
 
     [Header("Player Setting")]
     [SerializeField] private bool useControlRotation = true;
@@ -27,6 +29,7 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     #region References
     private Rigidbody _rb;
     private CameraController3D _cameraController;
+    private RigidbodyJumpModule _jumpModule;
     #endregion
 
     #region References of the inputs in InputManager
@@ -36,41 +39,59 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     private Vector2 Look =>
         targetInputManager.PlayerInputs.Player.Look.ReadValue<Vector2>();
 
-    /*private bool Jump =>
-        InputManager_3DStarter.Instance.PlayerInputs.Player.Jump.triggered;*/
+    private bool Jump =>
+        targetInputManager.PlayerInputs.Player.Jump.WasPressedThisFrame();
 
     private bool Pause =>
-        targetInputManager.Core.Player.OpenPauseMenu.triggered;
+        targetInputManager.CoreInputs.Player.OpenPauseMenu.WasPressedThisFrame();
     #endregion
+
+    private Quaternion _desiredRotation = Quaternion.identity;
+    private bool _canRotate = false;
 
     #region Life Cycle
     private void Awake() 
     {
         _rb = GetComponent<Rigidbody>();
+
         _cameraController = GetComponent<CameraController3D>();
+        _jumpModule = GetComponent<RigidbodyJumpModule>();
     }
 
     private void Update() 
     {
+        if (_jumpModule.isActiveAndEnabled) 
+        {
+            if (Jump)
+                _jumpModule.Jump();
+
+            _jumpModule.UpdateGravityState();
+        }
+        
         SetPause();
     }
 
     private void FixedUpdate() 
     {
-        Move();
+        if (_cameraController.enabled)
+            controlSource.rotation = _cameraController.CameraRotation;
+
+        HandleMove();
+        HandleRotation();
+
+        if (_jumpModule.isActiveAndEnabled)
+            _jumpModule.ResolveGravity();
     }
 
     private void LateUpdate() 
     {
-        if (!_cameraController.enabled) return;
-
-        _cameraController.UpdateCamera(controlSource, Look);
-        controlSource.rotation = _cameraController.CameraRotation;
+        if (_cameraController.enabled)
+            _cameraController.UpdateCamera(controlSource, Look);
     }
     #endregion
 
-    #region Movement Logic
-    private void Move()
+    #region Movement
+    private void HandleMove()
     {
         if (GameManager.TryGetInstance(out var instance) && instance.IsPaused) return;
         
@@ -80,14 +101,24 @@ public class Player3D : MonoBehaviour, IAutoEventListener
             controlSource, Movement, moveSpeed, ref velocity, out var result, useControlRotation);
 
         _rb.linearVelocity = velocity;
+        _desiredRotation = result.rotation;
+        _canRotate = result.hasRotation;
+    }
 
-        if (result.hasRotation) 
+    private void HandleRotation() 
+    {
+        if (!_canRotate) return;
+
+        if (instantTurn) 
         {
-            Quaternion rotation = _rb.rotation.GetTurnRotation(
-                result.rotation, turnSpeed, Time.fixedDeltaTime);
-
-            _rb.MoveRotation(rotation); 
+            _rb.rotation = _desiredRotation;
+            return;
         }
+
+        Quaternion rotation = _rb.rotation.GetTurnRotation(
+            _desiredRotation, turnSpeed, Time.fixedDeltaTime);
+
+        _rb.rotation = rotation;
     }
     #endregion
 
@@ -108,10 +139,16 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     [EventListener]
     private void OnPaused(PauseChangedEvent e) 
     {
-        if (e.IsPaused)
+        if (e.IsPaused) 
+        {
             _cameraController.enabled = false;
-        else
+            _jumpModule.enabled = false;
+        }
+        else 
+        {
             _cameraController.enabled = true;
+            _jumpModule.enabled = true;
+        }
     }
     #endregion
 }

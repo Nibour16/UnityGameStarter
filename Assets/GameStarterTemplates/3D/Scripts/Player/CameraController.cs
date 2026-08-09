@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityGameStarter.CursorStatics;
-using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.Gameplay.Camera.Spatial3D;
 
 public class CameraController3D : MonoBehaviour

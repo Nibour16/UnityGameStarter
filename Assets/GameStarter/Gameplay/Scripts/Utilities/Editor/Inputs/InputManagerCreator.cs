@@ -7,29 +7,32 @@ namespace UnityGameStarter.EditorUtilities.InputSystem
     public class InputManagerCreator : BaseScriptCreator
     {
         protected override string Template =>
-@"using UnityGameStarter.InputSystem;
+@"using UnityEngine;
 
-public class {0} : InputManager<{0}>
+public class {0} : MonoBehaviour
 {{
-    private {1} _inputs;
-    public {1} Inputs => _inputs;
+    private PlayerInputs_Core _coreInputs;
+    public PlayerInputs_Core CoreInputs => _coreInputs;    
 
-    protected override void Awake()
+    private {1} _playerInputs;
+    public {1} PlayerInputs => _playerInputs;
+
+    private void Awake()
     {{
-        base.Awake();
-        _inputs = new {1}();
+        _coreInputs = new PlayerInputs_Core();
+        _playerInputs = new {1}();
     }}
 
-    protected override void OnEnable()
+    private void OnEnable()
     {{
-        base.OnEnable();
-        _inputs?.Enable();
+        _coreInputs?.Enable();
+        _playerInputs?.Enable();
     }}
 
-    protected override void OnDisable()
+    private void OnDisable()
     {{
-        base.OnDisable();
-        _inputs?.Disable();
+        _coreInputs?.Disable();
+        _playerInputs?.Disable();
     }}
 }}";
 

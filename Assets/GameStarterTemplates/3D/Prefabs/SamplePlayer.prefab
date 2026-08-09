@@ -221,7 +221,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2867707394650106936}
-  - component: {fileID: 8522402100251494621}
   m_Layer: 6
   m_Name: ControlSource
   m_TagString: Untagged
@@ -244,21 +243,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6561833336624818796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8522402100251494621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8500265443354881161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d70370621eff35d458a8f8b46d2d4991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RotationSynchronizer
-  controlTransforms: []
-  yawOnly: 1
-  syncEveryFrame: 1
 --- !u!1001 &5000907396497197867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -267,6 +251,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1892692843579288841, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: c6006de805012624995c09a54b95abe9, type: 2}
     - target: {fileID: 2195111608349385031, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -307,6 +295,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6251211558423782661, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251211558423782661, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       propertyPath: m_Name
       value: SamplePlayer
@@ -337,6 +333,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3607529075795688444}
+    - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1232473498092514264}
+    - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 998847130575841630}
   m_SourcePrefab: {fileID: 100100000, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
 --- !u!1 &4044829040705874678 stripped
 GameObject:
@@ -358,7 +360,8 @@ MonoBehaviour:
   targetInputManager: {fileID: 8631843021876711754}
   controlSource: {fileID: 2867707394650106936}
   moveSpeed: 6
-  turnSpeed: 30
+  turnSpeed: 15
+  instantTurn: 0
   useControlRotation: 1
 --- !u!114 &3607529075795688444
 MonoBehaviour:
@@ -378,16 +381,48 @@ MonoBehaviour:
     sensitivity: 1
     minPitch: -89
     maxPitch: 89
-    collisionRadius: 0.2
+    collisionRadius: 0.4
     collisionMask:
       serializedVersion: 2
-      m_Bits: 73
+      m_Bits: 9
     invertVerticalLook: 0
     invertHorizontalLook: 0
   state:
     pitch: 0
     yaw: 0
     targetPos: {x: 0, y: 0, z: 0}
+--- !u!114 &1232473498092514264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044829040705874678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2600dbd558013f4590502c762df73ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RigidbodyJumpModule
+  jumpStrength: 20
+  gravityScale: 5
+  fallingGravityScale: 5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 9
+  maxGroundAngle: 45
+--- !u!114 &998847130575841630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044829040705874678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e080ea2b49b11454d96cf24e7fcaf81b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Events.EventManagement.EventListenerRegister
+  printLog: 0
 --- !u!4 &6561833336624818796 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2195111608349385031, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}

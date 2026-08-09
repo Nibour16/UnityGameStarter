@@ -39,4 +39,3 @@ namespace UnityGameStarter.Gameplay.Spatial3D
         }
     }
 }
-
