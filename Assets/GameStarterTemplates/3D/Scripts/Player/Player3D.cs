@@ -20,6 +20,7 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     [Header("Movement")]
     [SerializeField, Min(0.01f)] private float moveSpeed = 4f;
     [SerializeField, Min(0.01f)] private float turnSpeed = 10f;
+    [SerializeField] private bool instantTurn = false;
 
     [Header("Player Setting")]
     [SerializeField] private bool useControlRotation = true;
@@ -44,6 +45,9 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     private bool Pause =>
         targetInputManager.CoreInputs.Player.OpenPauseMenu.WasPressedThisFrame();
     #endregion
+
+    private Quaternion _desiredRotation = Quaternion.identity;
+    private bool _canRotate = false;
 
     #region Life Cycle
     private void Awake() 
@@ -73,6 +77,7 @@ public class Player3D : MonoBehaviour, IAutoEventListener
             controlSource.rotation = _cameraController.CameraRotation;
 
         HandleMove();
+        HandleRotation();
 
         if (_jumpModule.isActiveAndEnabled)
             _jumpModule.ResolveGravity();
@@ -96,14 +101,24 @@ public class Player3D : MonoBehaviour, IAutoEventListener
             controlSource, Movement, moveSpeed, ref velocity, out var result, useControlRotation);
 
         _rb.linearVelocity = velocity;
+        _desiredRotation = result.rotation;
+        _canRotate = result.hasRotation;
+    }
 
-        if (result.hasRotation) 
+    private void HandleRotation() 
+    {
+        if (!_canRotate) return;
+
+        if (instantTurn) 
         {
-            Quaternion rotation = _rb.rotation.GetTurnRotation(
-                result.rotation, turnSpeed, Time.fixedDeltaTime);
-
-            _rb.MoveRotation(rotation); 
+            _rb.rotation = _desiredRotation;
+            return;
         }
+
+        Quaternion rotation = _rb.rotation.GetTurnRotation(
+            _desiredRotation, turnSpeed, Time.fixedDeltaTime);
+
+        _rb.rotation = rotation;
     }
     #endregion
 

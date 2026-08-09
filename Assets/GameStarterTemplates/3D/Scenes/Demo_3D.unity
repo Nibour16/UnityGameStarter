@@ -164,6 +164,10 @@ PrefabInstance:
       value: 112
       objectReference: {fileID: 0}
     - target: {fileID: 1415829085258296878, guid: 4906837c02053a94dbe1d194ad1b9c39, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1415829085258296878, guid: 4906837c02053a94dbe1d194ad1b9c39, type: 3}
       propertyPath: m_IsKinematic
       value: 0
       objectReference: {fileID: 0}
@@ -182,6 +186,14 @@ PrefabInstance:
     - target: {fileID: 6456894328632299708, guid: 4906837c02053a94dbe1d194ad1b9c39, type: 3}
       propertyPath: jumpSpeed
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6456894328632299708, guid: 4906837c02053a94dbe1d194ad1b9c39, type: 3}
+      propertyPath: turnSpeed
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6456894328632299708, guid: 4906837c02053a94dbe1d194ad1b9c39, type: 3}
+      propertyPath: instantTurn
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6456894328632299708, guid: 4906837c02053a94dbe1d194ad1b9c39, type: 3}
       propertyPath: gravityScale
