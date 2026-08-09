@@ -14,7 +14,7 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
         public float maxPitch = 89f;
 
         public float collisionRadius = 0.2f;
-        public LayerMask collisionMask;
+        public LayerMask collisionMask = 1 << 0;
 
         [Header("Advanced")]
         public bool invertVerticalLook = false;

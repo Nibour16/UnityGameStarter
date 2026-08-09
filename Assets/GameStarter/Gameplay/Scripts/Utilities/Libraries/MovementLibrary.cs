@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Windows;
 using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Math.Kinematics;
 using UnityGameStarter.Math.TransformStatics;

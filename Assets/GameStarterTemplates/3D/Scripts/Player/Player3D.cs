@@ -1,12 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.Gameplay;
 using UnityGameStarter.Gameplay.CharacterMovement;
-using UnityGameStarter.PauseManagement;
 using UnityGameStarter.Gameplay.UI;
+using UnityGameStarter.PauseManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CameraController3D))]
+[RequireComponent(typeof(RigidbodyJumpModule))]
 [RequireComponent(typeof(EventListenerRegister))]
 public class Player3D : MonoBehaviour, IAutoEventListener
 {
@@ -16,8 +18,7 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     [SerializeField] private Transform controlSource;
 
     [Header("Movement")]
-    [SerializeField, Min(0.01f)] private float moveSpeed = 2f;
-    //[SerializeField, Min(0.01f)] private float jumpIntensity = 1f;
+    [SerializeField, Min(0.01f)] private float moveSpeed = 4f;
     [SerializeField, Min(0.01f)] private float turnSpeed = 10f;
 
     [Header("Player Setting")]
@@ -27,6 +28,7 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     #region References
     private Rigidbody _rb;
     private CameraController3D _cameraController;
+    private RigidbodyJumpModule _jumpModule;
     #endregion
 
     #region References of the inputs in InputManager
@@ -37,27 +39,34 @@ public class Player3D : MonoBehaviour, IAutoEventListener
         targetInputManager.PlayerInputs.Player.Look.ReadValue<Vector2>();
 
     private bool Jump =>
-        targetInputManager.PlayerInputs.Player.Jump.triggered;
+        targetInputManager.PlayerInputs.Player.Jump.WasPressedThisFrame();
 
     private bool Pause =>
-        targetInputManager.CoreInputs.Player.OpenPauseMenu.triggered;
+        targetInputManager.CoreInputs.Player.OpenPauseMenu.WasPressedThisFrame();
     #endregion
 
     #region Life Cycle
     private void Awake() 
     {
         _rb = GetComponent<Rigidbody>();
+
         _cameraController = GetComponent<CameraController3D>();
+        _jumpModule = GetComponent<RigidbodyJumpModule>();
     }
 
     private void Update() 
     {
+        if (Jump)
+            _jumpModule.Jump();
+
+        _jumpModule.UpdateGravityState();
         SetPause();
     }
 
     private void FixedUpdate() 
     {
-        Move();
+        HandleMove();
+        _jumpModule.ResolveGravity();
     }
 
     private void LateUpdate() 
@@ -69,8 +78,8 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     }
     #endregion
 
-    #region Movement Logic
-    private void Move()
+    #region Movement
+    private void HandleMove()
     {
         if (GameManager.TryGetInstance(out var instance) && instance.IsPaused) return;
         
