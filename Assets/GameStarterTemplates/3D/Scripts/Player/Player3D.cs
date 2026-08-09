@@ -36,11 +36,11 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     private Vector2 Look =>
         targetInputManager.PlayerInputs.Player.Look.ReadValue<Vector2>();
 
-    /*private bool Jump =>
-        InputManager_3DStarter.Instance.PlayerInputs.Player.Jump.triggered;*/
+    private bool Jump =>
+        targetInputManager.PlayerInputs.Player.Jump.triggered;
 
     private bool Pause =>
-        targetInputManager.Core.Player.OpenPauseMenu.triggered;
+        targetInputManager.CoreInputs.Player.OpenPauseMenu.triggered;
     #endregion
 
     #region Life Cycle

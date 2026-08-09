@@ -7,7 +7,7 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
     public class CameraSettings
     {
         [Header("General")]
-        public float distance = 0f;
+        public float distance = 4f;
         public float sensitivity = 1f;
 
         public float minPitch = -89f;
