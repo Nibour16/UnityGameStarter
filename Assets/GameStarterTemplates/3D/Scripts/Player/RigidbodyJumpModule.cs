@@ -10,18 +10,59 @@ public class RigidbodyJumpModule : MonoBehaviour
     [SerializeField, Min(0f)] private float fallingGravityScale = 1f;
     [Space]
     [SerializeField] private LayerMask groundMask = 1 << 0;
-
-    public bool IsGrounded => _groundColliders.Count > 0;
+    [SerializeField] private float maxGroundAngle = 45f;
 
     private Rigidbody _rb;
-
-    private readonly HashSet<Collider> _groundColliders = new();
     private float _currentGravityScale;
+
+    private readonly Dictionary<Collider, bool> _groundColliders = new();
+    private int _validGroundCount;
+
+    public bool IsGrounded => _validGroundCount > 0;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _currentGravityScale = gravityScale;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!IsGround(collision)) return;
+
+        bool isValid = IsValidGround(collision);
+
+        _groundColliders[collision.collider] = isValid;
+
+        if (isValid)
+            _validGroundCount++;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (!_groundColliders.TryGetValue(collision.collider, out bool previous))
+            return;
+
+        bool current = IsValidGround(collision);
+
+        if (previous == current)
+            return;
+
+        _groundColliders[collision.collider] = current;
+
+        if (current)
+            _validGroundCount++;
+        else
+            _validGroundCount--;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (!_groundColliders.Remove(collision.collider, out bool wasValid))
+            return;
+
+        if (wasValid)
+            _validGroundCount--;
     }
 
     public void Jump() 
@@ -44,17 +85,17 @@ public class RigidbodyJumpModule : MonoBehaviour
             _currentGravityScale = fallingGravityScale;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (IsGround(other))
-            _groundColliders.Add(other);
-    }
+    private bool IsGround(Collision collision)
+        => (groundMask.value & (1 << collision.gameObject.layer)) != 0;
 
-    private void OnTriggerExit(Collider other)
+    private bool IsValidGround(Collision collision)
     {
-        _groundColliders.Remove(other);
-    }
+        foreach (var contact in collision.contacts)
+        {
+            if (Vector3.Angle(contact.normal, Vector3.up) <= maxGroundAngle)
+                return true;
+        }
 
-    private bool IsGround(Collider other)
-        => (groundMask.value & (1 << other.gameObject.layer)) != 0;
+        return false;
+    }
 }

@@ -56,25 +56,32 @@ public class Player3D : MonoBehaviour, IAutoEventListener
 
     private void Update() 
     {
-        if (Jump)
-            _jumpModule.Jump();
+        if (_jumpModule.isActiveAndEnabled) 
+        {
+            if (Jump)
+                _jumpModule.Jump();
 
-        _jumpModule.UpdateGravityState();
+            _jumpModule.UpdateGravityState();
+        }
+        
         SetPause();
     }
 
     private void FixedUpdate() 
     {
+        if (_cameraController.enabled)
+            controlSource.rotation = _cameraController.CameraRotation;
+
         HandleMove();
-        _jumpModule.ResolveGravity();
+
+        if (_jumpModule.isActiveAndEnabled)
+            _jumpModule.ResolveGravity();
     }
 
     private void LateUpdate() 
     {
-        if (!_cameraController.enabled) return;
-
-        _cameraController.UpdateCamera(controlSource, Look);
-        controlSource.rotation = _cameraController.CameraRotation;
+        if (_cameraController.enabled)
+            _cameraController.UpdateCamera(controlSource, Look);
     }
     #endregion
 
@@ -117,10 +124,16 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     [EventListener]
     private void OnPaused(PauseChangedEvent e) 
     {
-        if (e.IsPaused)
+        if (e.IsPaused) 
+        {
             _cameraController.enabled = false;
-        else
+            _jumpModule.enabled = false;
+        }
+        else 
+        {
             _cameraController.enabled = true;
+            _jumpModule.enabled = true;
+        }
     }
     #endregion
 }
