@@ -361,6 +361,7 @@ MonoBehaviour:
   controlSource: {fileID: 2867707394650106936}
   moveSpeed: 6
   turnSpeed: 15
+  instantTurn: 0
   useControlRotation: 1
 --- !u!114 &3607529075795688444
 MonoBehaviour:
@@ -380,10 +381,10 @@ MonoBehaviour:
     sensitivity: 1
     minPitch: -89
     maxPitch: 89
-    collisionRadius: 0.2
+    collisionRadius: 0.4
     collisionMask:
       serializedVersion: 2
-      m_Bits: 73
+      m_Bits: 9
     invertVerticalLook: 0
     invertHorizontalLook: 0
   state:
