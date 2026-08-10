@@ -9,6 +9,7 @@ namespace UnityGameStarter.Gameplay
     public class GameManager : Singleton<GameManager>
     {
         [SerializeField] private GameplayData data;
+        
         private GameStateMachine stateMachine;
 
         public GameplayData Data => data;

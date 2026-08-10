@@ -29,6 +29,9 @@ public class Player3D : MonoBehaviour, IAutoEventListener
 
     [Header("Player Setting")]
     [SerializeField] private bool useControlRotation = true;
+
+    [Header("Advanced")]
+    [SerializeField] private bool resetVelocityWhenPaused = false;
     #endregion
 
     #region References
@@ -40,7 +43,8 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     #endregion
 
     #region Private Fields
-    private Vector3 _playerVelocity;
+    private Vector3 _playerVelocity = Vector3.zero;
+    private Vector3 _cachedVelocity = Vector3.zero;
     private Quaternion _desiredRotation;
     private bool _canRotate = false;
     private bool _isGrounded = false;
@@ -151,8 +155,7 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     [EventListener]
     private void OnPaused(OnPlayerPauseEvent e)
     {
-        Debug.Log("Paused");
-        
+        _cachedVelocity = _playerVelocity;
         _playerVelocity = Vector3.zero;
 
         _motionController.enabled = false;
@@ -162,8 +165,13 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     [EventListener]
     private void OnUnpaused(OnPlayerUnpauseEvent e)
     {
+        if (!resetVelocityWhenPaused)
+            _playerVelocity = _cachedVelocity;
+
         _motionController.enabled = true;
         _cameraController.enabled = true;
+
+        _cachedVelocity = Vector3.zero;
     }
     #endregion
 }
