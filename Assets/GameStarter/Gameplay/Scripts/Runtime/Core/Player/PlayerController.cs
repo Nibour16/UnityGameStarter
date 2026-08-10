@@ -12,15 +12,34 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
     public class PlayerController : MonoBehaviour, IAutoEventListener
     {
         [SerializeField] private string targetPauseMenuName = "PauseMenu";
-        
+
+        [Header("UI-less Settings")]
+        [SerializeField] private bool pauseGame = true;
+
         public void SetPause()
         {
             if (!GameManager.TryGetInstance(out var instance)) return;
 
-            if (instance.IsPaused)
-                UIController.Instance.CloseUI(targetPauseMenuName);
-            else
-                UIController.Instance.OpenUI(targetPauseMenuName);
+            if (instance.IsPaused) 
+            {
+                if (UIController.TryGetInstance(out var ui))
+                    if (ui.CloseUI(targetPauseMenuName)) return;
+
+                if (pauseGame)
+                    instance.EnterGame();
+                else
+                    EventManager.Instance.Publish(new OnPlayerUnpauseEvent());
+            }
+            else 
+            {
+                if (UIController.TryGetInstance(out var ui))
+                    if (ui.OpenUI(targetPauseMenuName)) return;
+
+                if (pauseGame)
+                    instance.PauseGame();
+                else
+                    EventManager.Instance.Publish(new OnPlayerPauseEvent());
+            }
         }
 
         [EventListener]

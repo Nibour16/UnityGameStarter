@@ -25,6 +25,9 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
 
     [Header("Player Setting")]
     [SerializeField] private bool useControlRotation = true;
+
+    [Header("Advanced")]
+    [SerializeField] private bool resetVelocityWhenPaused = false;
     #endregion
 
     #region References
@@ -37,6 +40,7 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
 
     private Quaternion _desiredRotation = Quaternion.identity;
     private bool _canRotate = false;
+    private Vector3 _cachedVelocity = Vector3.zero;
 
     #region Life Cycle
     private void Awake() 
@@ -125,6 +129,9 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
     [EventListener]
     private void OnPaused(OnPlayerPauseEvent e)
     {
+        _cachedVelocity = _rb.linearVelocity;
+        
+        _rb.useGravity = false;
         _cameraController.enabled = false;
         _jumpModule.enabled = false;
     }
@@ -132,8 +139,14 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
     [EventListener]
     private void OnUnpaused(OnPlayerUnpauseEvent e)
     {
+        if (!resetVelocityWhenPaused)
+            _rb.linearVelocity = _cachedVelocity;
+
+        _rb.useGravity = true;
         _cameraController.enabled = true;
         _jumpModule.enabled = true;
+
+        _cachedVelocity = Vector3.zero;
     }
     #endregion
 }
