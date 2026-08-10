@@ -125,6 +125,7 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
     [EventListener]
     private void OnPaused(OnPlayerPauseEvent e)
     {
+        _rb.useGravity = false;
         _cameraController.enabled = false;
         _jumpModule.enabled = false;
     }
@@ -132,6 +133,7 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
     [EventListener]
     private void OnUnpaused(OnPlayerUnpauseEvent e)
     {
+        _rb.useGravity = true;
         _cameraController.enabled = true;
         _jumpModule.enabled = true;
     }
