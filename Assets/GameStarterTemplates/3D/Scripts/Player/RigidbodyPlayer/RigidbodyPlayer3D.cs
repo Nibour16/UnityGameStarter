@@ -1,20 +1,21 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.Gameplay;
+using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Gameplay.CharacterMovement;
-using UnityGameStarter.Gameplay.UI;
-using UnityGameStarter.PauseManagement;
+using UnityGameStarter.Gameplay.PlayerSystem;
+using UnityGameStarter.Gameplay.Rigidbody3DExtension;
 
+[RequireComponent(typeof(InputManager3D))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CameraController3D))]
 [RequireComponent(typeof(RigidbodyJumpModule))]
 [RequireComponent(typeof(EventListenerRegister))]
-public class Player3D : MonoBehaviour, IAutoEventListener
+[RequireComponent(typeof(PlayerController))]
+public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
 {
     #region Settings
     [Header("References")]
-    [SerializeField] private InputManager3D targetInputManager;
     [SerializeField] private Transform controlSource;
 
     [Header("Movement")]
@@ -27,23 +28,11 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     #endregion
 
     #region References
+    private InputManager3D _inputManager;
     private Rigidbody _rb;
     private CameraController3D _cameraController;
     private RigidbodyJumpModule _jumpModule;
-    #endregion
-
-    #region References of the inputs in InputManager
-    private Vector2 Movement =>
-        targetInputManager.PlayerInputs.Player.Move.ReadValue<Vector2>();
-
-    private Vector2 Look =>
-        targetInputManager.PlayerInputs.Player.Look.ReadValue<Vector2>();
-
-    private bool Jump =>
-        targetInputManager.PlayerInputs.Player.Jump.WasPressedThisFrame();
-
-    private bool Pause =>
-        targetInputManager.CoreInputs.Player.OpenPauseMenu.WasPressedThisFrame();
+    private PlayerController _playerController;
     #endregion
 
     private Quaternion _desiredRotation = Quaternion.identity;
@@ -52,23 +41,22 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     #region Life Cycle
     private void Awake() 
     {
+        _inputManager = GetComponent<InputManager3D>();
+
         _rb = GetComponent<Rigidbody>();
 
         _cameraController = GetComponent<CameraController3D>();
         _jumpModule = GetComponent<RigidbodyJumpModule>();
+
+        _playerController = GetComponent<PlayerController>();
     }
 
     private void Update() 
     {
-        if (_jumpModule.isActiveAndEnabled) 
-        {
-            if (Jump)
-                _jumpModule.Jump();
-
-            _jumpModule.UpdateGravityState();
-        }
+        HandleJump();
         
-        SetPause();
+        if (_inputManager.Pause)
+            _playerController.SetPause();
     }
 
     private void FixedUpdate() 
@@ -86,7 +74,7 @@ public class Player3D : MonoBehaviour, IAutoEventListener
     private void LateUpdate() 
     {
         if (_cameraController.enabled)
-            _cameraController.UpdateCamera(controlSource, Look);
+            _cameraController.UpdateCamera(controlSource, _inputManager.Look);
     }
     #endregion
 
@@ -98,7 +86,7 @@ public class Player3D : MonoBehaviour, IAutoEventListener
         Vector3 velocity = _rb.linearVelocity;
 
         MovementLibrary.CalculateMovementVelocity(
-            controlSource, Movement, moveSpeed, ref velocity, out var result, useControlRotation);
+            controlSource, _inputManager.Move, moveSpeed, ref velocity, out var result, useControlRotation);
 
         _rb.linearVelocity = velocity;
         _desiredRotation = result.rotation;
@@ -120,35 +108,32 @@ public class Player3D : MonoBehaviour, IAutoEventListener
 
         _rb.rotation = rotation;
     }
+
+    private void HandleJump() 
+    {
+        if (_jumpModule.isActiveAndEnabled)
+        {
+            if (_inputManager.Jump)
+                _jumpModule.Jump();
+
+            _jumpModule.UpdateGravityState();
+        }
+    }
     #endregion
 
-    #region Pause Handlers
-    private void SetPause() 
+    #region Pause State Handle
+    [EventListener]
+    private void OnPaused(OnPlayerPauseEvent e)
     {
-        if (Pause) 
-        {
-            if (!GameManager.TryGetInstance(out var instance)) return;
-
-            if (instance.IsPaused)
-                UIController.Instance.CloseUI("PauseMenu");
-            else
-                UIController.Instance.OpenUI("PauseMenu");
-        }
+        _cameraController.enabled = false;
+        _jumpModule.enabled = false;
     }
 
     [EventListener]
-    private void OnPaused(PauseChangedEvent e) 
+    private void OnUnpaused(OnPlayerUnpauseEvent e)
     {
-        if (e.IsPaused) 
-        {
-            _cameraController.enabled = false;
-            _jumpModule.enabled = false;
-        }
-        else 
-        {
-            _cameraController.enabled = true;
-            _jumpModule.enabled = true;
-        }
+        _cameraController.enabled = true;
+        _jumpModule.enabled = true;
     }
     #endregion
 }
