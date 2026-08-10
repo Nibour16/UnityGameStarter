@@ -312,7 +312,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &798961851146356230
 MonoBehaviour:
@@ -357,6 +357,8 @@ MonoBehaviour:
   instantTurn: 0
   jumpHeight: 1.5
   gravityValue: 9.81
+  jumpGravityScale: 1
+  fallingGravityScale: 1
   useControlRotation: 1
 --- !u!114 &8261827858567171427
 MonoBehaviour:

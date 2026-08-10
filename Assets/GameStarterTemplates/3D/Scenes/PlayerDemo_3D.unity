@@ -482,6 +482,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimplePlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 1595535056366531756, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: m_MinMoveDistance
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1805074982803381077, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
       propertyPath: jumpHeight
       value: 10

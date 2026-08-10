@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.Gameplay;
+using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.Gameplay.PlayerSystem;
 using UnityGameStarter.Gameplay.Rigidbody3DExtension;
