@@ -8,7 +8,8 @@ using UnityGameStarter.Gameplay.PlayerSystem;
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CameraController3D))]
 [RequireComponent(typeof(PlayerController))]
-public class Player3D : MonoBehaviour
+[RequireComponent(typeof(EventListenerRegister))]
+public class Player3D : MonoBehaviour, IAutoEventListener
 {
     #region Serialized Fields
     [Header("Reference")]
@@ -150,6 +151,8 @@ public class Player3D : MonoBehaviour
     [EventListener]
     private void OnPaused(OnPlayerPauseEvent e)
     {
+        Debug.Log("Paused");
+        
         _playerVelocity = Vector3.zero;
 
         _motionController.enabled = false;
