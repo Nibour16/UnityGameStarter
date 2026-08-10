@@ -3,10 +3,19 @@ using UnityEngine;
 public class InputManager3D : MonoBehaviour
 {
     private PlayerInputs_Core _coreInputs;
-    public PlayerInputs_Core CoreInputs => _coreInputs;
-
     private PlayerInputs3D _playerInputs;
-    public PlayerInputs3D PlayerInputs => _playerInputs;
+
+    public Vector2 Move =>
+        _playerInputs.Player.Move.ReadValue<Vector2>();
+
+    public Vector2 Look =>
+        _playerInputs.Player.Look.ReadValue<Vector2>();
+
+    public bool Jump =>
+        _playerInputs.Player.Jump.WasPressedThisFrame();
+
+    public bool Pause =>
+        _coreInputs.Player.OpenPauseMenu.WasPressedThisFrame();
 
     private void Awake()
     {

@@ -12,10 +12,10 @@ namespace UnityGameStarter.EditorUtilities.InputSystem
 public class {0} : MonoBehaviour
 {{
     private PlayerInputs_Core _coreInputs;
-    public PlayerInputs_Core CoreInputs => _coreInputs;    
-
     private {1} _playerInputs;
-    public {1} PlayerInputs => _playerInputs;
+    
+    // TODO: Pass your inputs from your inputs classes as public properties here
+    // Example: public bool Move => _playerInputs.Player.Move.ReadValue<Vector2>();
 
     private void Awake()
     {{
