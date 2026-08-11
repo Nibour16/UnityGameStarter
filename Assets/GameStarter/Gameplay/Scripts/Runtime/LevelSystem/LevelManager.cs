@@ -44,8 +44,8 @@ namespace UnityGameStarter.Gameplay.LevelManagement
 
             if (EventManager.Instance.GetListenerCount<InitializeLevelEvent>() > 0)
                 EventManager.Instance.Publish(new InitializeLevelEvent());
-            else if(GameManager.TryGetInstance(out var instance))
-                instance.EnterGame();
+            else
+                OnInitializationComplete();
         }
 
         [EventListener]
@@ -70,7 +70,7 @@ namespace UnityGameStarter.Gameplay.LevelManagement
         }
 
         [EventListener]
-        private void ExitLevel(EnterStateEvent<ExitGameState> e)
+        private void ExitLevel(EnterGameExitEvent e)
         {
             if (_initializationState != InitializationState.Initialized) return;
 
@@ -78,6 +78,13 @@ namespace UnityGameStarter.Gameplay.LevelManagement
             ResetState();
 
             var sceneFacade = SceneFacade.Instance;
+
+            if (e.Reason == ExitGameReason.Restart) 
+            {
+                sceneFacade.Reload();
+                return;
+            }
+
             var scene = sceneFacade.GetSceneByName(mainSceneName);
 
             if (scene.IsValid())
@@ -110,6 +117,11 @@ namespace UnityGameStarter.Gameplay.LevelManagement
             _pendingInitializationCount = 0;
 
             EventManager.Instance.Publish(new InitializeLevelCompleteEvent());
+
+            if (GameManager.TryGetInstance(out var instance))
+                instance.EnterGame();
+            else
+                Debug.LogWarning("Unable to enter game because game manager is not found");
         }
 
         private void ResetState() 

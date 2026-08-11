@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityGameStarter.TypeStatics;
 
 namespace UnityGameStarter.FiniteStateMachine
 {
-    using UnityGameStarter.TypeLibrary;
-    
     public abstract class BaseStateMachine : MonoBehaviour
     {
         private Dictionary<Type, BaseState> _states = new();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace UnityGameStarter.TypeLibrary 
+namespace UnityGameStarter.TypeStatics
 {
     public static class TypeLibrary
     {

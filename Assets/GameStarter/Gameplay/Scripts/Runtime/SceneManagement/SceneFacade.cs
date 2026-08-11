@@ -97,7 +97,8 @@ namespace UnityGameStarter.SceneManagement
         #endregion
 
         #region Reload
-        public Task ReloadAsync() => LoadAsync(ActiveScene);
+        public void Reload(LoadSceneMode mode = LoadSceneMode.Single) => Load(ActiveScene, mode);
+        public Task ReloadAsync(LoadSceneMode mode = LoadSceneMode.Single) => LoadAsync(ActiveScene, mode);
         #endregion
 
         #region Other API

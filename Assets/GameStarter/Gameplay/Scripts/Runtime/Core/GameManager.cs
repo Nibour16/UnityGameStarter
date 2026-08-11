@@ -1,3 +1,4 @@
+using UnityEditorInternal;
 using UnityEngine;
 using UnityGameStarter.CommonData;
 using UnityGameStarter.Events.EventManagement;
@@ -19,15 +20,12 @@ namespace UnityGameStarter.Gameplay
         protected override void Awake()
         {
             base.Awake();
+
             stateMachine = GetComponent<GameStateMachine>();
+            stateMachine.SetState(typeof(InitialGameState));
 
             if (data != null)
                 EventManager.Instance.Publish(new RuntimeScale(data.gameTimeScale));
-        }
-
-        private void Start() 
-        {
-            LoadGame();
         }
 
         public void SaveGame() 
@@ -52,11 +50,13 @@ namespace UnityGameStarter.Gameplay
 
         public void RestartGame() 
         {
-            // TODO: restart the game
+            stateMachine.reason = ExitGameReason.Restart;
+            stateMachine.SetState(typeof(ExitGameState));
         }
 
         public void LeaveGame() 
         {
+            stateMachine.reason = ExitGameReason.Exit;
             stateMachine.SetState(typeof(ExitGameState));
         }
     }
