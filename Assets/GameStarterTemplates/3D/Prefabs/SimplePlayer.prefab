@@ -327,6 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.PlayerSystem.PlayerController
   targetPauseMenuName: PauseMenu
+  pauseGame: 1
 --- !u!114 &4457816698375499248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,6 +361,7 @@ MonoBehaviour:
   jumpGravityScale: 1
   fallingGravityScale: 1
   useControlRotation: 1
+  resetVelocityWhenPaused: 0
 --- !u!114 &8261827858567171427
 MonoBehaviour:
   m_ObjectHideFlags: 0

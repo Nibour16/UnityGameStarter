@@ -3,10 +3,13 @@ using UnityEngine;
 public class InputManager2D : MonoBehaviour
 {
     private PlayerInputs_Core _coreInputs;
-    public PlayerInputs_Core CoreInputs => _coreInputs;
-
     private PlayerInputs2D _playerInputs;
-    public PlayerInputs2D PlayerInputs => _playerInputs;
+
+    public Vector2 Move =>
+        _playerInputs.Player.Move.ReadValue<Vector2>();
+
+    public bool Pause =>
+        _coreInputs.Player.OpenPauseMenu.WasPressedThisFrame();
 
     private void Awake()
     {

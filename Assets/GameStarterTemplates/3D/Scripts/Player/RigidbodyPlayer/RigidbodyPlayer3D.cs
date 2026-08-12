@@ -1,33 +1,27 @@
 using UnityEngine;
-using UnityGameStarter.Events.EventManagement;
-using UnityGameStarter.Gameplay;
 using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.Gameplay.PlayerSystem;
-using UnityGameStarter.Gameplay.Rigidbody3DExtension;
+using UnityGameStarter.Gameplay.Character.JumpModule.RB3D;
+using UnityGameStarter.Math.TransformStatics;
+using static UnityGameStarter.Math.TransformStatics.VectorLibrary;
 
 [RequireComponent(typeof(InputManager3D))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CameraController3D))]
 [RequireComponent(typeof(RigidbodyJumpModule))]
-[RequireComponent(typeof(EventListenerRegister))]
-[RequireComponent(typeof(PlayerController))]
-public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
+public class RigidbodyPlayer3D : BasePlayer
 {
     #region Settings
     [Header("References")]
     [SerializeField] private Transform controlSource;
 
     [Header("Movement")]
-    [SerializeField, Min(0.01f)] private float moveSpeed = 4f;
     [SerializeField, Min(0.01f)] private float turnSpeed = 10f;
     [SerializeField] private bool instantTurn = false;
 
     [Header("Player Setting")]
     [SerializeField] private bool useControlRotation = true;
-
-    [Header("Advanced")]
-    [SerializeField] private bool resetVelocityWhenPaused = false;
     #endregion
 
     #region References
@@ -35,44 +29,50 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
     private Rigidbody _rb;
     private CameraController3D _cameraController;
     private RigidbodyJumpModule _jumpModule;
-    private PlayerController _playerController;
     #endregion
+
+    protected override Transform ControlSource => controlSource;
+    protected override bool UseControlRotation => useControlRotation;
 
     private Quaternion _desiredRotation = Quaternion.identity;
     private bool _canRotate = false;
-    private Vector3 _cachedVelocity = Vector3.zero;
+
+    protected override Vector2 MoveInput => _inputManager.Move;
+    protected override bool PauseInput => _inputManager.Pause;
 
     #region Life Cycle
-    private void Awake() 
+    protected override void OnInitialized() 
     {
         _inputManager = GetComponent<InputManager3D>();
-
         _rb = GetComponent<Rigidbody>();
-
         _cameraController = GetComponent<CameraController3D>();
         _jumpModule = GetComponent<RigidbodyJumpModule>();
-
-        _playerController = GetComponent<PlayerController>();
     }
 
-    private void Update() 
+    protected override void OnUpdate() 
     {
         HandleJump();
-        
-        if (_inputManager.Pause)
-            _playerController.SetPause();
     }
 
-    private void FixedUpdate() 
+    protected override void OnFixedUpdate() 
     {
-        if (_cameraController.enabled)
+        if (_cameraController.enabled) 
+        {
             controlSource.rotation = _cameraController.CameraRotation;
+            SetPlayerVelocityParam(VectorParam.Y, _rb.linearVelocity.y);
+        }
+    }
 
-        HandleMove();
+    protected override void OnMotionFixedUpdate()
+    {
+        Vector3 velocity = _rb.linearVelocity;
+
+        velocity.x = PlayerVelocity.x;
+        velocity.z = PlayerVelocity.z;
+
+        _rb.linearVelocity = velocity;
+
         HandleRotation();
-
-        if (_jumpModule.isActiveAndEnabled)
-            _jumpModule.ResolveGravity();
     }
 
     private void LateUpdate() 
@@ -83,16 +83,8 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
     #endregion
 
     #region Movement
-    private void HandleMove()
+    protected override void OnMoveVelocityHandled(MovementLibrary.MovementResult result)
     {
-        if (GameManager.TryGetInstance(out var instance) && instance.IsPaused) return;
-        
-        Vector3 velocity = _rb.linearVelocity;
-
-        MovementLibrary.CalculateMovementVelocity(
-            controlSource, _inputManager.Move, moveSpeed, ref velocity, out var result, useControlRotation);
-
-        _rb.linearVelocity = velocity;
         _desiredRotation = result.rotation;
         _canRotate = result.hasRotation;
     }
@@ -115,38 +107,23 @@ public class RigidbodyPlayer3D : MonoBehaviour, IAutoEventListener
 
     private void HandleJump() 
     {
-        if (_jumpModule.isActiveAndEnabled)
-        {
-            if (_inputManager.Jump)
-                _jumpModule.Jump();
-
-            _jumpModule.UpdateGravityState();
-        }
+        if (_jumpModule.isActiveAndEnabled && _inputManager.Jump)
+            _jumpModule.Jump();
     }
     #endregion
 
     #region Pause State Handle
-    [EventListener]
-    private void OnPaused(OnPlayerPauseEvent e)
+    protected override void OnPlayerPaused(OnPlayerPauseEvent e) 
     {
-        _cachedVelocity = _rb.linearVelocity;
-        
         _rb.useGravity = false;
         _cameraController.enabled = false;
         _jumpModule.enabled = false;
     }
-
-    [EventListener]
-    private void OnUnpaused(OnPlayerUnpauseEvent e)
+    protected override void OnPlayerUnpaused(OnPlayerUnpauseEvent e)
     {
-        if (!resetVelocityWhenPaused)
-            _rb.linearVelocity = _cachedVelocity;
-
         _rb.useGravity = true;
         _cameraController.enabled = true;
         _jumpModule.enabled = true;
-
-        _cachedVelocity = Vector3.zero;
     }
     #endregion
 }
