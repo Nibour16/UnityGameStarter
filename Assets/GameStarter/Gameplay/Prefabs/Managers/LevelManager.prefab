@@ -9,11 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1645314185314588154}
-  - component: {fileID: -2624644008373562203}
-  - component: {fileID: 554719997740078756}
+  - component: {fileID: -6671326284715321265}
   - component: {fileID: 5955840425745119722}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2624644008373562203
+--- !u!114 &-6671326284715321265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,23 +42,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 670908070030890632}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b866bd8e5f42e64d9819184bdce6094, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cd66aace075c584c93cff94cbfad0ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.Core.GameManager
-  data: {fileID: 11400000, guid: 828a2d2cb8b9195479faf45357d2ce79, type: 2}
---- !u!114 &554719997740078756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 670908070030890632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92ae537c2975a194fb91e5c96a6c8d44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.Core.GameStateMachine
-  reason: 0
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.LevelManagement.LevelManager
+  mainSceneName: 
+  quitIfMissingMainScene: 1
 --- !u!114 &5955840425745119722
 MonoBehaviour:
   m_ObjectHideFlags: 0

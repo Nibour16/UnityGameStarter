@@ -4,6 +4,63 @@ namespace UnityGameStarter.Math.TransformStatics
 {
     public static class VectorLibrary
     {
+        public enum VectorParam {X, Y, Z }
+
+        public static float GetVector3Param(Vector3 target, VectorParam param) 
+        {
+            return param switch
+            {
+                VectorParam.X => target.x,
+                VectorParam.Y => target.y,
+                VectorParam.Z => target.z,
+                _=> target.x
+            };
+        }
+        
+        public static void SetVector3Param(ref Vector3 target, VectorParam param, float value) 
+        {
+            switch (param) 
+            {
+                case VectorParam.X:
+                    target.x = value;
+                    break;
+
+                case VectorParam.Y:
+                    target.y = value;
+                    break;
+
+                case VectorParam.Z:
+                    target.z = value;
+                    break;
+
+                default:
+                    target.x = value;
+                    break;
+            }
+        }
+
+        public static void AddVector3Param(ref Vector3 target, VectorParam param, float value)
+        {
+            switch (param)
+            {
+                case VectorParam.X:
+                    target.x += value;
+                    break;
+
+                case VectorParam.Y:
+                    target.y += value;
+                    break;
+
+                case VectorParam.Z:
+                    target.z += value;
+                    break;
+
+                default:
+                    target.x += value;
+                    break;
+            }
+        }
+
         public static Vector3 ToVector3(this Vector2 vector, float z = 0)
             => new(vector.x, vector.y, z);
 

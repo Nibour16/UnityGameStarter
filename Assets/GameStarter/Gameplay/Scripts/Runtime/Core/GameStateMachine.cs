@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityGameStarter.FiniteStateMachine;
 using UnityGameStarter.FiniteStateMachine.EventState;
 
@@ -12,6 +13,7 @@ namespace UnityGameStarter.Gameplay
 
     public class EnterGameExitEvent : EnterStateEvent<ExitGameState>
     {
+        [HideInInspector]
         public ExitGameReason Reason { get; }
 
         public EnterGameExitEvent(ExitGameReason reason)
