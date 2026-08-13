@@ -79,20 +79,36 @@ namespace UnityGameStarter.Gameplay.LevelManagement
 
             var sceneFacade = SceneFacade.Instance;
 
-            if (e.Reason == ExitGameReason.Restart) 
+            switch (e.Reason) 
             {
-                sceneFacade.Reload();
-                return;
+                case ExitGameReason.Restart:
+                    sceneFacade.Reload();
+                    break;
+
+                case ExitGameReason.OpenNewLevel:
+                    var targetScene = e.TargetScene;
+
+                    if (targetScene.IsValid())
+                        sceneFacade.Load(targetScene);
+                    else
+                        Debug.LogError(
+                            $"LevelManager: the target scene is not defined while opening new level.");
+                    break;
+
+                case ExitGameReason.Exit:
+                    if (sceneFacade.Load(mainSceneName)) return;
+
+                    if (quitIfMissingMainScene)
+                        ApplicationLibrary.QuitApp();
+                    else
+                        Debug.LogWarning($"LevelManager: Main scene '{mainSceneName}' is not found.");
+                    break;
+
+                default:
+                    Debug.LogWarning(
+                        $"LevelManager: A non-implemented reason '{e.Reason}' has been detected");
+                    break;
             }
-
-            var scene = sceneFacade.GetSceneByName(mainSceneName);
-
-            if (scene.IsValid())
-                sceneFacade.Load(scene);
-            else if (quitIfMissingMainScene)
-                ApplicationLibrary.QuitApp();
-            else
-                Debug.LogWarning($"LevelManager: Main scene '{mainSceneName}' is not found.");
         }
         #endregion
 

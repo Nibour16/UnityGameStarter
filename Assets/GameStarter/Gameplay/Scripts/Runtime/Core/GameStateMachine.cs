@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityGameStarter.FiniteStateMachine;
 using UnityGameStarter.FiniteStateMachine.EventState;
 
@@ -8,24 +9,33 @@ namespace UnityGameStarter.Gameplay
     public enum ExitGameReason
     {
         Exit,
-        Restart
+        Restart,
+        OpenNewLevel
     }
 
     public class EnterGameExitEvent : EnterStateEvent<ExitGameState>
     {
-        [HideInInspector]
         public ExitGameReason Reason { get; }
+        public Scene TargetScene { get; }
 
-        public EnterGameExitEvent(ExitGameReason reason)
+        public EnterGameExitEvent(ExitGameReason reason, Scene targetScene = default)
         {
             Reason = reason;
+            TargetScene = targetScene;
         }
     }
 
     public class GameStateMachine : BaseStateMachine
     {
         protected override bool SetDefault => false;
-        public ExitGameReason reason = ExitGameReason.Exit;
+
+        #region Game Exit
+        [SerializeField] private bool alwaysUseDefaultExit = false;
+        public bool AlwaysUseDefaultExit => alwaysUseDefaultExit;
+
+        internal ExitGameReason reason = ExitGameReason.Exit;
+        internal Scene nextTargetScene = default;
+        #endregion
 
         protected override Type[] GetInitialStates()
         {

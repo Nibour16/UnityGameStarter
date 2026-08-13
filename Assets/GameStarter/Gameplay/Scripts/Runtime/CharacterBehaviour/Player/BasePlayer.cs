@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.Math.TransformStatics;
-using static UnityGameStarter.Gameplay.CharacterMovement.MovementLibrary;
-using static UnityGameStarter.Math.TransformStatics.VectorLibrary;
+using UnityGameStarter.Gameplay.CharacterMovement;
 
 namespace UnityGameStarter.Gameplay.PlayerSystem 
 {
@@ -49,10 +48,10 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
             => _playerVelocity = newVelocity.ToVector3XZ();
 
         public void SetPlayerVelocityParam(VectorParam param, float value)
-            => SetVector3Param(ref _playerVelocity, param, value);
+            => VectorLibrary.SetVector3Param(ref _playerVelocity, param, value);
 
         public void AddPlayerVelocityParam(VectorParam param, float value)
-            => AddVector3Param(ref _playerVelocity, param, value);
+            => VectorLibrary.AddVector3Param(ref _playerVelocity, param, value);
         #endregion
 
         #region Life Cycle
@@ -105,7 +104,7 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
         {
             if (GameManager.TryGetInstance(out var instance) && instance.IsPaused) return;
 
-            CalculateMovementVelocity(
+            MovementLibrary.CalculateMovementVelocity(
                 ControlSource, MoveInput, moveSpeed, ref _playerVelocity, out var result, UseControlRotation);
 
             OnMoveVelocityHandled(result);

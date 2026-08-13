@@ -72,8 +72,9 @@ namespace UnityGameStarter.Gameplay.UI
 
         private void Deinitialize(Scene e) 
         {
-            var removeRoots = _uiComponents.Keys.Where(root => root.gameObject.scene == e)
-                .ToArray();
+            var removeRoots = _uiComponents.Keys.Where(
+                root => root != null && root.gameObject != null &&
+                root.gameObject.scene.IsValid() && root.gameObject.scene == e).ToArray();
 
             foreach (var root in removeRoots)
             {

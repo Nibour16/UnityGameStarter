@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityGameStarter.Gameplay.Character.JumpModule.RB2D;
 using UnityGameStarter.Gameplay.PlayerSystem;
-using static UnityGameStarter.Gameplay.CharacterMovement.MovementLibrary;
+using UnityGameStarter.Gameplay.CharacterMovement;
 
 [RequireComponent(typeof(InputManager2D_Platformer))]
 [RequireComponent(typeof(Rigidbody2D))]

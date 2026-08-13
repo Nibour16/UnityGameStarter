@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityGameStarter.CommonData;
 using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.SceneManagement;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay
@@ -27,10 +29,10 @@ namespace UnityGameStarter.Gameplay
                 EventManager.Instance.Publish(new RuntimeScale(data.gameTimeScale));
         }
 
-        public void SaveGame() 
+        /*public void SaveGame() 
         {
             // TODO: Save the game by using Save Manager
-        }
+        }*/
         
         public void LoadGame() 
         {
@@ -46,6 +48,16 @@ namespace UnityGameStarter.Gameplay
         {
             stateMachine.SetState(typeof(GameplayState));
         }
+
+        public void NextLevel(Scene newLevel)
+        {
+            stateMachine.reason = ExitGameReason.OpenNewLevel;
+            stateMachine.nextTargetScene = newLevel;
+            stateMachine.SetState(typeof(ExitGameState));
+        }
+
+        public void NextLevel(string levelName)
+            => NextLevel(SceneFacade.Instance.GetSceneByName(levelName));
 
         public void RestartGame() 
         {

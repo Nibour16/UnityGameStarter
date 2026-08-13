@@ -5,15 +5,15 @@ using UnityGameStarter.Math.TransformStatics;
 
 namespace UnityGameStarter.Gameplay.CharacterMovement 
 {
+    public struct MovementResult
+    {
+        public Vector3 velocity;
+        public Quaternion rotation;
+        public bool hasRotation;
+    }
+
     public static class MovementLibrary
     {
-        public struct MovementResult 
-        {
-            public Vector3 velocity;
-            public Quaternion rotation;
-            public bool hasRotation;
-        }
-        
         public static void CalculateMovement(
             Vector2 direction, float moveSpeed, out MovementResult movement, bool updateTurn = true) 
         {

@@ -5,14 +5,23 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/GameStarterTemplates/Core/Scenes/MainMenuDemo.unity
+    guid: 1d37ec329f8efa94d9bc12e4ffa7f16a
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 0
     path: Assets/GameStarterTemplates/3D/Scenes/RigidbodyPlayerDemo_3D.unity
     guid: a2947cc600d52b546a5222bb0f83dba2
-  - enabled: 0
+  - enabled: 1
     path: Assets/GameStarterTemplates/3D/Scenes/PlayerDemo_3D.unity
     guid: 1a0bf3789de9f194baa275750d618ed2
-  - enabled: 1
+  - enabled: 0
     path: Assets/GameStarterTemplates/2D/Scenes/PlayerDemo_2D_Platformer.unity
     guid: 93e688a0a3c36fe4fbd5a9f2a7573fe4
+  - enabled: 0
+    path: Assets/GameStarterTemplates/2D/Scenes/PlayerDemo_2D_TopDown.unity
+    guid: a648475e679792c4db5ebedcda8d128d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
