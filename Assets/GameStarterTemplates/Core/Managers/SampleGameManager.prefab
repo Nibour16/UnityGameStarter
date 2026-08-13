@@ -77,5 +77,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd66aace075c584c93cff94cbfad0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.LevelManagement.LevelManager
-  mainSceneName: 
+  mainSceneName: MainMenuDemo
   quitIfMissingMainScene: 1

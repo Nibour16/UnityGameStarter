@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace UnityGameStarter.Gameplay.UI.Button 
 {
     public class ResumeButtonBehaviour : ButtonBehaviour

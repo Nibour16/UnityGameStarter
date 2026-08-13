@@ -51,9 +51,38 @@ namespace UnityGameStarter.SceneManagement
         #region Load
         public void Load(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            SceneLoadStarted?.Invoke(scene, mode);
+            if (!scene.IsValid())
+            {
+                Debug.LogError(
+                    $"Cannot load scene: Scene is invalid. " +
+                    $"name=[{scene.name}], buildIndex=[{scene.buildIndex}], path=[{scene.path}]");
 
+                return;
+            }
+
+            if (string.IsNullOrEmpty(scene.name))
+            {
+                Debug.LogError("Cannot load scene: Scene name is empty.");
+                return;
+            }
+
+            SceneLoadStarted?.Invoke(scene, mode);
             SceneManager.LoadScene(scene.name, mode);
+        }
+
+        public bool Load(string sceneName, LoadSceneMode mode = LoadSceneMode.Single, bool printError = false)
+        {
+            if (string.IsNullOrEmpty(sceneName))
+            {
+                if (printError)
+                    Debug.LogError("Cannot load scene: sceneName is null or empty.");
+                
+                return false;
+            }
+
+            SceneLoadStarted?.Invoke(SceneManager.GetSceneByName(sceneName), mode);
+            SceneManager.LoadScene(sceneName, mode);
+            return true;
         }
 
         public async Task LoadAsync(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
@@ -104,6 +133,12 @@ namespace UnityGameStarter.SceneManagement
         #region Other API
         public Scene GetSceneByName(string sceneName)
             => SceneManager.GetSceneByName(sceneName);
+
+        public bool IsValidScene(Scene scene)
+            => scene.IsValid();
+
+        public bool IsValidScene(string sceneName)
+            => IsValidScene(GetSceneByName(sceneName));
         #endregion
     }
 }

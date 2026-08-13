@@ -1,3 +1,5 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityGameStarter.ApplicationStatics;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.FiniteStateMachine;
@@ -14,17 +16,43 @@ namespace UnityGameStarter.Gameplay
 
         public override void EnterState()
         {
-            var reason = GetStateMachine<GameStateMachine>().reason;
+            bool useDefault = GetStateMachine<GameStateMachine>().AlwaysUseDefaultExit;
 
-            if (EventManager.Instance.GetListenerCount<EnterStateEvent<ExitGameState>>() <= 0)
-            {
-                if (reason == ExitGameReason.Exit)
-                    ApplicationLibrary.QuitApp();
-                else
-                    SceneFacade.Instance.Reload();
-            }
+            var reason = GetStateMachine<GameStateMachine>().reason;
+            var nextScene = GetStateMachine<GameStateMachine>().nextTargetScene;
+
+            if (EventManager.Instance.GetListenerCount<EnterGameExitEvent>() <= 0 || useDefault)
+                DefaultExitScene(reason, nextScene);
             else
-                EventManager.Instance.Publish(new EnterGameExitEvent(reason));
+                EventManager.Instance.Publish(new EnterGameExitEvent(reason, nextScene));
+        }
+
+        /// <summary>
+        /// Optional protection to prevent user forgets to place level manager
+        /// </summary>
+        /// <param name="reason"></param>
+        /// <param name="targetScene"></param>
+        private void DefaultExitScene(ExitGameReason reason, Scene targetScene) 
+        {
+            switch (reason)
+            {
+                case ExitGameReason.OpenNewLevel:
+                    SceneFacade.Instance.Load(targetScene);
+                    break;
+
+                case ExitGameReason.Restart:
+                    SceneFacade.Instance.Reload();
+                    break;
+
+                case ExitGameReason.Exit:
+                    ApplicationLibrary.QuitApp();
+                    break;
+
+                default:
+                    Debug.LogWarning(
+                        $"ExitGameState: A non-implemented reason '{reason}' has been detected");
+                    break;
+            }
         }
     }
 }
