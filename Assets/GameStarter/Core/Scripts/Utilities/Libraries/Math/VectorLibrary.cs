@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace UnityGameStarter.Math.TransformStatics
 {
+    public enum VectorParam { X, Y, Z }
+
     public static class VectorLibrary
     {
-        public enum VectorParam {X, Y, Z }
-
         public static float GetVector3Param(Vector3 target, VectorParam param) 
         {
             return param switch

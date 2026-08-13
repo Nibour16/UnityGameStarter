@@ -83,7 +83,7 @@ public class RigidbodyPlayer3D : BasePlayer
     #endregion
 
     #region Movement
-    protected override void OnMoveVelocityHandled(MovementLibrary.MovementResult result)
+    protected override void OnMoveVelocityHandled(MovementResult result)
     {
         _desiredRotation = result.rotation;
         _canRotate = result.hasRotation;

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.Gameplay.PlayerSystem;
-using static UnityGameStarter.Math.TransformStatics.VectorLibrary;
+using UnityGameStarter.Math.TransformStatics;
 
 [RequireComponent(typeof(InputManager3D))]
 [RequireComponent(typeof(CharacterController))]
@@ -74,7 +74,7 @@ public class Player3D : BasePlayer
         _motionController.Move(PlayerVelocity * Time.deltaTime);
     }
 
-    protected override void OnMoveVelocityHandled(MovementLibrary.MovementResult result)
+    protected override void OnMoveVelocityHandled(MovementResult result)
     {
         _desiredRotation = result.rotation;
         _canRotate = result.hasRotation;
