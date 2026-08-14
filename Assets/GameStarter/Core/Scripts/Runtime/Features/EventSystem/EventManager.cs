@@ -9,6 +9,25 @@ namespace UnityGameStarter.Events.EventManagement
     [AttributeUsage(AttributeTargets.Method)]
     public class EventListenerAttribute : Attribute { }
 
+    /// <summary>
+    /// Central event manager for registering, unregistering, and publishing events.
+    ///
+    /// Listener class inheritance is supported:
+    /// - [EventListener] methods declared in a base class can be inherited and
+    ///   registered when a derived listener is registered.
+    /// - Inherited listener methods must be <c>protected</c> or more accessible
+    ///   (e.g. <c>protected</c>, <c>public</c>, or <c>internal</c> where applicable).
+    /// - Private [EventListener] methods declared in a base class are not considered
+    ///   inherited listeners for derived classes.
+    ///
+    /// Note that this inheritance support applies to listener methods, not event types.
+    /// An EventListener for BaseEvent does NOT automatically receive ChildEvent,
+    /// even when ChildEvent derives from BaseEvent.
+    ///
+    /// A valid EventListener method must have exactly one parameter.
+    /// The parameter type is treated as the event type and the method is registered
+    /// as an Action&lt;TEvent&gt; callback.
+    /// </summary>
     [RuntimeSingleton(-300)]
     public sealed class EventManager : Singleton<EventManager>
     {
