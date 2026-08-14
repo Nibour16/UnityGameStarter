@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.StarterSettings.StarterSettingsRoot
   settings:
   - {fileID: 11400000, guid: 8c7393dbede3a0540a12ed139a89dced, type: 2}
+  - {fileID: 11400000, guid: 1da0c3b296264434ba271e9e7a467826, type: 2}

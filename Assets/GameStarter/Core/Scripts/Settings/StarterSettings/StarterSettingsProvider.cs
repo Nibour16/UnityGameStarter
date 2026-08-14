@@ -8,7 +8,7 @@ namespace UnityGameStarter.StarterSettings
 
     public static class StarterSettingsProvider
     {
-        private static readonly Dictionary<Type, IStarterSetting> cache = new();
+        private static readonly Dictionary<Type, IStarterSetting> _cache = new();
         private static bool _initialized;
 
         public static bool Initialize(StarterSettingsRoot root)
@@ -35,13 +35,13 @@ namespace UnityGameStarter.StarterSettings
 
                 var type = setting.GetType();
 
-                if (cache.ContainsKey(type))
+                if (_cache.ContainsKey(type))
                 {
                     Debug.LogError($"Duplicate setting type: {type}");
                     continue;
                 }
 
-                cache.Add(type, (IStarterSetting)setting);
+                _cache.Add(type, (IStarterSetting)setting);
             }
 
             _initialized = true;
@@ -50,7 +50,7 @@ namespace UnityGameStarter.StarterSettings
 
         public static T Get<T>() where T : ScriptableObject, IStarterSetting
         {
-            if (!cache.TryGetValue(typeof(T), out var value))
+            if (!_cache.TryGetValue(typeof(T), out var value))
             {
                 Debug.LogError($"Setting {typeof(T)} not registered.");
                 return null;

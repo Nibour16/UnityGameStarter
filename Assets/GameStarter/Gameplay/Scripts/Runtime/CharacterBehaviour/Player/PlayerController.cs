@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityGameStarter.Events.EventManagement;
-using UnityGameStarter.Gameplay.UI;
 using UnityGameStarter.PauseManagement;
+using UnityGameStarter.UI;
 
 namespace UnityGameStarter.Gameplay.PlayerSystem
 {
@@ -11,6 +11,7 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
     [RequireComponent(typeof(EventListenerRegister))]
     public class PlayerController : MonoBehaviour, IAutoEventListener
     {
+        [SerializeField] private UIRoot gameplayUIRoot;
         [SerializeField] private string targetPauseMenuName = "PauseMenu";
 
         [Header("UI-less Settings")]
@@ -22,8 +23,13 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
 
             if (instance.IsPaused) 
             {
-                if (UIController.TryGetInstance(out var ui))
+                if (UIController.TryGetInstance(out var ui)) 
+                {
+                    if (gameplayUIRoot)
+                        if (ui.CloseUI(gameplayUIRoot, targetPauseMenuName)) return;
+
                     if (ui.CloseUI(targetPauseMenuName)) return;
+                }
 
                 if (pauseGame)
                     instance.EnterGame();
@@ -32,8 +38,13 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
             }
             else 
             {
-                if (UIController.TryGetInstance(out var ui))
+                if (UIController.TryGetInstance(out var ui)) 
+                {
+                    if (gameplayUIRoot)
+                        if (ui.OpenUI(gameplayUIRoot, targetPauseMenuName)) return;
+
                     if (ui.OpenUI(targetPauseMenuName)) return;
+                }
 
                 if (pauseGame)
                     instance.PauseGame();
