@@ -482,6 +482,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimplePlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 798961851146356230, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: gameplayUIRoot
+      value: 
+      objectReference: {fileID: 1667819472}
     - target: {fileID: 1595535056366531756, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
       propertyPath: m_MinMoveDistance
       value: 0
@@ -1644,6 +1648,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ab2986371ced614785e301f3ecc48be, type: 3}
+--- !u!114 &1667819472 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 370179354764222696, guid: 6ab2986371ced614785e301f3ecc48be, type: 3}
+  m_PrefabInstance: {fileID: 1667819471}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09950eb8211c6c489080c2fc9b4a997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.UI.UIRoot
 --- !u!1001 &1812785915
 PrefabInstance:
   m_ObjectHideFlags: 0

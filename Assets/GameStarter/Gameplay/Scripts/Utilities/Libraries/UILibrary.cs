@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityGameStarter.Gameplay.UI 
+namespace UnityGameStarter.UI 
 {
     public static class UILibrary
     {

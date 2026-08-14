@@ -10,11 +10,7 @@ namespace UnityGameStarter.ServiceLocatorPattern
         public static void Register<T>(T service) where T : class, IService
         {
             var type = typeof(T);
-
-            if (service == null)
-                throw new ArgumentNullException(nameof(service));
-
-            _services[type] = service;
+            _services[type] = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         public static void Unregister<T>() where T : class, IService
