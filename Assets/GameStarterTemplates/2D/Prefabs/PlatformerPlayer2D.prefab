@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7865169018142504055}
   - component: {fileID: 8702561000496459382}
   - component: {fileID: 858537494184479014}
+  - component: {fileID: 1540906070659378250}
   m_Layer: 6
   m_Name: PlatformerPlayer2D
   m_TagString: Player
@@ -115,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfba3774bfd68e458d187e4ea49e9d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.PlayerSystem.PlayerController
+  gameplayUIRoot: {fileID: 0}
   targetPauseMenuName: PauseMenu
   pauseGame: 1
 --- !u!114 &4547318733646734836
@@ -175,6 +177,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Events.EventManagement.EventListenerRegister
   printLog: 0
+--- !u!81 &1540906070659378250
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4877215146579372781}
+  m_Enabled: 1
 --- !u!1 &6905140845105301229
 GameObject:
   m_ObjectHideFlags: 0
