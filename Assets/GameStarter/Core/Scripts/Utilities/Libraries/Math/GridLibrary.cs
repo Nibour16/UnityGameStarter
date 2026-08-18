@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityGameStarter.LoopHelper;
 using UnityGameStarter.Math.TransformStatics;
 
-namespace UnityGameStarter.Math.Grid 
+namespace UnityGameStarter.Math.GridStatics
 {
     public static class GridLibrary
     {
@@ -39,7 +39,7 @@ namespace UnityGameStarter.Math.Grid
         public static Vector3Int GridToWorldInt(this Vector3Int gridCoord, Vector3Int origin)
             => gridCoord.GridToWorld(origin).ToVector3Int();
 
-        public static Vector3Int[,,] GenerateGridData(Vector3Int size, Vector3Int origin) 
+        public static Vector3Int[,,] GenerateGrid(Vector3Int size, Vector3Int origin) 
         {
             var grid = new Vector3Int[size.x, size.y, size.z];
 

@@ -1,18 +1,23 @@
 using UnityEngine;
 
-namespace UnityGameStarter.Gameplay.Grid
+namespace UnityGameStarter.Gameplay.GridSystem
 {
     public enum GridState { Empty, Occupied, Blocked }
 
-    public class GridElement
+    public struct GridElement
     {
-        public Vector3Int coordinate;
-        public GridState state;
-    }
+        public readonly Vector3Int coordinate;
+        public readonly Quaternion faceRotator;
 
-    public class SurfaceGridElement : GridElement
-    {
-        public Vector3 faceEuler;
+        public GridState state;
+
+        public GridElement(
+            Vector3Int coordinate, Quaternion faceRotator, GridState state = GridState.Empty) 
+        {
+            this.coordinate = coordinate;
+            this.faceRotator = faceRotator;
+            this.state = state;
+        }
     }
 
     public struct Layer 
