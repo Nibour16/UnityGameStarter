@@ -12,7 +12,7 @@ namespace UnityGameStarter.Gameplay.Grid
 
     public class SurfaceGridElement : GridElement
     {
-        public Quaternion faceRotator;
+        public Vector3 faceEuler;
     }
 
     public struct Layer 

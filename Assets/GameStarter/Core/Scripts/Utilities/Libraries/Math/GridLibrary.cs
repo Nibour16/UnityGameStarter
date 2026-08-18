@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityGameStarter.LoopHelper;
 using UnityGameStarter.Math.TransformStatics;
 
 namespace UnityGameStarter.Math.Grid 
@@ -42,10 +43,8 @@ namespace UnityGameStarter.Math.Grid
         {
             var grid = new Vector3Int[size.x, size.y, size.z];
 
-            for (int x = 0; x < size.x; x++)
-                for (int y = 0; y < size.y; y++)
-                    for (int z = 0; z < size.z; z++)
-                        grid[x, y, z] = new Vector3Int(x + origin.x, y + origin.y, z + origin.z);
+            LoopLibrary.Loop3D(size.x, size.y, size.z, (x, y, z) => 
+                grid[x, y, z] = new Vector3Int(x + origin.x, y + origin.y, z + origin.z));      
 
             return grid;
         }
