@@ -40,5 +40,22 @@ namespace UnityGameStarter.Pool
 
             Object.Destroy(instance);
         }
+
+        public void Clear()
+        {
+            foreach (var instance in _activeInstances.Keys)
+            {
+                Destroy(instance);
+            }
+
+            _activeInstances.Clear();
+
+            foreach (var pool in _pools.Values)
+            {
+                pool.Clear();
+            }
+
+            _pools.Clear();
+        }
     }
 }

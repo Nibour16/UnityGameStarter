@@ -4,6 +4,7 @@ using UnityGameStarter.ApplicationStatics;
 using UnityGameStarter.Events.EventManagement;
 using UnityGameStarter.FiniteStateMachine;
 using UnityGameStarter.FiniteStateMachine.EventState;
+using UnityGameStarter.Pool;
 using UnityGameStarter.SceneManagement;
 
 namespace UnityGameStarter.Gameplay 
@@ -16,6 +17,9 @@ namespace UnityGameStarter.Gameplay
 
         public override void EnterState()
         {
+            if (PoolManager.TryGetInstance(out var instance))
+                instance.Clear();
+
             bool useDefault = GetStateMachine<GameStateMachine>().AlwaysUseDefaultExit;
 
             var reason = GetStateMachine<GameStateMachine>().reason;

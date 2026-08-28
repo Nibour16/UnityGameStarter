@@ -44,5 +44,7 @@ namespace UnityGameStarter.Pool.Internal
         }
 
         public void Release(GameObject obj) => _pool.Release(obj);
+
+        public void Clear() => _pool.Clear();
     }
 }
