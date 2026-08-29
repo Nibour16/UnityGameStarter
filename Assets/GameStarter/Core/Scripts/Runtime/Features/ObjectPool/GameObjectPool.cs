@@ -39,7 +39,7 @@ namespace UnityGameStarter.Pool.Internal
             if (obj.TryGetComponent<IPoolable>(out var poolable))
                 poolable.OnDespawn();
 
-            Object.Destroy(obj); 
+            Object.Destroy(obj);
         }
 
         public GameObject Spawn(Vector3 pos, Quaternion rot)
@@ -50,6 +50,8 @@ namespace UnityGameStarter.Pool.Internal
         }
 
         public void Release(GameObject obj) => _pool.Release(obj);
+
+        public void Destroy(GameObject obj) => OnDestroy(obj);
 
         public void Clear() => _pool.Clear();
     }

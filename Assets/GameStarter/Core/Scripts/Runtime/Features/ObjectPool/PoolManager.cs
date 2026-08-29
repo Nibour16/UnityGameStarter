@@ -36,16 +36,17 @@ namespace UnityGameStarter.Pool
 
         public void Destroy(GameObject instance)
         {
-            _activeInstances.Remove(instance);
-
-            Object.Destroy(instance);
+            if (_activeInstances.Remove(instance, out var pool))
+                pool.Destroy(instance);
+            else
+                Object.Destroy(instance);
         }
 
         public void Clear()
         {
-            foreach (var instance in _activeInstances.Keys)
+            foreach (var instance in _activeInstances)
             {
-                Object.Destroy(instance);
+                instance.Value.Destroy(instance.Key);
             }
 
             _activeInstances.Clear();
