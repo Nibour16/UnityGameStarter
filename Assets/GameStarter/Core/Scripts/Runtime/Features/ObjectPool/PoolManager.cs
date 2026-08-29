@@ -45,7 +45,7 @@ namespace UnityGameStarter.Pool
         {
             foreach (var instance in _activeInstances.Keys)
             {
-                Destroy(instance);
+                Object.Destroy(instance);
             }
 
             _activeInstances.Clear();

@@ -28,13 +28,19 @@ namespace UnityGameStarter.Pool.Internal
 
         private void OnRelease(GameObject obj)
         {
-            obj.SetActive(false);
-
             if (obj.TryGetComponent<IPoolable>(out var poolable))
                 poolable.OnDespawn();
+
+            obj.SetActive(false);
         }
 
-        private void OnDestroy(GameObject obj) => Object.Destroy(obj);
+        private void OnDestroy(GameObject obj) 
+        {
+            if (obj.TryGetComponent<IPoolable>(out var poolable))
+                poolable.OnDespawn();
+
+            Object.Destroy(obj); 
+        }
 
         public GameObject Spawn(Vector3 pos, Quaternion rot)
         {
