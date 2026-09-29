@@ -39,6 +39,12 @@ namespace UnityGameStarter.Math.GridStatics
         public static Vector3Int GridToWorldInt(this Vector3Int gridCoord, Vector3Int origin)
             => gridCoord.GridToWorld(origin).ToVector3Int();
 
+        public static Vector3 GridToWorld(this Vector3Int gridCoord, Vector3Int origin, float cellSize)
+            => (Vector3)origin + (Vector3)gridCoord * cellSize;
+
+        public static Vector3Int GridToWorldInt(this Vector3Int gridCoord, Vector3Int origin, int cellSize)
+            => origin + gridCoord * cellSize;
+
         public static Vector3Int[,,] GenerateGrid(Vector3Int size, Vector3Int origin) 
         {
             var grid = new Vector3Int[size.x, size.y, size.z];

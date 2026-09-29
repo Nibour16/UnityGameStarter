@@ -43,14 +43,14 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             LoopLibrary.Loop3D(size.x, size.y, size.z, (x, y, z) =>
             {
-                Vector3Int coordinate = new Vector3Int(x, y, z) + _origin;
-
-                Vector3 worldPosition = GridLibrary.GridToWorld(coordinate, _origin);
+                Vector3Int localCoord = new(x, y, z);
+                Vector3 worldPosition = localCoord.GridToWorld(_origin, _cellSize);
+                Vector3Int worldGridCoord = localCoord + _origin;
 
                 if (sampler.TrySample(worldPosition, Vector3.up, _cellSize, out var sample)) 
                 {
                     _grid[x, y, z] = new GridElement(
-                        coordinate, Quaternion.FromToRotation(Vector3.up, sample.normal), 
+                        worldGridCoord, Quaternion.FromToRotation(Vector3.up, sample.normal), 
                         GridState.Empty);
                 }
             });
