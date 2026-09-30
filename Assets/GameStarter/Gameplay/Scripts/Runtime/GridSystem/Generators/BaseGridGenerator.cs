@@ -8,13 +8,17 @@ namespace UnityGameStarter.Gameplay.GridSystem
     {
         [SerializeField] protected Vector3Int size;
         [SerializeField] protected float cellSize = 1f;
+        public float CellSize => cellSize;
+
         [SerializeField] protected string[] layers;
 
         protected Dictionary<Layer, Grid> grids = new();
         private readonly Dictionary<string, Layer> _layersByName = new();
         private readonly Dictionary<int, Layer> _layersById = new();
 
-        protected abstract Vector3Int Origin { get; }
+        public abstract Vector3Int Origin { get; }
+        public abstract Vector3 WorldOrigin { get; }
+
         protected abstract T Sampler { get; }
 
         protected virtual void Awake() 
@@ -27,7 +31,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         {
             for (int i = 0; i < layers.Length; i++)
             {
-                var grid = new Grid(bounds, Origin, cellSize, sampler);
+                var grid = new Grid(bounds, Origin, WorldOrigin, cellSize, sampler);
 
                 Layer layer = new()
                 {

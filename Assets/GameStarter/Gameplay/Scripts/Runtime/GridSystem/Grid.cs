@@ -10,17 +10,20 @@ namespace UnityGameStarter.Gameplay.GridSystem
     {
         private Bounds _bounds;
         private Vector3Int _origin;
+        private Vector3 _worldOrigin;
         private readonly float _cellSize = 1f;
         private readonly IntConversionMode _gridSizeConversionMode = IntConversionMode.Floor;
 
         private GridElement[,,] _grid;
+        public GridElement[,,] GridData => _grid;
 
         public Grid(
-            Bounds bounds, Vector3Int origin, float cellSize, ISurfaceSampler sampler, 
+            Bounds bounds, Vector3Int origin, Vector3 worldOrigin, float cellSize, ISurfaceSampler sampler, 
             bool includeIncompleteCell = false) 
         {
             _bounds = bounds;
             _origin = origin;
+            _worldOrigin = worldOrigin;
             _cellSize = cellSize;
             _gridSizeConversionMode = includeIncompleteCell ? IntConversionMode.Ceil : IntConversionMode.Floor;
 
@@ -44,15 +47,17 @@ namespace UnityGameStarter.Gameplay.GridSystem
             LoopLibrary.Loop3D(size.x, size.y, size.z, (x, y, z) =>
             {
                 Vector3Int localCoord = new(x, y, z);
-                Vector3 worldPosition = localCoord.GridToWorld(_origin, _cellSize);
+                Vector3 worldPosition = localCoord.GridToWorld(_worldOrigin, _cellSize);
                 Vector3Int worldGridCoord = localCoord + _origin;
 
-                if (sampler.TrySample(worldPosition, Vector3.up, _cellSize, out var sample)) 
+                if (sampler.TrySample(worldPosition, Vector3.up, _cellSize, out var sample))
                 {
                     _grid[x, y, z] = new GridElement(
-                        worldGridCoord, Quaternion.FromToRotation(Vector3.up, sample.normal), 
+                        worldGridCoord, Quaternion.FromToRotation(Vector3.up, sample.normal),
                         GridState.Empty);
                 }
+                else
+                    Debug.LogError("Sampling failed");
             });
         }
     }

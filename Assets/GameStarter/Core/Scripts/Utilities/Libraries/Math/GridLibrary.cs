@@ -27,11 +27,11 @@ namespace UnityGameStarter.Math.GridStatics
             this Vector3 position, Vector3Int[,,] grid, Vector3Int origin, out Vector3Int gridCoord)
             => position.ToVector3Int().TryWorldToGrid(grid, origin, out gridCoord);
 
-        public static Vector3 GridToWorld(this Vector3Int gridCoord, Vector3Int origin)
+        public static Vector3 GridToWorld(this Vector3Int gridCoord, Vector3 origin)
         {
-            int x = gridCoord.x + origin.x;
-            int y = gridCoord.y + origin.y;
-            int z = gridCoord.z + origin.z;
+            float x = gridCoord.x + origin.x;
+            float y = gridCoord.y + origin.y;
+            float z = gridCoord.z + origin.z;
 
             return new Vector3(x, y, z);
         }
@@ -39,8 +39,8 @@ namespace UnityGameStarter.Math.GridStatics
         public static Vector3Int GridToWorldInt(this Vector3Int gridCoord, Vector3Int origin)
             => gridCoord.GridToWorld(origin).ToVector3Int();
 
-        public static Vector3 GridToWorld(this Vector3Int gridCoord, Vector3Int origin, float cellSize)
-            => (Vector3)origin + (Vector3)gridCoord * cellSize;
+        public static Vector3 GridToWorld(this Vector3Int gridCoord, Vector3 origin, float cellSize)
+            => origin + (Vector3)gridCoord * cellSize;
 
         public static Vector3Int GridToWorldInt(this Vector3Int gridCoord, Vector3Int origin, int cellSize)
             => origin + gridCoord * cellSize;
