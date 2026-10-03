@@ -167,15 +167,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1994053820662534207, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.1567895
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1994053820662534207, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5000003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1994053820662534207, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.943287
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1994053820662534207, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -207,7 +207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3375595762390698335, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_Name
-      value: UIRoot Variant
+      value: GameplayUIRoot
       objectReference: {fileID: 0}
     - target: {fileID: 7099594405747404948, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
