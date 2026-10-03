@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e080ea2b49b11454d96cf24e7fcaf81b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.EventSystem.EventManagement.EventListenerRegister
+  printLog: 0
 --- !u!114 &9082810962171314965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,7 +62,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.UI.UIRoot
   rootCanvas: {fileID: 7099594405747404948}
   dontDestroyOnLoad: 1
-  useMarker: 0
 --- !u!114 &2482374573946725802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.UI.UIOrganizer
   root: {fileID: 9082810962171314965}
   stripCanvasComponents: 1
+  normalizeLayout: 1
   autoOrganize: 0
 --- !u!1 &8027744915679143015
 GameObject:
@@ -151,10 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 960, y: 540}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
