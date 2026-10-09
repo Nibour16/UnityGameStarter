@@ -73,7 +73,7 @@ namespace UnityGameStarter.Gameplay.Character.JumpModule.RB3D
                 _validGroundCount--;
         }
 
-        protected override void HandleJump()
+        protected override void HandleJump(float jumpStrength)
             => _rb.ApplyForce(jumpStrength, Vector3.up, ForceMode.Impulse);
 
         private bool IsGround(Collision collision)
