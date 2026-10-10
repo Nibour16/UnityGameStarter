@@ -348,7 +348,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 0.4
 --- !u!114 &5327966960728204185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,5 +361,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8263dfa815152f24ea86b6889a7fb970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.Character.JumpModule.Rigidbody2DGroundCheck
-  jumpModule: {fileID: 8702561000496459382}
   maxCheckDistance: 5
+  jumpModule: {fileID: 8702561000496459382}
