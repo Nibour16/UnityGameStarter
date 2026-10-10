@@ -2,11 +2,9 @@ using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.Character.JumpModule
 {
-    [RequireComponent(typeof(CircleCollider2D))]
-    public class Rigidbody2DGroundCheck : MonoBehaviour
+    public class Rigidbody2DGroundCheck : BaseRigidbodyGroundCheck<Collider2D>
     {
         [SerializeField] private Rigidbody2DJumpModule jumpModule;
-        [SerializeField] private float maxCheckDistance = 5f;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {

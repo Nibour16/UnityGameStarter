@@ -10,6 +10,7 @@ namespace UnityGameStarter.Gameplay.Character.JumpModule
         [Space]
         [SerializeField] protected LayerMask groundMask = 1 << 0;
 
+        [Header("Experimental")]
         /// <summary>
         /// Enable Max Ground Angle used physics cast, which can possibly be more expensive
         /// </summary>
@@ -89,21 +90,17 @@ namespace UnityGameStarter.Gameplay.Character.JumpModule
             if (!groundColliders.TryGetValue(collider, out bool previous))
                 return;
 
-            bool current = false;
-
-            if (collider is Collider c)
-                current = IsValidGround(transform, c, maxCheckDistance);
-            else if (collider is Collider2D c2d)
-                current = IsValidGround(transform, c2d, maxCheckDistance);
+            bool current = collider switch
+            {
+                Collider c => IsValidGround(transform, c, maxCheckDistance),
+                Collider2D c2d => IsValidGround(transform, c2d, maxCheckDistance),
+                _ => false
+            };
 
             if (previous == current) return;
 
             groundColliders[collider] = current;
-
-            if (current)
-                validGroundCount++;
-            else
-                validGroundCount--;
+            validGroundCount += current ? 1 : -1;
         }
 
         public void ExitTrigger(TCollider collider)
