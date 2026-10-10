@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityGameStarter.Gameplay.Character.JumpModule.RB2D;
+using UnityGameStarter.Gameplay.Character.JumpModule;
 using UnityGameStarter.Gameplay.PlayerSystem;
 using UnityGameStarter.Gameplay.CharacterMovement;
 

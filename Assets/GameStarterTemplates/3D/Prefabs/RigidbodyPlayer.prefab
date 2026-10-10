@@ -1,5 +1,73 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5641282600171196209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6396619029572310166}
+  - component: {fileID: 310698652180052635}
+  - component: {fileID: 7235336904888859640}
+  m_Layer: 6
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6396619029572310166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641282600171196209}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6561833336624818796}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &310698652180052635
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641282600171196209}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7235336904888859640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641282600171196209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01da6b13293d60849bebfcc12e0eb60f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.Character.JumpModule.RigidbodyGroundCheck
+  jumpModule: {fileID: 1232473498092514264}
+  maxCheckDistance: 5
 --- !u!1 &6868564794179496817
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,6 +340,9 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2195111608349385031, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6396619029572310166}
+    - targetCorrespondingSourceObject: {fileID: 2195111608349385031, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2867707394650106936}
     - targetCorrespondingSourceObject: {fileID: 2195111608349385031, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
@@ -346,6 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfba3774bfd68e458d187e4ea49e9d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.PlayerSystem.PlayerController
+  gameplayUIRoot: {fileID: 0}
   targetPauseMenuName: PauseMenu
   pauseGame: 1
 --- !u!114 &6514019471908713868
@@ -372,12 +444,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4840c9cb4e3ee49806311de112ca5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SamplePlayer3D
-  controlSource: {fileID: 2867707394650106936}
   moveSpeed: 6
+  restoreVelocityAfterPause: 1
+  controlSource: {fileID: 2867707394650106936}
   turnSpeed: 15
   instantTurn: 0
   useControlRotation: 1
-  resetVelocityWhenPaused: 0
 --- !u!114 &3607529075795688444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,9 +493,11 @@ MonoBehaviour:
   jumpStrength: 20
   gravityScale: 5
   fallingGravityScale: 5
+  flappyJump: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 9
+  enableMaxGroundAngle: 0
   maxGroundAngle: 45
 --- !u!114 &998847130575841630
 MonoBehaviour:

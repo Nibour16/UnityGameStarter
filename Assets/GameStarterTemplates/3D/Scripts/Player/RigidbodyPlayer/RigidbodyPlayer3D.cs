@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityGameStarter.Gameplay.Camera.Spatial3D;
 using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.Gameplay.PlayerSystem;
-using UnityGameStarter.Gameplay.Character.JumpModule.RB3D;
+using UnityGameStarter.Gameplay.Character.JumpModule;
 using UnityGameStarter.Math.TransformStatics;
-using static UnityGameStarter.Math.TransformStatics.VectorLibrary;
 
 [RequireComponent(typeof(InputManager3D))]
 [RequireComponent(typeof(Rigidbody))]
