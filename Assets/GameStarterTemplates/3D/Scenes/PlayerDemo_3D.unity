@@ -546,6 +546,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9055189794988680749, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: coyoteTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9055189794988680749, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: flappyJump
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9055189794988680749, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: gravityScale
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9055189794988680749, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: jumpStrength
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9055189794988680749, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: extraJumpCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9055189794988680749, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: fallingGravityScale
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

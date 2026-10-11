@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityGameStarter.Gameplay.Camera.Spatial3D;
+using UnityGameStarter.Gameplay.Character.JumpModule;
 using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.Gameplay.PlayerSystem;
 using UnityGameStarter.Math.TransformStatics;
@@ -7,6 +8,7 @@ using UnityGameStarter.Math.TransformStatics;
 [RequireComponent(typeof(InputManager3D))]
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CameraController3D))]
+[RequireComponent(typeof(CharacterJumpModule))]
 public class Player3D : BasePlayer
 {
     #region Serialized Fields
@@ -14,12 +16,6 @@ public class Player3D : BasePlayer
     [SerializeField] private Transform controlSource;
     [SerializeField, Min(0.01f)] private float turnSpeed = 10f;
     [SerializeField] private bool instantTurn = false;
-
-    [Header("Jump")]
-    [SerializeField, Min(0.1f)] private float jumpHeight = 1.5f;
-    [SerializeField, Min(0f)] private float gravityValue = 9.81f;
-    [SerializeField, Min(0f)] private float jumpGravityScale = 1f;
-    [SerializeField, Min(0f)] private float fallingGravityScale = 1f;
 
     [Header("Player Setting")]
     [SerializeField] private bool useControlRotation = true;
@@ -29,12 +25,12 @@ public class Player3D : BasePlayer
     private InputManager3D _inputManager;
     private CharacterController _motionController;
     private CameraController3D _cameraController;
+    private CharacterJumpModule _jumpModule;
     #endregion
 
     #region Private Fields
     private Quaternion _desiredRotation;
     private bool _canRotate = false;
-    private bool _isGrounded = false;
     #endregion
 
     #region Properties Override
@@ -57,18 +53,18 @@ public class Player3D : BasePlayer
         _inputManager = GetComponent<InputManager3D>();
         _motionController = GetComponent<CharacterController>();
         _cameraController = GetComponent<CameraController3D>();
+        _jumpModule = GetComponent<CharacterJumpModule>();
     }
 
     protected override void OnUpdate()
     {
         HandleControlSource();
-        HandleGrounded();
     }
 
     protected override void OnMotionUpdate()
     {
-        HandleJumpVelocity();
-        HandleGravityVelocity();
+        HandleJump();
+        SetPlayerVelocityParam(VectorParam.Y, _jumpModule.VelocityY);
         HandleRotation();
 
         _motionController.Move(PlayerVelocity * Time.deltaTime);
@@ -107,33 +103,6 @@ public class Player3D : BasePlayer
     }
     #endregion
 
-    #region Jump Velocity
-    private void HandleGrounded() 
-    {
-        if (!EnableMotion) return;
-        
-        _isGrounded = _motionController.isGrounded;
-
-        if (_isGrounded && PlayerVelocity.y < 0)
-            SetPlayerVelocityParam(VectorParam.Y, 0);
-    }
-
-    private void HandleJumpVelocity() 
-    {
-        if (_isGrounded && _inputManager.Jump) 
-        {
-            float jumpMagnitude = Mathf.Sqrt(jumpHeight * gravityValue * (jumpGravityScale + 1));
-            SetPlayerVelocityParam(VectorParam.Y, jumpMagnitude);
-        }
-    }
-
-    private void HandleGravityVelocity() 
-    {
-        float gravityMagnitude = -gravityValue * fallingGravityScale * Time.deltaTime;
-        AddPlayerVelocityParam(VectorParam.Y, gravityMagnitude);
-    }
-    #endregion
-
     #region Move Rotation
     private void HandleRotation()
     {
@@ -149,6 +118,14 @@ public class Player3D : BasePlayer
             _desiredRotation, turnSpeed, Time.deltaTime);
 
         transform.rotation = rotation;
+    }
+    #endregion
+
+    #region Jump
+    private void HandleJump()
+    {
+        if (_jumpModule.isActiveAndEnabled && _inputManager.Jump)
+            _jumpModule.Jump();
     }
     #endregion
 }

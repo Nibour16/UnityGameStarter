@@ -45,6 +45,7 @@ public class Player2D_Platformer : BasePlayer
         if (_jumpModule.isActiveAndEnabled && _inputManager.Jump)
             _jumpModule.Jump();
     }
+
     protected override void OnMoveVelocityHandled(MovementResult result)
     {
         Vector2 velocity = _rb.linearVelocity;

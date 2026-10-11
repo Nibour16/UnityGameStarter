@@ -279,6 +279,9 @@ PrefabInstance:
       addedObject: {fileID: 1805074982803381077}
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 9055189794988680749}
+    - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8261827858567171427}
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
@@ -326,6 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfba3774bfd68e458d187e4ea49e9d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.PlayerSystem.PlayerController
+  gameplayUIRoot: {fileID: 0}
   targetPauseMenuName: PauseMenu
   pauseGame: 1
 --- !u!114 &4457816698375499248
@@ -352,16 +356,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3447055282dd3ec4484a29b36a2c3257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player3D
-  controlSource: {fileID: 298712164226609304}
   moveSpeed: 4
+  restoreVelocityAfterPause: 1
+  controlSource: {fileID: 298712164226609304}
   turnSpeed: 16
   instantTurn: 0
-  jumpHeight: 1.5
-  gravityValue: 9.81
-  jumpGravityScale: 1
-  fallingGravityScale: 1
   useControlRotation: 1
-  resetVelocityWhenPaused: 0
+--- !u!114 &9055189794988680749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504469840963320352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a221c2bbc78cc48a1069e09ea315d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.Character.JumpModule.CharacterJumpModule
+  jumpStrength: 5
+  gravityScale: 5
+  fallingGravityScale: 5
+  coyoteTime: 0
+  extraJumpCount: 0
+  flappyJump: 0
+  gravityValue: 9.81
 --- !u!114 &8261827858567171427
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -494,13 +494,14 @@ MonoBehaviour:
   gravityScale: 5
   fallingGravityScale: 5
   coyoteTime: 0
-  maxJumpCount: 1
+  extraJumpCount: 0
   flappyJump: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 9
   enableMaxGroundAngle: 0
   maxGroundAngle: 45
+  groundedResetDelay: 0.1
 --- !u!114 &998847130575841630
 MonoBehaviour:
   m_ObjectHideFlags: 0
