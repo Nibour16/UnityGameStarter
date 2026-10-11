@@ -493,6 +493,8 @@ MonoBehaviour:
   jumpStrength: 20
   gravityScale: 5
   fallingGravityScale: 5
+  coyoteTime: 0
+  maxJumpCount: 1
   flappyJump: 0
   groundMask:
     serializedVersion: 2

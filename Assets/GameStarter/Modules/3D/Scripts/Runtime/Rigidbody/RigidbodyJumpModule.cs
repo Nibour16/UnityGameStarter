@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityGameStarter.Gameplay.PhysicsStatics;
 
 namespace UnityGameStarter.Gameplay.Character.JumpModule
 {

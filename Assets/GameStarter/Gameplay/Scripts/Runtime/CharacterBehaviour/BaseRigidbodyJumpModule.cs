@@ -21,6 +21,9 @@ namespace UnityGameStarter.Gameplay.Character.JumpModule
         /// </summary>
         [SerializeField] private float maxGroundAngle = 45f;
 
+        [Header("Advanced")]
+        [SerializeField, Min(0f)] private float groundedResetDelay = 0.1f;
+
         protected TRigidbody rb;
         protected float currentGravityScale;
 
@@ -29,14 +32,31 @@ namespace UnityGameStarter.Gameplay.Character.JumpModule
 
         public override bool IsGrounded => validGroundCount > 0;
 
-        protected virtual void Awake()
+        private float _groundedDuration;
+        private bool _pendingJump = false;
+
+        protected override void Awake()
         {
+            base.Awake();
+
             rb = GetComponent<TRigidbody>();
             currentGravityScale = gravityScale;
         }
 
-        protected virtual void Update() 
+        protected override void Update() 
         {
+            base.Update();
+
+            if (IsGrounded)
+            {
+                _groundedDuration += Time.deltaTime;
+
+                if (_groundedDuration >= groundedResetDelay)
+                    _pendingJump = false;
+            }
+            else
+                _groundedDuration = 0f;
+
             if (this.rb is Rigidbody rb)
                 UpdateGravityScale(rb);
             else if (this.rb is Rigidbody2D rb_2D)
@@ -51,12 +71,44 @@ namespace UnityGameStarter.Gameplay.Character.JumpModule
                 rb_2D.ApplyExtraGravity2D(rb_2D.mass, currentGravityScale - 1);
         }
 
+        public override bool Jump(float overrideJumpStrength = 0)
+        {
+            if (_pendingJump) return false;
+
+            if (base.Jump(overrideJumpStrength)) 
+            {
+                _pendingJump = true;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public void ForceJump(bool markedAsJumped, float overrideJumpStrength = 0,
+            bool consumeJumpCount = false)
+        {
+            if (markedAsJumped && _pendingJump) return;
+            
+            ForceJump(overrideJumpStrength, consumeJumpCount);
+
+            if (markedAsJumped)
+                _pendingJump = true;
+        }
+
         protected override void HandleJump(float jumpStrength)
         {
-            if (this.rb is Rigidbody rb)
-                rb.ApplyForce(jumpStrength, Vector3.up, ForceMode.Impulse);
-            else if (this.rb is Rigidbody2D rb_2D)
-                rb_2D.ApplyForce2D(jumpStrength, Vector2.up, ForceMode2D.Impulse);
+            if (this.rb is Rigidbody rb) 
+            {
+                Vector3 velocity = rb.linearVelocity;
+                velocity.y = jumpStrength;
+                rb.linearVelocity = velocity;
+            }
+            else if (this.rb is Rigidbody2D rb_2D) 
+            {
+                Vector2 velocity = rb_2D.linearVelocity;
+                velocity.y = jumpStrength;
+                rb_2D.linearVelocity = velocity;
+            }
         }
 
         #region API
@@ -110,6 +162,9 @@ namespace UnityGameStarter.Gameplay.Character.JumpModule
 
             if (wasValid)
                 validGroundCount--;
+
+            if (!IsGrounded)
+                _pendingJump = false;
         }
         #endregion
 

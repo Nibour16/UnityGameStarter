@@ -692,6 +692,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8702561000496459382, guid: 9eed32809ded60247bc60072f826146c, type: 3}
+      propertyPath: coyoteTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8702561000496459382, guid: 9eed32809ded60247bc60072f826146c, type: 3}
       propertyPath: flappyJump
       value: 0
       objectReference: {fileID: 0}
@@ -702,6 +706,10 @@ PrefabInstance:
     - target: {fileID: 8702561000496459382, guid: 9eed32809ded60247bc60072f826146c, type: 3}
       propertyPath: jumpStrength
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8702561000496459382, guid: 9eed32809ded60247bc60072f826146c, type: 3}
+      propertyPath: extraJumpCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
