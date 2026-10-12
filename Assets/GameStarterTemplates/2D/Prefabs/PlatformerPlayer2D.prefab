@@ -158,17 +158,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7933d8cfa4a2974485b22bbe8418387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.Character.JumpModule.RB2D.Rigidbody2DJumpModule
-  jumpStrength: 15
-  gravityScale: 2
-  fallingGravityScale: 3
+  jumpStrength: 25
+  gravityScale: 5
+  fallingGravityScale: 5
   coyoteTime: 0
-  maxJumpCount: 1
+  extraJumpCount: 0
   flappyJump: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 9
   enableMaxGroundAngle: 0
   maxGroundAngle: 45
+  groundedResetDelay: 0.1
 --- !u!114 &858537494184479014
 MonoBehaviour:
   m_ObjectHideFlags: 0
