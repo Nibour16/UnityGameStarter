@@ -1,36 +1,23 @@
-using System.Drawing;
 using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
 {
     public class PlaneGridGenerator : BaseGridGenerator<PlaneSurfaceSampler>
     {
-        [SerializeField] private bool centerAsOrigin = false;
-        
-        protected override PlaneSurfaceSampler Sampler => new(transform.up, transform.position);
+        [SerializeField] private SpriteRenderer renderer;
 
-        public override Vector3Int Origin 
+        protected override PlaneSurfaceSampler Sampler => new(GridUp, GridCenter);
+
+        public override Vector3Int CellCount
         {
             get
             {
-                if (centerAsOrigin)
-                    return new Vector3Int(-size.x / 2, -size.y / 2, -size.z / 2);
-                else
-                    return Vector3Int.zero;
-            }
-        }
+                Vector3 worldSize = renderer.bounds.size;
 
-        public override Vector3 WorldOrigin
-        {
-            get
-            {
-                if (centerAsOrigin)
-                    return transform.position;
-                else
-                {
-                    Vector3 halfSize = (Vector3)size * cellSize * 0.5f;
-                    return transform.position - transform.right * halfSize.x - transform.forward * halfSize.z;
-                }
+                return new Vector3Int(
+                    Mathf.CeilToInt(worldSize.x / CellSize),
+                    Mathf.CeilToInt(worldSize.y / CellSize),
+                    Mathf.CeilToInt(worldSize.z / CellSize));
             }
         }
     }

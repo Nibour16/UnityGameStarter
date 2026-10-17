@@ -4,45 +4,97 @@ using UnityGameStarter.Surface;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
 {
-    public abstract class BaseGridGenerator<T> : MonoBehaviour where T : class, ISurfaceSampler
+    public abstract class BaseGridGenerator<T> : MonoBehaviour, IGridDebugSource
+        where T : class, ISurfaceSampler
     {
-        [SerializeField] protected Vector3Int size;
-        [SerializeField] protected float cellSize = 1f;
-        public float CellSize => cellSize;
+        [SerializeField] private float cellSize = 1f;
+        [SerializeField] private string[] layers;
 
-        [SerializeField] protected string[] layers;
-
-        protected Dictionary<Layer, Grid> grids = new();
         private readonly Dictionary<string, Layer> _layersByName = new();
         private readonly Dictionary<int, Layer> _layersById = new();
+        private bool _isGridGenerated = false;
 
-        public abstract Vector3Int Origin { get; }
-        public abstract Vector3 WorldOrigin { get; }
+        protected Dictionary<Layer, Grid> grids = new();
+        protected string[] Layers => layers;
 
+        public float CellSize => cellSize;
+        public Vector3 GridSize => (Vector3)CellCount * cellSize;
+
+        protected virtual Vector3 GridCenter => transform.position;
+        public virtual Vector3 GridRight => transform.right;
+        public virtual Vector3 GridUp => transform.up;
+        public virtual Vector3 GridForward => transform.forward;
+
+        public abstract Vector3Int CellCount { get; }
         protected abstract T Sampler { get; }
+
+        public bool IsGridGenerated => _isGridGenerated;
+        public IReadOnlyDictionary<Layer, Grid> Grids => grids;
 
         protected virtual void Awake() 
         {
-            var bounds = new Bounds(transform.position, (Vector3)size * cellSize);
+            var bounds = new Bounds(GridCenter, GridSize);
             GenerateGrids(bounds, Sampler);
+        }
+
+        public Vector3Int Origin(bool centerOrigin)
+        {
+            if (centerOrigin)
+                return new Vector3Int(-CellCount.x / 2, -CellCount.y / 2, -CellCount.z / 2);
+            else
+                return Vector3Int.zero;
+        }
+
+        public Vector3 WorldOrigin(bool centerOrigin)
+        {
+            if (centerOrigin)
+                return GridCenter;
+
+            Vector3 halfSize = 0.5f * GridSize;
+
+            return GridCenter - transform.right * halfSize.x
+                - transform.up * halfSize.y
+                - transform.forward * halfSize.z;
         }
 
         private void GenerateGrids(Bounds bounds, ISurfaceSampler sampler)
         {
+            grids.Clear();
+            _layersByName.Clear();
+            _layersById.Clear();
+
+            if (layers == null) return;
+
             for (int i = 0; i < layers.Length; i++)
             {
-                var grid = new Grid(bounds, Origin, WorldOrigin, cellSize, sampler);
+                string layerName = layers[i];
+
+                if (string.IsNullOrWhiteSpace(layerName))
+                {
+                    Debug.LogWarning($"Layer name at index {i} is empty.", this);
+                    continue;
+                }
+
+                if (_layersByName.ContainsKey(layerName))
+                {
+                    Debug.LogWarning($"Duplicate layer name: {layerName}", this);
+                    continue;
+                }
 
                 Layer layer = new()
                 {
-                    name = layers[i],
+                    name = layerName,
                     id = i
                 };
 
-                grids[layer] = grid;
-                _layersByName[layer.name] = layer;
-                _layersById[layer.id] = layer;
+                Grid grid = new(bounds, Origin(true), WorldOrigin(true), cellSize, sampler);
+
+                grids.Add(layer, grid);
+                _layersByName.Add(layer.name, layer);
+                _layersById.Add(layer.id, layer);
             }
+
+            _isGridGenerated = true;
         }
 
         protected Layer GetLayerByName(string name) => _layersByName[name];

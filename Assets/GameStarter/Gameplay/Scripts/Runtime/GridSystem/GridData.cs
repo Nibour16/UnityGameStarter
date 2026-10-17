@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem
 {
-    public enum GridState { Empty, Occupied, Blocked }
+    public enum GridState { Empty, Occupied, Blocked, Invalid }
 
     public struct GridElement
     {

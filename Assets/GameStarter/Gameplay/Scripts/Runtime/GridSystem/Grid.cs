@@ -57,7 +57,10 @@ namespace UnityGameStarter.Gameplay.GridSystem
                         GridState.Empty);
                 }
                 else
-                    Debug.LogError("Sampling failed");
+                {
+                    _grid[x, y, z] = new GridElement(
+                        worldGridCoord, Quaternion.identity, GridState.Invalid);
+                }
             });
         }
     }
