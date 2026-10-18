@@ -7,61 +7,75 @@ namespace UnityGameStarter.Gameplay.GridSystem
     public abstract class BaseGridGenerator<T> : MonoBehaviour, IGridDebugSource
         where T : class, ISurfaceSampler
     {
+        #region Configuration
         [SerializeField] private float cellSize = 1f;
         [SerializeField] private string[] layers;
 
+        [SerializeField] private GridOriginType originType = GridOriginType.Center;
+        [SerializeField] private CenterOriginMode centerOriginMode = CenterOriginMode.Intersection;
+        #endregion
+
+        #region Grid Data
         private readonly Dictionary<string, Layer> _layersByName = new();
         private readonly Dictionary<int, Layer> _layersById = new();
-        private bool _isGridGenerated = false;
+
+        private bool _isGridGenerated;
 
         protected Dictionary<Layer, Grid> grids = new();
         protected string[] Layers => layers;
 
+        public bool IsGridGenerated => _isGridGenerated;
+        public IReadOnlyDictionary<Layer, Grid> Grids => grids;
+        #endregion
+
+        #region Grid Properties
         public float CellSize => cellSize;
         public Vector3 GridSize => (Vector3)CellCount * cellSize;
 
+        public GridOriginType OriginType => originType;
+        public CenterOriginMode CenterOriginMode => centerOriginMode;
+
         protected virtual Vector3 GridCenter => transform.position;
+
         public virtual Vector3 GridRight => transform.right;
         public virtual Vector3 GridUp => transform.up;
         public virtual Vector3 GridForward => transform.forward;
 
         public abstract Vector3Int CellCount { get; }
+        #endregion
+
+        #region Generator Configuration
         protected abstract T Sampler { get; }
+        protected abstract Vector3 SampleDirection { get; }
 
-        public bool IsGridGenerated => _isGridGenerated;
-        public IReadOnlyDictionary<Layer, Grid> Grids => grids;
+        protected virtual Vector3 CellFaceDirection => SampleDirection;
+        protected virtual bool IncludeIncompleteCell => false;
+        #endregion
 
-        protected virtual void Awake() 
+        #region Unity Lifecycle
+        protected virtual void Awake()
         {
             var bounds = new Bounds(GridCenter, GridSize);
             GenerateGrids(bounds, Sampler);
         }
+        #endregion
 
-        public Vector3Int Origin(bool centerOrigin)
-        {
-            if (centerOrigin)
-                return new Vector3Int(-CellCount.x / 2, -CellCount.y / 2, -CellCount.z / 2);
-            else
-                return Vector3Int.zero;
-        }
+        #region Layer Access
+        protected Layer GetLayerByName(string name) => _layersByName[name];
+        protected Layer GetLayerById(int id) => _layersById[id];
 
-        public Vector3 WorldOrigin(bool centerOrigin)
-        {
-            if (centerOrigin)
-                return GridCenter;
+        public Grid GetGridByLayer(string layer) => grids[GetLayerByName(layer)];
+        public Grid GetGridByLayer(int layer) => grids[GetLayerById(layer)];
+        #endregion
 
-            Vector3 halfSize = 0.5f * GridSize;
-
-            return GridCenter - transform.right * halfSize.x
-                - transform.up * halfSize.y
-                - transform.forward * halfSize.z;
-        }
-
+        #region Grid Generation
         private void GenerateGrids(Bounds bounds, ISurfaceSampler sampler)
         {
             grids.Clear();
             _layersByName.Clear();
             _layersById.Clear();
+
+            _isGridGenerated = false;
 
             if (layers == null) return;
 
@@ -81,13 +95,11 @@ namespace UnityGameStarter.Gameplay.GridSystem
                     continue;
                 }
 
-                Layer layer = new()
-                {
-                    name = layerName,
-                    id = i
-                };
+                Layer layer = new(){ name = layerName, id = i };
 
-                Grid grid = new(bounds, Origin(true), WorldOrigin(true), cellSize, sampler);
+                Grid grid = new(bounds, GridCenter, cellSize,
+                    sampler, SampleDirection, CellFaceDirection,
+                    IncludeIncompleteCell, originType, centerOriginMode);
 
                 grids.Add(layer, grid);
                 _layersByName.Add(layer.name, layer);
@@ -96,11 +108,6 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             _isGridGenerated = true;
         }
-
-        protected Layer GetLayerByName(string name) => _layersByName[name];
-        protected Layer GetLayerById(int id) => _layersById[id];
-
-        public Grid GetGridByLayer(string layer) => grids[GetLayerByName(layer)];
-        public Grid GetGridByLayer(int layer) => grids[GetLayerById(layer)];
+        #endregion
     }
 }

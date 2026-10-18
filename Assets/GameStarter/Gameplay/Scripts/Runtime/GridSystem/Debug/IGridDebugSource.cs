@@ -11,11 +11,13 @@ namespace UnityGameStarter.Gameplay.GridSystem
         Vector3Int CellCount { get; }
         float CellSize { get; }
 
-        Vector3Int Origin(bool centerOrigin);
-        Vector3 WorldOrigin(bool centerOrigin);
-
         Vector3 GridRight { get; }
         Vector3 GridUp { get; }
         Vector3 GridForward { get; }
+
+        GridOriginType OriginType { get; }
+        CenterOriginMode CenterOriginMode { get; }
+
+        Grid GetGridByLayer(string layer);
     }
 }

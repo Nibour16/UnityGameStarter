@@ -7,6 +7,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         [SerializeField] private SpriteRenderer renderer;
 
         protected override PlaneSurfaceSampler Sampler => new(GridUp, GridCenter);
+        protected override Vector3 SampleDirection => Vector3.up;
 
         public override Vector3Int CellCount
         {

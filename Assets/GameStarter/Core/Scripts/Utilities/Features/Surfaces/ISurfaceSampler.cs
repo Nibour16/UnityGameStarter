@@ -4,7 +4,7 @@ namespace UnityGameStarter.Surface
 {
     public interface ISurfaceSampler 
     {
-        bool TrySample(Vector3 origin, Vector3 direction, float distance, out SurfaceSample sample);
+        bool TrySample(Vector3 gridPos, Vector3 direction, float distance, out SurfaceSample sample);
     }
 
     public readonly struct SurfaceSample

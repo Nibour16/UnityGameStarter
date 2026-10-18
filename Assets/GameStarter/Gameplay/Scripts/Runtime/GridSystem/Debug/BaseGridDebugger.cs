@@ -5,6 +5,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
     public abstract class BaseGridDebugger : MonoBehaviour
     {
         [SerializeField] private MonoBehaviour sourceBehaviour;
+        [SerializeField] private string targetLayer = "Default";
 
         [Header("Display")]
         [SerializeField] private bool drawGrid = true;
@@ -18,11 +19,14 @@ namespace UnityGameStarter.Gameplay.GridSystem
         [SerializeField] protected Color originColor = Color.red;
         [SerializeField] protected Color centersColor = Color.cyan;
 
-        protected IGridDebugSource Source => sourceBehaviour as IGridDebugSource;
+        public IGridDebugSource Source => sourceBehaviour as IGridDebugSource;
+        protected Grid targetGrid;
 
         protected void Draw() 
         {
             if (Source == null) return;
+
+            if (!TryGetDebugGrid(out targetGrid)) return;
 
             var source = Source;
             var count = source.CellCount;
@@ -30,10 +34,15 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             if (count.x <= 0 || count.y <= 0 || count.z <= 0 || size <= 0f) return;
 
-            Vector3 start = source.WorldOrigin(false);
             Vector3 right = source.GridRight * size;
             Vector3 up = source.GridUp * size;
             Vector3 forward = source.GridForward * size;
+
+            Vector3 firstCellCenter = targetGrid.GetCellWorldPosition(
+                Vector3Int.zero, out _, GridOriginType.LowerLeftCorner);
+
+            Vector3 start = firstCellCenter
+                - (right + up + forward) * 0.5f;
 
             if (drawBounds)
                 DrawBounds(start, right, up, forward, count);
@@ -46,6 +55,17 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             if (drawCellCenters)
                 DrawCellCenters(start, right, up, forward, count);
+        }
+
+        private bool TryGetDebugGrid(out Grid grid)
+        {
+            grid = null;
+
+            if (Source == null) return false;
+
+            grid = Source.GetGridByLayer(targetLayer);
+
+            return grid != null;
         }
 
         protected abstract void DrawGrid(

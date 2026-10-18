@@ -12,19 +12,19 @@ namespace UnityGameStarter.Gameplay.GridSystem
             _plane = new Plane(normal, point);
         }
 
-        public bool TrySample(Vector3 origin, Vector3 direction, float distance, out SurfaceSample sample)
+        public bool TrySample(Vector3 gridPos, Vector3 direction, float distance, out SurfaceSample sample)
         {
             sample = default;
 
-            float signedDistance = _plane.GetDistanceToPoint(origin);
+            float signedDistance = _plane.GetDistanceToPoint(gridPos);
 
             if (Mathf.Approximately(signedDistance, 0f))
             {
-                sample = new SurfaceSample(origin, _plane.normal);
+                sample = new SurfaceSample(gridPos, _plane.normal);
                 return true;
             }
 
-            Ray ray = new(origin, direction);
+            Ray ray = new(gridPos, direction);
 
             if (!_plane.Raycast(ray, out float enter))
                 return false;

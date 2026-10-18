@@ -6,7 +6,8 @@ public class TilemapGridGenerator : BaseGridGenerator<TilemapSurfaceSampler>
 {
     [SerializeField] private Tilemap tilemap;
 
-    protected override TilemapSurfaceSampler Sampler => new(tilemap, GridCenter);
+    protected override TilemapSurfaceSampler Sampler => new(tilemap, Vector3.forward);
+    protected override Vector3 SampleDirection => Vector3.back;
 
     public override Vector3Int CellCount
     {

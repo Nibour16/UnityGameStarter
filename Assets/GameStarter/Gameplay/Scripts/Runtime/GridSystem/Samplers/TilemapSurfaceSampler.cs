@@ -15,7 +15,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             _plane = new Plane(normal.normalized, tilemap.transform.position);
         }
 
-        public bool TrySample(Vector3 origin, Vector3 direction, float distance, out SurfaceSample sample)
+        public bool TrySample(Vector3 gridPos, Vector3 direction, float distance, out SurfaceSample sample)
         {
             sample = default;
 
@@ -23,19 +23,23 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             Vector3 hitPoint;
 
-            if (Mathf.Approximately(_plane.GetDistanceToPoint(origin), 0f))
-                hitPoint = origin;
+            if (Mathf.Approximately(_plane.GetDistanceToPoint(gridPos), 0f))
+                hitPoint = gridPos;
             else
             {
-                Ray ray = new(origin, direction);
+                Ray ray = new(gridPos, direction);
 
-                if (!_plane.Raycast(ray, out float enter) || enter < 0f || enter > distance)
+                bool didHit = _plane.Raycast(ray, out float enter);
+
+                if (!didHit || enter < 0f || enter > distance)
                     return false;
 
                 hitPoint = ray.GetPoint(enter);
             }
 
-            if (!_tilemap.HasTile(_tilemap.WorldToCell(hitPoint))) return false;
+            Vector3Int cell = _tilemap.WorldToCell(hitPoint);
+
+            if (!_tilemap.HasTile(cell)) return false;
 
             sample = new SurfaceSample(hitPoint, _plane.normal);
             return true;

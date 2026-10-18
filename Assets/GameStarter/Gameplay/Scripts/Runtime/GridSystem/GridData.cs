@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem
 {
+    public enum GridOriginType  {  Center, LowerLeftCell, LowerLeftCorner }
+
+    public enum CenterOriginMode { Intersection, CellCenter }
+
     public enum GridState { Empty, Occupied, Blocked, Invalid }
 
     public struct GridElement
