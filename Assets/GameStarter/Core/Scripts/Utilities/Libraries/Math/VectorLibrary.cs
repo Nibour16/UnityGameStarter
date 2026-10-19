@@ -70,19 +70,21 @@ namespace UnityGameStarter.Math.TransformStatics
         public static Vector3 ToVector3XZ(this Vector2 vector, float y = 0)
             => new(vector.x, y, vector.y);
 
-        public static Vector2Int ToVector2Int(this Vector2 vector, IntConversionMode mode = IntConversionMode.Floor) 
+        public static Vector2Int ToVector2Int(this Vector2 vector, 
+            IntConversionMode mode = IntConversionMode.Floor, HalfToIntMode him = HalfToIntMode.Default) 
         {
-            int x = StandardMathLibrary.IntConversion(vector.x, mode);
-            int y = StandardMathLibrary.IntConversion(vector.y, mode);
+            int x = vector.x.IntConversion(him, mode);
+            int y = vector.y.IntConversion(him, mode);
 
             return new(x, y);
         }
 
-        public static Vector3Int ToVector3Int(this Vector3 vector, IntConversionMode mode = IntConversionMode.Floor) 
+        public static Vector3Int ToVector3Int(this Vector3 vector, 
+            IntConversionMode mode = IntConversionMode.Floor, HalfToIntMode him = HalfToIntMode.Default) 
         {
-            int x = StandardMathLibrary.IntConversion(vector.x, mode);
-            int y = StandardMathLibrary.IntConversion(vector.y, mode);
-            int z = StandardMathLibrary.IntConversion(vector.z, mode);
+            int x = vector.x.IntConversion(him, mode);
+            int y = vector.y.IntConversion(him, mode);
+            int z = vector.z.IntConversion(him, mode);
 
             return new(x, y, z);
         }

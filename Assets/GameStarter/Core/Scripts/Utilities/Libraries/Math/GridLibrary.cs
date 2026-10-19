@@ -6,7 +6,7 @@ namespace UnityGameStarter.Math.GridStatics
 {
     public static class GridLibrary
     {
-        public static bool TryWorldToGrid(
+        public static bool TryToGridCoord(
             this Vector3Int position, Vector3Int[,,] grid, Vector3Int origin, out Vector3Int gridCoord)
         {
             gridCoord = position;
@@ -23,9 +23,14 @@ namespace UnityGameStarter.Math.GridStatics
             return true;
         }
 
-        public static bool TryWorldToGrid(
-            this Vector3 position, Vector3Int[,,] grid, Vector3Int origin, out Vector3Int gridCoord)
-            => position.ToVector3Int().TryWorldToGrid(grid, origin, out gridCoord);
+        public static bool TryToGridCoord(
+            this Vector3 position, Vector3Int[,,] grid, Vector3Int origin, 
+            out Vector3Int gridCoord, HalfToIntMode mode = HalfToIntMode.Up)
+            => position.ToVector3Int(IntConversionMode.Floor, mode).TryToGridCoord(grid, origin, out gridCoord);
+
+        public static Vector3Int ToGridCoord(this Vector3 position, HalfToIntMode mode = HalfToIntMode.Up)
+            => new (position.x.IntConversion(mode), position.y.IntConversion(mode), 
+                position.z.IntConversion(mode));
 
         public static Vector3 GridToWorld(this Vector3Int gridCoord, Vector3 origin)
         {
@@ -61,10 +66,5 @@ namespace UnityGameStarter.Math.GridStatics
 
             return grid;
         }
-
-        public static int ToGridCoordinate(this float value) => Mathf.FloorToInt(value + 0.5f);
-
-        public static Vector3Int ToGridCoordinate(this Vector3 value)
-            => new (value.x.ToGridCoordinate(), value.y.ToGridCoordinate(), value.z.ToGridCoordinate());
     }
 }

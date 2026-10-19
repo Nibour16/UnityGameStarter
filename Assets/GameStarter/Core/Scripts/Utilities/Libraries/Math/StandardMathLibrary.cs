@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEditorInternal.ReorderableList;
 
 namespace UnityGameStarter.Math 
 {
@@ -10,9 +11,16 @@ namespace UnityGameStarter.Math
         Ceil
     }
 
+    public enum HalfToIntMode 
+    {
+        Default,
+        Up,
+        Down
+    }
+
     public static class StandardMathLibrary 
     {
-        public static int IntConversion(float value, IntConversionMode mode = IntConversionMode.Floor) 
+        public static int IntConversion(this float value, IntConversionMode mode = IntConversionMode.Floor) 
         {
             return mode switch
             {
@@ -22,5 +30,23 @@ namespace UnityGameStarter.Math
                 _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
             };
         }
+
+        public static int IntConversion(this float value, HalfToIntMode him, 
+            IntConversionMode icm = IntConversionMode.Floor)
+        {
+            return him switch
+            {
+                HalfToIntMode.Default => value.IntConversion(icm),
+                HalfToIntMode.Up => value.HalfUpToInt(icm),
+                HalfToIntMode.Down => value.HalfDownToInt(icm),
+                _ => throw new ArgumentOutOfRangeException(nameof(him), him, null)
+            };
+        }
+
+        public static int HalfUpToInt(this float value, IntConversionMode mode = IntConversionMode.Floor)
+            => (value + 0.5f).IntConversion(mode);
+
+        public static int HalfDownToInt(this float value, IntConversionMode mode = IntConversionMode.Floor)
+            => (value - 0.5f).IntConversion(mode);
     }
 }

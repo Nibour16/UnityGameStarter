@@ -17,6 +17,8 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
         [Header("UI-less Settings")]
         [SerializeField] private bool pauseGame = true;
 
+        public UIRoot GameplayUIRoot => gameplayUIRoot;
+
         public void SetPause()
         {
             if (!GameManager.TryGetInstance(out var instance)) return;
