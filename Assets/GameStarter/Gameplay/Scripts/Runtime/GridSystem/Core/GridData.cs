@@ -6,7 +6,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
     public enum CenterOriginMode { Intersection, CellCenter }
 
-    public enum GridState { Empty, Blocked, Invalid }
+    public enum GridState { Passable, Blocked, Invalid }
 
     public readonly struct GridOriginData
     {
@@ -28,13 +28,16 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public readonly Quaternion faceRotator;
 
         public GridState state;
+        public GameObject entity;
 
         public GridElement(
-            Vector3Int coordinate, Quaternion faceRotator, GridState state = GridState.Empty) 
+            Vector3Int coordinate, Quaternion faceRotator, 
+            GridState state = GridState.Passable, GameObject entity = null) 
         {
             this.coordinate = coordinate;
             this.faceRotator = faceRotator;
             this.state = state;
+            this.entity = entity;
         }
     }
 

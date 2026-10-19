@@ -10,7 +10,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
     public class LayerConfig
     {
         public string layerName = "Default";
-        public GridState initialState = GridState.Empty;
+        public GridState initialState = GridState.Passable;
     }
 
     public abstract class BaseGridGenerator<TSurface, TLayer> : MonoBehaviour, IGridDebugSource

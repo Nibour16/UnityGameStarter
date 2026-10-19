@@ -6,7 +6,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
     public sealed class GridVisualizer : BaseGridDebugger
     {
         [Header("State Colors")]
-        [SerializeField] private Color emptyColor = Color.green;
+        [SerializeField] private Color passableColor = Color.green;
         [SerializeField] private Color blockedColor = Color.red;
         [SerializeField] private Color invalidColor = Color.gray;
 
@@ -139,8 +139,8 @@ namespace UnityGameStarter.Gameplay.GridSystem
         {
             switch (state)
             {
-                case GridState.Empty:
-                    color = emptyColor;
+                case GridState.Passable:
+                    color = passableColor;
                     return true;
 
                 case GridState.Blocked:

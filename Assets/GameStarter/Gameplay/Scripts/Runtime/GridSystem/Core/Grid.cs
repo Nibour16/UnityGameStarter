@@ -28,7 +28,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public Grid(
             Bounds bounds, Vector3 worldCenter, float cellSize,
             ISurfaceSampler sampler, Vector3 sampleDirection, Vector3 cellFaceDirection,
-            GridState initialState = GridState.Empty,
+            GridState initialState = GridState.Passable,
             bool includeIncompleteCell = false,
             GridOriginType originType = GridOriginType.Center, 
             CenterOriginMode centerOriginMode = CenterOriginMode.Intersection) 
@@ -45,7 +45,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         }
 
         private void GenerateGrid(ISurfaceSampler sampler, Vector3 sampleDirection, Vector3 cellFaceDirection,
-            GridState defaultState = GridState.Empty)
+            GridState defaultState = GridState.Passable)
         {
             Vector3Int size = GetGridSize();
             _grid = new GridElement[size.x, size.y, size.z];
@@ -132,13 +132,10 @@ namespace UnityGameStarter.Gameplay.GridSystem
             CenterOriginMode centerMode = CenterOriginMode.Intersection, 
             HalfToIntMode mode = HalfToIntMode.Up)
         {
-            Vector3 localPosition = WorldToLocalPosition(
-                worldPosition, originType, centerMode);
-
+            Vector3 localPosition = WorldToLocalPosition(worldPosition, originType, centerMode);
             Vector3Int localCoord = localPosition.ToGridCoord(mode);
 
-            return GetCellWorldPosition(
-                localCoord, out _, originType, centerMode);
+            return GetCellWorldPosition(localCoord, out _, originType, centerMode);
         }
         #endregion
 
