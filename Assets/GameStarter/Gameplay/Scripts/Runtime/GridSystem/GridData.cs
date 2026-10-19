@@ -6,7 +6,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
     public enum CenterOriginMode { Intersection, CellCenter }
 
-    public enum GridState { Empty, Occupied, Blocked, Invalid }
+    public enum GridState { Empty, Blocked, Invalid }
 
     public struct GridElement
     {

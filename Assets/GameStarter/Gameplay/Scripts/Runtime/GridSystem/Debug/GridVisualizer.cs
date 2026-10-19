@@ -7,7 +7,6 @@ namespace UnityGameStarter.Gameplay.GridSystem
     {
         [Header("State Colors")]
         [SerializeField] private Color emptyColor = Color.green;
-        [SerializeField] private Color occupiedColor = Color.blue;
         [SerializeField] private Color blockedColor = Color.red;
         [SerializeField] private Color invalidColor = Color.gray;
 
@@ -148,10 +147,6 @@ namespace UnityGameStarter.Gameplay.GridSystem
             {
                 case GridState.Empty:
                     color = emptyColor;
-                    return true;
-
-                case GridState.Occupied:
-                    color = occupiedColor;
                     return true;
 
                 case GridState.Blocked:

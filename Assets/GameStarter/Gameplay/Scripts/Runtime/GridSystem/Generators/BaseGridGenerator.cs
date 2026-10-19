@@ -4,13 +4,20 @@ using UnityGameStarter.Surface;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
 {
-    public abstract class BaseGridGenerator<T> : MonoBehaviour, IGridDebugSource
-        where T : class, ISurfaceSampler
+    [System.Serializable]
+    public class SerializedLayer
+    {
+        public string layerName;
+        public GridState initialState = GridState.Empty;
+    }
+
+    public abstract class BaseGridGenerator<TSurface, TLayer> : MonoBehaviour, IGridDebugSource
+        where TSurface : class, ISurfaceSampler where TLayer : SerializedLayer
     {
         #region Configuration
+        [SerializeField] protected TLayer[] layers;
         [SerializeField] private float cellSize = 1f;
-        [SerializeField] private string[] layers = { "Default" };
-
+        
         [SerializeField] private GridOriginType originType = GridOriginType.Center;
         [SerializeField] private CenterOriginMode centerOriginMode = CenterOriginMode.Intersection;
         #endregion
@@ -22,8 +29,6 @@ namespace UnityGameStarter.Gameplay.GridSystem
         private bool _isGridGenerated;
 
         protected Dictionary<Layer, Grid> grids = new();
-        protected string[] Layers => layers;
-
         public bool IsGridGenerated => _isGridGenerated;
         public IReadOnlyDictionary<Layer, Grid> Grids => grids;
         #endregion
@@ -45,7 +50,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         #endregion
 
         #region Generator Configuration
-        protected abstract T Sampler { get; }
+        protected abstract TSurface Sampler { get; }
         protected abstract Vector3 SampleDirection { get; }
 
         protected virtual Vector3 CellFaceDirection => SampleDirection;
@@ -81,7 +86,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             for (int i = 0; i < layers.Length; i++)
             {
-                string layerName = layers[i];
+                string layerName = layers[i].layerName;
 
                 if (string.IsNullOrWhiteSpace(layerName))
                 {
@@ -98,8 +103,8 @@ namespace UnityGameStarter.Gameplay.GridSystem
                 Layer layer = new(){ name = layerName, id = i };
 
                 Grid grid = new(bounds, GridCenter, cellSize,
-                    sampler, SampleDirection, CellFaceDirection,
-                    IncludeIncompleteCell, originType, centerOriginMode);
+                    sampler, SampleDirection, CellFaceDirection, 
+                    layers[i].initialState, IncludeIncompleteCell, originType, centerOriginMode);
 
                 grids.Add(layer, grid);
                 _layersByName.Add(layer.name, layer);

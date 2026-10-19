@@ -23,6 +23,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public Grid(
             Bounds bounds, Vector3 worldCenter, float cellSize,
             ISurfaceSampler sampler, Vector3 sampleDirection, Vector3 cellFaceDirection,
+            GridState initialState = GridState.Empty,
             bool includeIncompleteCell = false,
             GridOriginType originType = GridOriginType.Center, 
             CenterOriginMode centerOriginMode = CenterOriginMode.Intersection) 
@@ -35,7 +36,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             _originType = originType;
             _centerOriginMode = centerOriginMode;
 
-            GenerateGrid(sampler, sampleDirection, cellFaceDirection);
+            GenerateGrid(sampler, sampleDirection, cellFaceDirection, initialState);
         }
 
         public Vector3Int GetGridSize() 
@@ -130,7 +131,8 @@ namespace UnityGameStarter.Gameplay.GridSystem
             return worldPosition;
         }
 
-        private void GenerateGrid(ISurfaceSampler sampler, Vector3 sampleDirection, Vector3 cellFaceDirection) 
+        private void GenerateGrid(ISurfaceSampler sampler, Vector3 sampleDirection, Vector3 cellFaceDirection,
+            GridState defaultState = GridState.Empty) 
         {
             Vector3Int size = GetGridSize();
             _grid = new GridElement[size.x, size.y, size.z];
@@ -144,7 +146,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
                 if (sampler.TrySample(worldPosition, sampleDirection, _cellSize, out var sample))
                 {
                     var rotator = Quaternion.FromToRotation(cellFaceDirection, sample.normal);
-                    _grid[x, y, z] = new GridElement(relativeCoord, rotator, GridState.Empty);
+                    _grid[x, y, z] = new GridElement(relativeCoord, rotator, defaultState);
                 }
                 else
                     _grid[x, y, z] = new GridElement(relativeCoord, Quaternion.identity, GridState.Invalid);

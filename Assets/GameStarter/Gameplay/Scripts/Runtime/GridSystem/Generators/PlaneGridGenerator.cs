@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
 {
-    public class PlaneGridGenerator : BaseGridGenerator<PlaneSurfaceSampler>
+    public class PlaneGridGenerator : BaseGridGenerator<PlaneSurfaceSampler, SerializedLayer>
     {
         [SerializeField] private SpriteRenderer renderer;
 
