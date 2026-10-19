@@ -9,7 +9,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
     {
         #region Configuration
         [SerializeField] private float cellSize = 1f;
-        [SerializeField] private string[] layers;
+        [SerializeField] private string[] layers = { "Default" };
 
         [SerializeField] private GridOriginType originType = GridOriginType.Center;
         [SerializeField] private CenterOriginMode centerOriginMode = CenterOriginMode.Intersection;
