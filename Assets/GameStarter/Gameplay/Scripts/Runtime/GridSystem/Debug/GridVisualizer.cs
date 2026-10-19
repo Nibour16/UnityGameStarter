@@ -22,52 +22,50 @@ namespace UnityGameStarter.Gameplay.GridSystem
         protected override void DrawBounds(
             Vector3 start, Vector3 right, Vector3 up, Vector3 forward, Vector3Int count)
         {
-            foreach (var pair in Source.Grids)
+            GridElement[,,] data = targetGrid.GridData;
+
+            if (data == null) return;
+
+            int sx = data.GetLength(0);
+            int sy = data.GetLength(1);
+            int sz = data.GetLength(2);
+
+            bool IsValid(int x, int y, int z)
             {
-                GridElement[,,] data = pair.Value.GridData;
-                if (data == null) continue;
+                if (x < 0 || x >= sx || y < 0 || y >= sy || z < 0 || z >= sz) return false;
 
-                int sx = data.GetLength(0);
-                int sy = data.GetLength(1);
-                int sz = data.GetLength(2);
-
-                bool IsValid(int x, int y, int z)
-                {
-                    if (x < 0 || x >= sx || y < 0 || y >= sy || z < 0 || z >= sz) return false;
-
-                    return data[x, y, z].state != GridState.Invalid;
-                }
-
-                Gizmos.color = boundsColor;
-
-                LoopLibrary.Loop3D(sx, sy, sz, (x, y, z) =>
-                {
-                    if (!IsValid(x, y, z)) return;
-
-                    Vector3 p = start + right * x + up * y + forward * z;
-
-                    if (!IsValid(x - 1, y, z))
-                        DrawQuad(p, p + up, p + up + forward, p + forward);
-
-                    if (!IsValid(x + 1, y, z))
-                        DrawQuad(p + right, p + right + up,
-                            p + right + up + forward, p + right + forward);
-
-                    if (!IsValid(x, y - 1, z))
-                        DrawQuad(p, p + right, p + right + forward, p + forward);
-
-                    if (!IsValid(x, y + 1, z))
-                        DrawQuad(p + up, p + up + right,
-                            p + up + right + forward, p + up + forward);
-
-                    if (!IsValid(x, y, z - 1))
-                        DrawQuad(p, p + right, p + right + up, p + up);
-
-                    if (!IsValid(x, y, z + 1))
-                        DrawQuad(p + forward, p + right + forward,
-                            p + right + up + forward, p + up + forward);
-                });
+                return data[x, y, z].state != GridState.Invalid;
             }
+
+            Gizmos.color = boundsColor;
+
+            LoopLibrary.Loop3D(sx, sy, sz, (x, y, z) =>
+            {
+                if (!IsValid(x, y, z)) return;
+
+                Vector3 p = start + right * x + up * y + forward * z;
+
+                if (!IsValid(x - 1, y, z))
+                    DrawQuad(p, p + up, p + up + forward, p + forward);
+
+                if (!IsValid(x + 1, y, z))
+                    DrawQuad(p + right, p + right + up,
+                        p + right + up + forward, p + right + forward);
+
+                if (!IsValid(x, y - 1, z))
+                    DrawQuad(p, p + right, p + right + forward, p + forward);
+
+                if (!IsValid(x, y + 1, z))
+                    DrawQuad(p + up, p + up + right,
+                        p + up + right + forward, p + up + forward);
+
+                if (!IsValid(x, y, z - 1))
+                    DrawQuad(p, p + right, p + right + up, p + up);
+
+                if (!IsValid(x, y, z + 1))
+                    DrawQuad(p + forward, p + right + forward,
+                        p + right + up + forward, p + up + forward);
+            });
         }
 
         protected override void DrawCellCenters(
@@ -75,61 +73,57 @@ namespace UnityGameStarter.Gameplay.GridSystem
         {
             float radius = Source.CellSize * 0.035f;
 
-            foreach (var pair in Source.Grids)
+            GridElement[,,] data = targetGrid.GridData;
+
+            if (data == null) return;
+
+            int sx = data.GetLength(0);
+            int sy = data.GetLength(1);
+            int sz = data.GetLength(2);
+
+            LoopLibrary.Loop3D(sx, sy, sz, (x, y, z) =>
             {
-                GridElement[,,] data = pair.Value.GridData;
-                if (data == null) continue;
+                GridElement element = data[x, y, z];
 
-                int sx = data.GetLength(0);
-                int sy = data.GetLength(1);
-                int sz = data.GetLength(2);
+                if (!TryGetStateColor(element.state, out Color color)) return;
 
-                LoopLibrary.Loop3D(sx, sy, sz, (x, y, z) =>
-                {
-                    GridElement element = data[x, y, z];
+                Gizmos.color = color;
 
-                    if (!TryGetStateColor(element.state, out Color color)) return;
+                Vector3 center = start
+                    + right * (x + 0.5f)
+                    + up * (y + 0.5f)
+                    + forward * (z + 0.5f);
 
-                    Gizmos.color = color;
-
-                    Vector3 center = start
-                        + right * (x + 0.5f)
-                        + up * (y + 0.5f)
-                        + forward * (z + 0.5f);
-
-                    Gizmos.DrawSphere(center, radius);
-                });
-            }
+                Gizmos.DrawSphere(center, radius);
+            });
         }
 
         protected override void DrawGrid(
             Vector3 start, Vector3 right, Vector3 up, Vector3 forward, Vector3Int count)
         {
-            foreach (var pair in Source.Grids)
+            GridElement[,,] data = targetGrid.GridData;
+
+            if (data == null) return;
+
+            int sx = data.GetLength(0);
+            int sy = data.GetLength(1);
+            int sz = data.GetLength(2);
+
+            LoopLibrary.Loop3D(sx, sy, sz, (x, y, z) =>
             {
-                GridElement[,,] data = pair.Value.GridData;
-                if (data == null) continue;
+                GridElement element = data[x, y, z];
 
-                int sx = data.GetLength(0);
-                int sy = data.GetLength(1);
-                int sz = data.GetLength(2);
+                if (!TryGetStateColor(element.state, out Color color)) return;
 
-                LoopLibrary.Loop3D(sx, sy, sz, (x, y, z) =>
-                {
-                    GridElement element = data[x, y, z];
+                Gizmos.color = color;
 
-                    if (!TryGetStateColor(element.state, out Color color)) return;
+                Vector3 p = start
+                    + right * x
+                    + up * y
+                    + forward * z;
 
-                    Gizmos.color = color;
-
-                    Vector3 p = start
-                        + right * x
-                        + up * y
-                        + forward * z;
-
-                    DrawCellEdges(p, right, up, forward);
-                });
-            }
+                DrawCellEdges(p, right, up, forward);
+            });
         }
 
         protected override void DrawOrigin(float size)

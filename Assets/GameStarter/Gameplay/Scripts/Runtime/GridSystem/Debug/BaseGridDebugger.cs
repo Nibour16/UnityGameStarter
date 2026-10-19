@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
@@ -5,7 +6,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
     public abstract class BaseGridDebugger : MonoBehaviour
     {
         [SerializeField] private MonoBehaviour sourceBehaviour;
-        [SerializeField] private string targetLayer = "Default";
+        [SerializeField] private string targetLayerName = "Default";
 
         [Header("Display")]
         [SerializeField] private bool drawGrid = true;
@@ -20,23 +21,27 @@ namespace UnityGameStarter.Gameplay.GridSystem
         [SerializeField] protected Color centersColor = Color.cyan;
 
         public IGridDebugSource Source => sourceBehaviour as IGridDebugSource;
+
+        protected Layer targetLayer;
         protected Grid targetGrid;
 
         protected void Draw() 
         {
             if (Source == null) return;
 
+            if (!TryGetDebugLayer(out targetLayer)) return;
+
             if (!TryGetDebugGrid(out targetGrid)) return;
 
             var source = Source;
-            var count = source.CellCount;
+            var count = source.GetCellCount(targetLayer);
             float size = source.CellSize;
 
             if (count.x <= 0 || count.y <= 0 || count.z <= 0 || size <= 0f) return;
 
-            Vector3 right = source.GridRight * size;
-            Vector3 up = source.GridUp * size;
-            Vector3 forward = source.GridForward * size;
+            Vector3 right = source.GetGridRight(targetLayer) * size;
+            Vector3 up = source.GetGridUp(targetLayer) * size;
+            Vector3 forward = source.GetGridForward(targetLayer) * size;
 
             Vector3 firstCellCenter = targetGrid.GetCellWorldPosition(
                 Vector3Int.zero, out _, GridOriginType.LowerLeftCorner);
@@ -57,13 +62,24 @@ namespace UnityGameStarter.Gameplay.GridSystem
                 DrawCellCenters(start, right, up, forward, count);
         }
 
+        private bool TryGetDebugLayer(out Layer layer) 
+        {
+            layer = default;
+
+            if (Source == null) return false;
+
+            layer = Source.GetLayerByName(targetLayerName);
+
+            return true;
+        }
+
         private bool TryGetDebugGrid(out Grid grid)
         {
             grid = null;
 
             if (Source == null) return false;
 
-            grid = Source.GetGridByLayer(targetLayer);
+            grid = Source.GetGridByLayer(targetLayerName);
 
             return grid != null;
         }

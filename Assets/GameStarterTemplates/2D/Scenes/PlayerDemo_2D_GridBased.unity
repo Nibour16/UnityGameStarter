@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 271290374}
   - component: {fileID: 271290373}
   m_Layer: 3
-  m_Name: Ground
+  m_Name: Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2143,7 +2143,6 @@ MonoBehaviour:
   cellSize: 1
   originType: 0
   centerOriginMode: 0
-  mainTilemap: {fileID: 271290374}
 --- !u!1 &661210394
 GameObject:
   m_ObjectHideFlags: 0

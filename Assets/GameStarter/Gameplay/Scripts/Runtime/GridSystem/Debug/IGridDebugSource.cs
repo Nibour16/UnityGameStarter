@@ -6,18 +6,17 @@ namespace UnityGameStarter.Gameplay.GridSystem
     public interface IGridDebugSource
     {
         bool IsGridGenerated { get; }
-        IReadOnlyDictionary<Layer, Grid> Grids { get; }
-
-        Vector3Int CellCount { get; }
         float CellSize { get; }
-
-        Vector3 GridRight { get; }
-        Vector3 GridUp { get; }
-        Vector3 GridForward { get; }
 
         GridOriginType OriginType { get; }
         CenterOriginMode CenterOriginMode { get; }
 
+        Layer GetLayerByName(string layer);
         Grid GetGridByLayer(string layer);
+
+        Vector3Int GetCellCount(Layer layer);
+        Vector3 GetGridRight(Layer layer);
+        Vector3 GetGridUp(Layer layer);
+        Vector3 GetGridForward(Layer layer);
     }
 }

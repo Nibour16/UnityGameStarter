@@ -145,7 +145,12 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
                 if (sampler.TrySample(worldPosition, sampleDirection, _cellSize, out var sample))
                 {
-                    var rotator = Quaternion.FromToRotation(cellFaceDirection, sample.normal);
+                    var rotator = defaultState switch
+                    {
+                        GridState.Invalid => Quaternion.identity,
+                        _ => Quaternion.FromToRotation(cellFaceDirection, sample.normal)
+                    };
+
                     _grid[x, y, z] = new GridElement(relativeCoord, rotator, defaultState);
                 }
                 else

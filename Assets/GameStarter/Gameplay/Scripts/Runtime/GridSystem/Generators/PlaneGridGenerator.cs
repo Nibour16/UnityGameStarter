@@ -2,24 +2,20 @@ using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
 {
-    public class PlaneGridGenerator : BaseGridGenerator<PlaneSurfaceSampler, SerializedLayer>
+    public class PlaneGridGenerator : BaseGridGenerator<PlaneSurfaceSampler, LayerConfig>
     {
         [SerializeField] private SpriteRenderer renderer;
 
-        protected override PlaneSurfaceSampler Sampler => new(GridUp, GridCenter);
+        protected override PlaneSurfaceSampler Sampler(Layer layer) => new(MainGridUp, MainGridCenter);
         protected override Vector3 SampleDirection => Vector3.up;
 
-        public override Vector3Int CellCount
+        public override Vector3Int GetCellCount(Layer layer)
         {
-            get
-            {
-                Vector3 worldSize = renderer.bounds.size;
+            Vector3 worldSize = renderer.bounds.size;
 
-                return new Vector3Int(
-                    Mathf.CeilToInt(worldSize.x / CellSize),
-                    Mathf.CeilToInt(worldSize.y / CellSize),
-                    Mathf.CeilToInt(worldSize.z / CellSize));
-            }
+            return new Vector3Int(Mathf.CeilToInt(worldSize.x / CellSize),
+                Mathf.CeilToInt(worldSize.y / CellSize),
+                Mathf.CeilToInt(worldSize.z / CellSize));
         }
     }
 }
