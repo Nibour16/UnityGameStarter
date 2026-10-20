@@ -33,21 +33,19 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             if (!TryGetDebugGrid(out targetGrid)) return;
 
-            var source = Source;
-            var count = source.GetCellCount(targetLayer);
-            float size = source.CellSize;
+            var count = Source.GetCellCount(targetLayer);
+            float size = Source.CellSize;
 
             if (count.x <= 0 || count.y <= 0 || count.z <= 0 || size <= 0f) return;
 
-            Vector3 right = source.GetGridRight(targetLayer) * size;
-            Vector3 up = source.GetGridUp(targetLayer) * size;
-            Vector3 forward = source.GetGridForward(targetLayer) * size;
+            Vector3 right = Source.GetGridRight(targetLayer) * size;
+            Vector3 up = Source.GetGridUp(targetLayer) * size;
+            Vector3 forward = Source.GetGridForward(targetLayer) * size;
 
             Vector3 firstCellCenter = targetGrid.GetCellWorldPosition(
                 Vector3Int.zero, out _, GridOriginType.LowerLeftCorner);
 
-            Vector3 start = firstCellCenter
-                - (right + up + forward) * 0.5f;
+            Vector3 start = firstCellCenter - (right + up + forward) * 0.5f;
 
             if (drawBounds)
                 DrawBounds(start, right, up, forward, count);

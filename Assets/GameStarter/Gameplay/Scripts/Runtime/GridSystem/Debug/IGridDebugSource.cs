@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
@@ -7,9 +6,6 @@ namespace UnityGameStarter.Gameplay.GridSystem
     {
         bool IsGridGenerated { get; }
         float CellSize { get; }
-
-        GridOriginType OriginType { get; }
-        CenterOriginMode CenterOriginMode { get; }
 
         Layer GetLayerByName(string layer);
         Grid GetGridByLayer(string layer);

@@ -53,8 +53,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             LoopLibrary.Loop3D(size.x, size.y, size.z, (x, y, z) =>
             {
                 Vector3Int localCoord = new(x, y, z);
-                Vector3 worldPosition = GetCellWorldPosition(
-                    localCoord, out var relativeCoord, _originType, _centerOriginMode);
+                Vector3 worldPosition = GetCellWorldPosition(localCoord, out var relativeCoord);
 
                 if (sampler.TrySample(worldPosition, sampleDirection, _cellSize, out var sample))
                 {
@@ -72,7 +71,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         }
         #endregion
 
-        #region API
+        #region Grid Size
         public Vector3Int GetGridSize() 
         {
             int x = (_bounds.size.x / _cellSize).IntConversion(_gridSizeConversionMode);
@@ -81,33 +80,47 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             return new Vector3Int(x, y, z);
         }
+        #endregion
 
-        public Vector3 GetGridOrigin(
-            GridOriginType originType, CenterOriginMode centerMode = CenterOriginMode.Intersection)
+        #region Grid Origin
+        public Vector3 GetGridOrigin()
         {
             Vector3Int size = GetGridSize();
 
-            return CalculateGridOriginData(
-                originType, centerMode, size).GridOrigin;
+            return CalculateGridOriginData(size, _originType, _centerOriginMode).GridOrigin;
         }
 
-        public Vector3Int GetGridOriginCoord(
-            GridOriginType originType, CenterOriginMode centerMode = CenterOriginMode.Intersection)
+        public Vector3Int GetGridOriginCoord()
         {
             Vector3Int size = GetGridSize();
 
-            return CalculateGridOriginData(
-                originType, centerMode, size).GridOriginCoord;
+            return CalculateGridOriginData(size, _originType, _centerOriginMode).GridOriginCoord;
         }
 
-        public Vector3 GetOriginWorldPosition(
-            GridOriginType originType, CenterOriginMode centerMode = CenterOriginMode.Intersection)
+        public Vector3 GetOriginWorldPosition()
         {
             Vector3Int size = GetGridSize();
 
-            return CalculateGridOriginData(
-                originType, centerMode, size).WorldOrigin;
+            return CalculateGridOriginData(size, _originType, _centerOriginMode).WorldOrigin;
         }
+        #endregion
+
+        #region Grid Cell
+        public Vector3 GetCellCenterWorldPosition(Vector3 worldPosition)
+            => GetCellCenterWorldPosition(worldPosition, _originType, _centerOriginMode);
+
+        public Vector3 GetCellCenterWorldPosition(Vector3 worldPosition, GridOriginType originType,
+            CenterOriginMode centerMode = CenterOriginMode.Intersection,
+            HalfToIntMode mode = HalfToIntMode.Up)
+        {
+            Vector3 localPosition = WorldToLocalPosition(worldPosition, originType, centerMode);
+            Vector3Int localCoord = localPosition.ToGridCoord(mode);
+
+            return GetCellWorldPosition(localCoord, out _, originType, centerMode);
+        }
+
+        public Vector3 GetCellWorldPosition(Vector3Int localCoord, out Vector3Int relativeCoord)
+            => GetCellWorldPosition(localCoord, out relativeCoord, _originType, _centerOriginMode);
 
         public Vector3 GetCellWorldPosition(Vector3Int localCoord, out Vector3Int relativeCoord,
             GridOriginType originType, CenterOriginMode centerMode = CenterOriginMode.Intersection)
@@ -115,7 +128,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             Vector3Int size = GetGridSize();
 
             GridOriginData originData = CalculateGridOriginData(
-                originType, centerMode, size);
+                size, originType, centerMode);
 
             relativeCoord = localCoord + originData.GridOriginCoord;
 
@@ -127,20 +140,39 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             return worldPosition;
         }
+        #endregion
 
-        public Vector3 GetCellCenterWorldPosition(Vector3 worldPosition, GridOriginType originType,
-            CenterOriginMode centerMode = CenterOriginMode.Intersection, 
-            HalfToIntMode mode = HalfToIntMode.Up)
+        #region Record Entity To Grid
+        public bool TrySetEntity(GameObject entity, bool setToBlock = true) 
         {
-            Vector3 localPosition = WorldToLocalPosition(worldPosition, originType, centerMode);
-            Vector3Int localCoord = localPosition.ToGridCoord(mode);
+            if (entity == null) return false;
 
-            return GetCellWorldPosition(localCoord, out _, originType, centerMode);
+            Vector3Int localCoord = WorldToLocalPosition(
+                entity.transform.position, _originType, _centerOriginMode).ToGridCoord();
+
+            Vector3Int origin = GetGridOriginCoord();
+            Vector3Int coord = localCoord - origin;
+
+            if (coord.x < 0 || coord.y < 0 || coord.z < 0 ||
+                coord.x >= _grid.GetLength(0) || coord.y >= _grid.GetLength(1) ||
+                coord.z >= _grid.GetLength(2))
+                return false;
+
+            GridElement element = _grid[coord.x, coord.y, coord.z];
+            element.entity = entity;
+
+            if (setToBlock)
+                element.state = GridState.Blocked;
+
+            _grid[coord.x, coord.y, coord.z] = element;
+
+            return true;
         }
         #endregion
 
         #region Calculation
-        private Vector3 GetCenterOriginOffset(Vector3Int size, CenterOriginMode centerMode)
+        private Vector3 GetCenterOriginOffset(Vector3Int size,
+            CenterOriginMode centerMode = CenterOriginMode.Intersection)
         {
             Vector3 sizeOffset = (Vector3)size;
 
@@ -156,8 +188,9 @@ namespace UnityGameStarter.Gameplay.GridSystem
             };
         }
 
-        private GridOriginData CalculateGridOriginData(GridOriginType originType,
-            CenterOriginMode centerMode, Vector3Int size)
+        private GridOriginData CalculateGridOriginData(Vector3Int size, 
+            GridOriginType originType = GridOriginType.Center,
+            CenterOriginMode centerMode = CenterOriginMode.Intersection)
         {
             Vector3 gridOrigin = originType switch
             {
@@ -219,7 +252,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         {
             Vector3Int size = GetGridSize();
 
-            GridOriginData originData = CalculateGridOriginData(originType, centerMode, size);
+            GridOriginData originData = CalculateGridOriginData(size, originType, centerMode);
 
             Vector3 localPosition = (worldPosition - originData.WorldOrigin) / _cellSize;
 

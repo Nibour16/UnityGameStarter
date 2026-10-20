@@ -131,8 +131,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             if (targetGrid == null) return;
 
             Gizmos.color = originColor;
-            Gizmos.DrawSphere(targetGrid.GetOriginWorldPosition(
-                Source.OriginType, Source.CenterOriginMode), size * 0.1f);
+            Gizmos.DrawSphere(targetGrid.GetOriginWorldPosition(), size * 0.1f);
         }
 
         private bool TryGetStateColor(GridState state, out Color color)

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,7 +12,8 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public GridState initialState = GridState.Passable;
     }
 
-    public abstract class BaseGridGenerator<TSurface, TLayer> : MonoBehaviour, IGridDebugSource
+    public abstract class BaseGridGenerator<TSurface, TLayer> : MonoBehaviour, 
+        IGridDebugSource, ISnappableGridSource
         where TSurface : class, ISurfaceSampler where TLayer : LayerConfig
     {
         #region Configuration
@@ -32,6 +32,8 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
         protected Dictionary<Layer, Grid> grids = new();
         public bool IsGridGenerated => _isGridGenerated;
+
+        public IReadOnlyDictionary<Layer, Grid> Grids => grids;
         #endregion
 
         #region Grid Properties
@@ -116,7 +118,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
         private void GenerateGrids(Bounds bounds)
         {
-            foreach (var config in layers ?? Array.Empty<TLayer>())
+            foreach (var config in layers ?? System.Array.Empty<TLayer>())
             {
                 if (string.IsNullOrWhiteSpace(config.layerName)) continue;
 
