@@ -1,11 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
 {
-    public interface IGridDebugSource
+    public interface IGridSource
     {
         bool IsGridGenerated { get; }
         float CellSize { get; }
+        IReadOnlyDictionary<Layer, Grid> Grids { get; }
 
         Layer GetLayerByName(string layer);
         Grid GetGridByLayer(string layer);

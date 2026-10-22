@@ -14,11 +14,11 @@ namespace UnityGameStarter.Gameplay.GridSystem
         protected override Vector3 SampleDirection => Vector3.back;
 
         protected override TilemapSurfaceSampler Sampler(Layer layer)
-            => new(GetSerializedLayer(layer).targetTilemap, Vector3.forward);
+            => new(GetLayerConfig(layer).targetTilemap, Vector3.forward);
 
         public override Vector3Int GetCellCount(Layer layer)
         {
-            var tilemap = GetSerializedLayer(layer).targetTilemap;
+            var tilemap = GetLayerConfig(layer).targetTilemap;
             BoundsInt bounds = tilemap.cellBounds;
 
             bool found = false;
@@ -46,7 +46,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
         protected override Vector3 GetGridCenter(Layer layer) 
         {
-            var tilemap = GetSerializedLayer(layer).targetTilemap;
+            var tilemap = GetLayerConfig(layer).targetTilemap;
             BoundsInt bounds = tilemap.cellBounds;
 
             bool found = false;
@@ -79,7 +79,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
         public override Vector3 GetGridRight(Layer layer) 
         {
-            var tilemap = GetSerializedLayer(layer).targetTilemap;
+            var tilemap = GetLayerConfig(layer).targetTilemap;
 
             Vector3 origin = tilemap.CellToWorld(Vector3Int.zero);
             Vector3 next = tilemap.CellToWorld(Vector3Int.right);
@@ -89,7 +89,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
         public override Vector3 GetGridUp(Layer layer) 
         {
-            var tilemap = GetSerializedLayer(layer).targetTilemap;
+            var tilemap = GetLayerConfig(layer).targetTilemap;
 
             Vector3 origin = tilemap.CellToWorld(Vector3Int.zero);
             Vector3 next = tilemap.CellToWorld(Vector3Int.up);
@@ -99,7 +99,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
         public override Vector3 GetGridForward(Layer layer)
         {
-            var tilemap = GetSerializedLayer(layer).targetTilemap;
+            var tilemap = GetLayerConfig(layer).targetTilemap;
 
             Vector3 origin = tilemap.CellToWorld(Vector3Int.zero);
             Vector3 next = tilemap.CellToWorld(Vector3Int.forward);

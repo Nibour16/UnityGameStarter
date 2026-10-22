@@ -2,22 +2,38 @@ using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
 {
-    public class GridSnapper : MonoBehaviour
+    public class GridSnapper
     {
-        [SerializeField] private MonoBehaviour source;
+        private readonly IGridSource _source;
 
-        private ISnappableGridSource Source => source as ISnappableGridSource;
+        public GridSnapper(IGridSource source) => _source = source;
 
-        public void SnapToGrid(GameObject entity, Layer layer, bool setToBlock = true)
+        public bool TrySnapToGrid(GameObject entity, string layerName, 
+            out Vector3Int coord, bool setToBlock = true)
         {
-            if (entity == null || !Source.Grids.TryGetValue(layer, out Grid grid) || grid == null)
-                return;
+            coord = default;
+
+            if (_source == null || !_source.IsGridGenerated) return false;
+            
+            Layer layer = _source.GetLayerByName(layerName);
+
+            if (entity == null || !_source.Grids.TryGetValue(layer, out Grid grid) || grid == null)
+                return false;
 
             Vector3 entityPos = entity.transform.position;
 
             entity.transform.position = grid.GetCellCenterWorldPosition(entityPos);
 
-            grid.TrySetEntity(entity, setToBlock);
+            if (!grid.TrySetEntity(entity, out coord, setToBlock)) 
+            {
+                entity.transform.position = entityPos;
+                return false;
+            }
+
+            if (entity.TryGetComponent<IGridSnappable>(out var snappable))
+                snappable.OnSnapped(layerName, coord);
+
+            return true;
         }
     }
 }

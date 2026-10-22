@@ -12,8 +12,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public GridState initialState = GridState.Passable;
     }
 
-    public abstract class BaseGridGenerator<TSurface, TLayer> : MonoBehaviour, 
-        IGridDebugSource, ISnappableGridSource
+    public abstract class BaseGridGenerator<TSurface, TLayer> : MonoBehaviour, IGridSource
         where TSurface : class, ISurfaceSampler where TLayer : LayerConfig
     {
         #region Configuration
@@ -21,7 +20,9 @@ namespace UnityGameStarter.Gameplay.GridSystem
         [SerializeField] private float cellSize = 1f;
         
         [SerializeField] private GridOriginType originType = GridOriginType.Center;
-        [SerializeField] private CenterOriginMode centerOriginMode = CenterOriginMode.Intersection;
+
+        [Header("Advanced")]
+        [SerializeField] private CenterOriginMode centerOriginMode = CenterOriginMode.CellCenter;
         #endregion
 
         #region Grid Data
@@ -71,7 +72,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public Grid GetGridByLayer(string layer) => grids[GetLayerByName(layer)];
         public Grid GetGridByLayer(int layer) => grids[GetLayerById(layer)];
 
-        protected TLayer GetSerializedLayer(Layer layer) 
+        protected TLayer GetLayerConfig(Layer layer) 
             => System.Array.Find(layers, t => t.layerName == layer.name);
         #endregion
 

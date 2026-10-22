@@ -87,21 +87,21 @@ namespace UnityGameStarter.Gameplay.GridSystem
         {
             Vector3Int size = GetGridSize();
 
-            return CalculateGridOriginData(size, _originType, _centerOriginMode).GridOrigin;
+            return CalculateGridOriginData(size, _originType, _centerOriginMode).gridOrigin;
         }
 
         public Vector3Int GetGridOriginCoord()
         {
             Vector3Int size = GetGridSize();
 
-            return CalculateGridOriginData(size, _originType, _centerOriginMode).GridOriginCoord;
+            return CalculateGridOriginData(size, _originType, _centerOriginMode).gridOriginCoord;
         }
 
         public Vector3 GetOriginWorldPosition()
         {
             Vector3Int size = GetGridSize();
 
-            return CalculateGridOriginData(size, _originType, _centerOriginMode).WorldOrigin;
+            return CalculateGridOriginData(size, _originType, _centerOriginMode).worldOrigin;
         }
         #endregion
 
@@ -130,10 +130,10 @@ namespace UnityGameStarter.Gameplay.GridSystem
             GridOriginData originData = CalculateGridOriginData(
                 size, originType, centerMode);
 
-            relativeCoord = localCoord + originData.GridOriginCoord;
+            relativeCoord = localCoord - originData.gridOriginCoord;
 
             Vector3 worldPosition = relativeCoord.GridToWorld(
-                originData.WorldOrigin, originData.GridOrigin, originData.GridOriginCoord, _cellSize);
+                originData.worldOrigin, originData.gridOrigin, originData.gridOriginCoord, _cellSize);
 
             if (originType == GridOriginType.LowerLeftCorner)
                 worldPosition += Vector3.one * (_cellSize * 0.5f);
@@ -143,28 +143,35 @@ namespace UnityGameStarter.Gameplay.GridSystem
         #endregion
 
         #region Record Entity To Grid
-        public bool TrySetEntity(GameObject entity, bool setToBlock = true) 
+        public bool TrySetEntity(GameObject entity, out Vector3Int relativeCoord, bool setToBlock = true) 
         {
-            if (entity == null) return false;
+            if (entity == null) 
+            {
+                relativeCoord = default;
+                return false; 
+            }
 
             Vector3Int localCoord = WorldToLocalPosition(
                 entity.transform.position, _originType, _centerOriginMode).ToGridCoord();
 
             Vector3Int origin = GetGridOriginCoord();
-            Vector3Int coord = localCoord - origin;
+            relativeCoord = localCoord - origin;
 
-            if (coord.x < 0 || coord.y < 0 || coord.z < 0 ||
-                coord.x >= _grid.GetLength(0) || coord.y >= _grid.GetLength(1) ||
-                coord.z >= _grid.GetLength(2))
+            if (localCoord.x < 0 || localCoord.y < 0 || localCoord.z < 0 ||
+                localCoord.x >= _grid.GetLength(0) || localCoord.y >= _grid.GetLength(1) ||
+                localCoord.z >= _grid.GetLength(2))
                 return false;
 
-            GridElement element = _grid[coord.x, coord.y, coord.z];
+            GridElement element = _grid[localCoord.x, localCoord.y, localCoord.z];
+
+            if (element.state == GridState.Invalid) return false;
+
             element.entity = entity;
 
             if (setToBlock)
                 element.state = GridState.Blocked;
 
-            _grid[coord.x, coord.y, coord.z] = element;
+            _grid[localCoord.x, localCoord.y, localCoord.z] = element;
 
             return true;
         }
@@ -195,7 +202,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             Vector3 gridOrigin = originType switch
             {
                 GridOriginType.Center =>
-                    -GetCenterOriginOffset(size, centerMode),
+                    GetCenterOriginOffset(size, centerMode),
 
                 GridOriginType.LowerLeftCell or
                 GridOriginType.LowerLeftCorner =>
@@ -254,9 +261,9 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             GridOriginData originData = CalculateGridOriginData(size, originType, centerMode);
 
-            Vector3 localPosition = (worldPosition - originData.WorldOrigin) / _cellSize;
+            Vector3 localPosition = (worldPosition - originData.worldOrigin) / _cellSize;
 
-            localPosition -= originData.GridOrigin;
+            localPosition += originData.gridOrigin;
 
             if (originType == GridOriginType.LowerLeftCorner)
                 localPosition -= Vector3.one * 0.5f;

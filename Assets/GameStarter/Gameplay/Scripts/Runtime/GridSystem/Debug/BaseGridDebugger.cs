@@ -20,7 +20,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         [SerializeField] protected Color originColor = Color.red;
         [SerializeField] protected Color centersColor = Color.cyan;
 
-        public IGridDebugSource Source => sourceBehaviour as IGridDebugSource;
+        public IGridSource Source => sourceBehaviour as IGridSource;
 
         protected Layer targetLayer;
         protected Grid targetGrid;

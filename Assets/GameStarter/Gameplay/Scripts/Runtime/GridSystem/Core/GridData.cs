@@ -10,15 +10,15 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
     public readonly struct GridOriginData
     {
-        public readonly Vector3 GridOrigin;
-        public readonly Vector3Int GridOriginCoord;
-        public readonly Vector3 WorldOrigin;
+        public readonly Vector3 gridOrigin;
+        public readonly Vector3Int gridOriginCoord;
+        public readonly Vector3 worldOrigin;
 
         public GridOriginData(Vector3 gridOrigin, Vector3Int gridOriginCoord, Vector3 worldOrigin)
         {
-            GridOrigin = gridOrigin;
-            GridOriginCoord = gridOriginCoord;
-            WorldOrigin = worldOrigin;
+            this.gridOrigin = gridOrigin;
+            this.gridOriginCoord = gridOriginCoord;
+            this.worldOrigin = worldOrigin;
         }
     }
 
