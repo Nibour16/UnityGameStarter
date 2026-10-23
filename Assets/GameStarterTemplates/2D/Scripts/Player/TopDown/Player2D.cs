@@ -14,6 +14,7 @@ public class Player2D : BasePlayer
     #region Override Properties
     protected override Transform ControlSource => transform;
     protected override bool UseControlRotation => false;
+    protected override bool UseFixedUpdateMove => true;
 
     protected override Vector2 MoveInput => _inputManager.Move;
     protected override bool PauseInput => _inputManager.Pause;

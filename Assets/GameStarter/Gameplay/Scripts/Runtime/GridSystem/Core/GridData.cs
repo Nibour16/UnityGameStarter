@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem
@@ -28,16 +30,17 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public readonly Quaternion faceRotator;
 
         public GridState state;
-        public GameObject entity;
+        public HashSet<GameObject> entities;
 
         public GridElement(
             Vector3Int coordinate, Quaternion faceRotator, 
-            GridState state = GridState.Passable, GameObject entity = null) 
+            GridState state = GridState.Passable, GameObject[] entities = null) 
         {
             this.coordinate = coordinate;
             this.faceRotator = faceRotator;
             this.state = state;
-            this.entity = entity;
+
+            this.entities = new HashSet<GameObject>(entities ?? System.Array.Empty<GameObject>());
         }
     }
 

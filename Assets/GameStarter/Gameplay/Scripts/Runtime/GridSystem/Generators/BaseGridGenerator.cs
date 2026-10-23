@@ -66,11 +66,44 @@ namespace UnityGameStarter.Gameplay.GridSystem
         #endregion
 
         #region Layer Access
-        public Layer GetLayerByName(string name) => _layersByName[name];
-        public Layer GetLayerById(int id) => _layersById[id];
+        public bool TryGetLayerByName(string name, out Layer layer) 
+        {
+            layer = default;
 
-        public Grid GetGridByLayer(string layer) => grids[GetLayerByName(layer)];
-        public Grid GetGridByLayer(int layer) => grids[GetLayerById(layer)];
+            if (!_layersByName.Keys.Contains(name)) return false;
+            
+            layer = _layersByName[name];
+            return true;
+        }
+        public bool TryGetLayerByID(int id, out Layer layer) 
+        {
+            layer = default;
+
+            if (!_layersById.Keys.Contains(id)) return false;
+
+            layer = _layersById[id];
+            return true;
+        }
+
+        public bool TryGetGridByLayerName(string name, out Grid grid) 
+        {
+            grid = null;
+
+            if (!TryGetLayerByName(name, out var layer)) return false;
+
+            grid = grids[layer];
+            return true;
+        }
+
+        public bool TryGetGridByLayerID(int id, out Grid grid) 
+        {
+            grid = null;
+
+            if (!TryGetLayerByID(id, out var layer)) return false;
+
+            grid = grids[layer];
+            return true;
+        }
 
         protected TLayer GetLayerConfig(Layer layer) 
             => System.Array.Find(layers, t => t.layerName == layer.name);
@@ -85,6 +118,13 @@ namespace UnityGameStarter.Gameplay.GridSystem
             _isGridGenerated = false;
 
             CollectLayers();
+
+            if (grids.Count == 0)
+            {
+                Debug.LogError("No valid grid layers were collected.", this);
+                return;
+            }
+
             var bounds = new Bounds(MainGridCenter, GridSize);
             GenerateGrids(bounds);
         }

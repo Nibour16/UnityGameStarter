@@ -34,6 +34,9 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
         protected virtual bool EnableMotion => true;
         protected virtual bool UseFixedUpdateMove => false;
 
+        public virtual Vector3 MoveDirection => PlayerVelocity.normalized;
+        public virtual Vector2 MoveDirection2D => PlayerVelocity2D.normalized;
+
         protected abstract Transform ControlSource { get; }
         protected abstract bool UseControlRotation { get; }
         protected abstract Vector2 MoveInput { get; }
@@ -52,6 +55,11 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
 
         public void AddPlayerVelocityParam(VectorParam param, float value)
             => VectorLibrary.AddVector3Param(ref _playerVelocity, param, value);
+        #endregion
+
+        #region Pause State
+        private bool _isPaused = false;
+        public bool IsPaused => _isPaused;
         #endregion
 
         #region Life Cycle
@@ -119,6 +127,7 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
         {
             _cachedVelocity = _playerVelocity;
             _playerVelocity = Vector3.zero;
+            _isPaused = true;
 
             OnPlayerPaused(e);
         }
@@ -130,6 +139,8 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
                 _playerVelocity = _cachedVelocity;
 
             _cachedVelocity = Vector3.zero;
+            _isPaused = false;
+
             OnPlayerUnpaused(e);
         }
 

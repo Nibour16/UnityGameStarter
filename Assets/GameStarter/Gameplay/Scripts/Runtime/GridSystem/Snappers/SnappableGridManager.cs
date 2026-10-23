@@ -57,7 +57,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
                     setToBlock = config.setToBlock;
                 }
 
-                _gridSnapper.TrySnapToGrid(entity, targetLayer, out _, setToBlock);
+                _gridSnapper.TrySnapToGrid(entity, targetLayer, out _, out _, setToBlock);
             }
         }
 

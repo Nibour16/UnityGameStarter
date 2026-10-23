@@ -4,7 +4,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 {
     public sealed class TestSnappable : MonoBehaviour, IGridSnappable
     {
-        public void OnSnapped(string snappedLayer, Vector3Int coord)
+        public void OnSnapped(string snappedLayer, Vector3Int gridID, Vector3Int coord)
         {
             Debug.Log(
                 $"Me as the entity '{gameObject.name}' has snapped into the layer '{snappedLayer}'.\n" +

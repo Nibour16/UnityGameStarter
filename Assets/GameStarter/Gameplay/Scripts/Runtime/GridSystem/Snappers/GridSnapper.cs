@@ -8,30 +8,29 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
         public GridSnapper(IGridSource source) => _source = source;
 
-        public bool TrySnapToGrid(GameObject entity, string layerName, 
+        public bool TrySnapToGrid(GameObject entity, string layerName, out Vector3Int gridID, 
             out Vector3Int coord, bool setToBlock = true)
         {
+            gridID = default;
             coord = default;
 
             if (_source == null || !_source.IsGridGenerated) return false;
-            
-            Layer layer = _source.GetLayerByName(layerName);
 
-            if (entity == null || !_source.Grids.TryGetValue(layer, out Grid grid) || grid == null)
+            if (entity == null || !_source.TryGetGridByLayerName(layerName, out Grid grid) || grid == null)
                 return false;
 
             Vector3 entityPos = entity.transform.position;
 
             entity.transform.position = grid.GetCellCenterWorldPosition(entityPos);
-
-            if (!grid.TrySetEntity(entity, out coord, setToBlock)) 
+            
+            if (!grid.TrySetEntity(entity, out gridID, out coord, setToBlock)) 
             {
                 entity.transform.position = entityPos;
                 return false;
             }
 
             if (entity.TryGetComponent<IGridSnappable>(out var snappable))
-                snappable.OnSnapped(layerName, coord);
+                snappable.OnSnapped(layerName, gridID, coord);
 
             return true;
         }

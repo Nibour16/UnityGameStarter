@@ -66,9 +66,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             if (Source == null) return false;
 
-            layer = Source.GetLayerByName(targetLayerName);
-
-            return true;
+            return Source.TryGetLayerByName(targetLayerName, out layer);
         }
 
         private bool TryGetDebugGrid(out Grid grid)
@@ -77,9 +75,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             if (Source == null) return false;
 
-            grid = Source.GetGridByLayer(targetLayerName);
-
-            return grid != null;
+            return Source.TryGetGridByLayerName(targetLayerName, out grid);
         }
 
         protected abstract void DrawGrid(
