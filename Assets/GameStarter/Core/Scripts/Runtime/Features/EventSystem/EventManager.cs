@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Events
@@ -181,9 +182,9 @@ namespace UnityGameStarter.Events
                 Type eventType = parameter[0].ParameterType;
 
                 // Define the method info into callback by creating the delegate,
-                // The delegate type of the callback must be the action with the generic type of the event type
+                // The callback type must be the Unity Action with the generic type of the event type
                 Delegate callback =
-                    method.CreateDelegate(typeof(Action<>).MakeGenericType(eventType), listener);
+                    method.CreateDelegate(typeof(UnityAction<>).MakeGenericType(eventType), listener);
 
                 // Execute the processor with the event type and the callback
                 processor(eventType, callback);
