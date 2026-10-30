@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityGameStarter.CommonData;
-using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.Events;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.PauseManagement 

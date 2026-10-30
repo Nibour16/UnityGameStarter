@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityGameStarter.CommonData;
-using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.Events;
 using UnityGameStarter.SceneManagement;
 using UnityGameStarter.SingletonPattern;
 

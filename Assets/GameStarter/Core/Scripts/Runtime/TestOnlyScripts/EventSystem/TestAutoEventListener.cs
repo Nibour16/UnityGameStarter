@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.Events;
 
 namespace UnityGameStarter.TestOnlyScripts.Event
 {

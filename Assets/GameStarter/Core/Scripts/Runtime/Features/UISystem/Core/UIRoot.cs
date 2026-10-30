@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.Events;
 
 namespace UnityGameStarter.UI 
 {

@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.Events;
 
 namespace UnityGameStarter.FiniteStateMachine.EventState 
 {

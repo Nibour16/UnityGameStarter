@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityGameStarter.Events.EventManagement
+namespace UnityGameStarter.Events
 {   
     public interface IAutoEventListener { }
 

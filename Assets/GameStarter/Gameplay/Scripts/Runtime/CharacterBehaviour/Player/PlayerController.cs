@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.Events;
 using UnityGameStarter.PauseManagement;
 using UnityGameStarter.UI;
 

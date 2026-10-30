@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityGameStarter.ApplicationStatics;
-using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.Events;
 using UnityGameStarter.FiniteStateMachine;
 using UnityGameStarter.FiniteStateMachine.EventState;
 using UnityGameStarter.Pool;

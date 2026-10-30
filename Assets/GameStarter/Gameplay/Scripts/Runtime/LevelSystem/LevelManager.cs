@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityGameStarter.ApplicationStatics;
 using UnityGameStarter.CommonData;
-using UnityGameStarter.Events.EventManagement;
+using UnityGameStarter.Events;
 using UnityGameStarter.FiniteStateMachine.EventState;
 using UnityGameStarter.SceneManagement;
 using UnityGameStarter.SingletonPattern;
