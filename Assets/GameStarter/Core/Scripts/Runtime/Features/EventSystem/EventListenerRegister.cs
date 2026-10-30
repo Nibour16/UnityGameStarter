@@ -1,9 +1,14 @@
 using UnityEngine;
 
 namespace UnityGameStarter.Events
-{   
+{
     public interface IAutoEventListener { }
 
+    /// <summary>
+    /// Component to register event listener components automatically.
+    /// Can register more than one component in the gameObject,
+    /// but only support those with IAutoEventListener interface
+    /// </summary>
     public sealed class EventListenerRegister : MonoBehaviour
     {
         [SerializeField] private bool printLog = false;

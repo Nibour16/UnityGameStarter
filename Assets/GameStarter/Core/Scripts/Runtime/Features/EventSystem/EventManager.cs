@@ -8,7 +8,7 @@ using UnityGameStarter.SingletonPattern;
 namespace UnityGameStarter.Events
 {
     /// <summary>
-    /// The Event Listener attribute for methods in the event listener classes
+    /// The Event Listener attribute for methods in the event listener classes.
     /// 
     /// Rules for event listener classes inheritance:
     /// - Methods with [EventListener] attribute in a base class can be inherited and registered.
@@ -16,63 +16,39 @@ namespace UnityGameStarter.Events
     ///   inherited listeners in child classes.
     /// </summary>
     /// 
-    /// <Remark>
+    /// <remarks>
     /// Note that this inheritance support applies to listener methods, not event types.
-    /// An EventListener for BaseEvent does NOT automatically receive ChildEvent,
-    /// even when ChildEvent inherits from BaseEvent.
     /// 
-    /// A valid EventListener method must have exactly one parameter, which is treated as an Event Type
-    /// </summary>
+    /// An EventListener for BaseEvent does NOT automatically receive ChildEvent,
+    /// even when ChildEvent inherits from BaseEvent
+    /// 
+    /// A valid EventListener method must have exactly one parameter, which is treated as an Event Type.
+    /// </remarks>
     [AttributeUsage(AttributeTargets.Method)]
     public class EventListenerAttribute : Attribute { }
 
     /// <summary>
+    /// TODO: created a completed persistent event registry system to make Event Manager supports it.
+    /// 
     /// Manager for registering, unregistering, and publishing events, followed by Event Bus Pattern.
+    /// The event manager constructs mainly for cross-system publishment.
+    /// Role will be acted as an extension of Unity Events.
     /// </summary>
     [RuntimeSingleton(-300)]
     public sealed class EventManager : Singleton<EventManager>
     {
-        // Event Invoker Data, that stores all events with specific types
-        private readonly Dictionary<Type, List<IEventInvoker>> _events = new();
-
-        #region Event Invoker Data Structure
         /// <summary>
-        /// Interface that used for data collection 
-        /// Specific achievement are handled by the following EventInvoker<T> class
-        /// Can offer the Callback delegate, or invoke this event
+        /// Event Invoker Data, that stores all events with specific types
         /// </summary>
-        private interface IEventInvoker
-        {
-            Delegate Callback { get; }
-            void Invoke(object e);
-        }
-
-        /// <summary>
-        /// Class to handle how an event Invokes
-        /// </summary>
-        private sealed class EventInvoker<T> : IEventInvoker
-        {
-            private readonly Action<T> _callback;
-            public Delegate Callback => _callback;
-
-            public EventInvoker(Action<T> callback)
-            {
-                _callback = callback;
-            }
-
-            public void Invoke(object e)
-            {
-                _callback((T)e);
-            }
-        }
-        #endregion
+        private readonly Dictionary<Type, IRuntimeEventInvoker> _events = new();
+        private readonly Dictionary<Type, IPersistentEventInvoker> _serializedEvents = new();
 
         /// <summary>
         /// Clear all data when this manager is destroyed
         /// </summary>
         protected override void OnDestroy()
         {
-            ClearAll();
+            _events.Clear();
             base.OnDestroy();
         }
 
@@ -80,26 +56,41 @@ namespace UnityGameStarter.Events
         {
             var type = typeof(TEvent);
 
-            if (!_events.TryGetValue(type, out var list))
-                return 0;
-
-            return list.Count;
+            return _events.TryGetValue(type, out var invoker)? invoker.Count : 0;
         }
 
         #region Registration
-        public void Register(object listener) => ProcessListener(listener, (type, callback) => 
-        { 
-            Subscribe(type, callback); 
-        });
-
-        public void Unregister(object listener) => ProcessListener(listener, (type, callback) => 
+        /// <summary>
+        /// Used the ProcessListener method to register listeners,
+        /// and the processor is <see cref="Subscribe"/>
+        /// </summary>
+        /// <remarks>
+        /// To further understand more about the ProcessListener, see <see cref="ProcessListener"/>
+        /// </remarks>
+        public void Register(object listener) 
         {
-            Unsubscribe(type, callback); 
-        });
+            if (!enabled) return;
+            
+            ProcessListener(listener, Subscribe);
+        }
+
+        /// <summary>
+        /// Used the ProcessListener method to unregister listeners,
+        /// and the processor is <see cref="Unsubscribe"/>
+        /// </summary>
+        /// <remarks>
+        /// To further understand more about the ProcessListener, see <see cref="ProcessListener"/>
+        /// </remarks>
+        public void Unregister(object listener) 
+        {
+            if (!enabled) return;
+
+            ProcessListener(listener, Unsubscribe);
+        }
         #endregion
 
         /// <summary>
-        /// Publish (invoke) all events with a specific event type
+        /// Publish (invoke) all events with a specific event type.
         /// If the manager is disabled, the publish won't be executed
         /// </summary>
         public void Publish<TEvent>(TEvent e, bool removePublishedEvent = false)
@@ -108,56 +99,76 @@ namespace UnityGameStarter.Events
             
             Type eventType = typeof(TEvent);
 
-            if (!_events.TryGetValue(eventType, out var invokers)) return;
+            if (!_events.TryGetValue(eventType, out var invoker)) return;
 
-            foreach (var listener in invokers)
-                listener.Invoke(e);
+            invoker.Invoke(e);
 
             if (removePublishedEvent)
                 Clear<TEvent>();
         }
 
-        public void Clear<TEvent>() => _events.Remove(typeof(TEvent));
-        public void ClearAll() => _events.Clear();
+        #region Event Data Clear API
+        public void Clear<TEvent>() 
+        {
+            if (!enabled) return;
+
+            _events.Remove(typeof(TEvent));
+        }
+
+        public void ClearAll() 
+        {
+            if (!enabled) return;
+
+            _events.Clear();
+        }
+        #endregion
 
         #region Record event listeners
         private void Subscribe(Type eventType, Delegate listener)
         {
-            if (!_events.TryGetValue(eventType, out var list))
+            if (!_events.TryGetValue(eventType, out var invoker))
             {
-                list = new List<IEventInvoker>();
-                _events[eventType] = list;
+                // The new invoker will be created as an instance from the Activator
+                // The new invoker type must be a generic type of the event type
+                invoker = (IRuntimeEventInvoker)Activator.CreateInstance(
+                    typeof(EventInvoker<>).MakeGenericType(eventType));
+
+                _events[eventType] = invoker;
             }
 
-            var invoker = (IEventInvoker)Activator.CreateInstance(
-                typeof(EventInvoker<>).MakeGenericType(eventType), listener);
-
-            list.Add(invoker);
+            invoker.AddListener(listener);
         }
 
         private void Unsubscribe(Type eventType, Delegate listener)
         {
-            if (!_events.TryGetValue(eventType, out var list)) return;
+            if (!_events.TryGetValue(eventType, out var invoker)) return;
 
-            list.RemoveAll(x => x.Callback.Equals(listener));
+            invoker.RemoveListener(listener);
 
-            if (list.Count == 0)
+            if (invoker.Count == 0)
                 _events.Remove(eventType);
         }
         #endregion
 
-        private void ProcessListener(object listener, Action<Type, Delegate> action)
+        /// <summary>
+        /// Collect all [EventListener] methods from the <paramref name="listener"/>
+        /// to be processed throught the <paramref name="processor"/> action
+        /// </summary>
+        private void ProcessListener(object listener, Action<Type, Delegate> processor)
         {
+            // Get All methods from the listener, excluding static methods
             var methods = listener.GetType().GetMethods
                 (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             foreach (var method in methods)
             {
+                // All listener methods must be assigned by [EventListener] attribute
                 if (method.GetCustomAttribute<EventListenerAttribute>() == null)
                     continue;
 
                 var parameter = method.GetParameters();
 
+                // All listener methods must have exactly one parameter
                 if (parameter.Length != 1) 
                 {
                     Debug.LogError(
@@ -165,12 +176,17 @@ namespace UnityGameStarter.Events
                     continue; 
                 }
 
+                // This parameter will be acted as the event type
+                // The type can be anything, but recommended to make them more understandable
                 Type eventType = parameter[0].ParameterType;
 
+                // Define the method info into callback by creating the delegate,
+                // The delegate type of the callback must be the action with the generic type of the event type
                 Delegate callback =
                     method.CreateDelegate(typeof(Action<>).MakeGenericType(eventType), listener);
 
-                action(eventType, callback);
+                // Execute the processor with the event type and the callback
+                processor(eventType, callback);
             }
         }
     }
