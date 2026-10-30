@@ -4,10 +4,10 @@ namespace UnityGameStarter.Gameplay.GridSystem
 {
     public class PlaneGridGenerator : BaseGridGenerator<PlaneSurfaceSampler, LayerConfig>
     {
-        [SerializeField] private SpriteRenderer renderer;
+        [SerializeField] private Renderer renderer;
 
         protected override PlaneSurfaceSampler Sampler(Layer layer) => new(MainGridUp, MainGridCenter);
-        protected override Vector3 SampleDirection => Vector3.up;
+        protected override Vector3 SampleDirection => MainGridUp;
 
         public override Vector3Int GetCellCount(Layer layer)
         {

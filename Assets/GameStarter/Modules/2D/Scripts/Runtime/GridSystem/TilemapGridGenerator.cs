@@ -11,10 +11,10 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
     public class TilemapGridGenerator : BaseGridGenerator<TilemapSurfaceSampler, TilemapLayer>
     {
-        protected override Vector3 SampleDirection => Vector3.back;
+        protected override Vector3 SampleDirection => -MainGridForward;
 
         protected override TilemapSurfaceSampler Sampler(Layer layer)
-            => new(GetLayerConfig(layer).targetTilemap, Vector3.forward);
+            => new(GetLayerConfig(layer).targetTilemap, MainGridForward);
 
         public override Vector3Int GetCellCount(Layer layer)
         {
