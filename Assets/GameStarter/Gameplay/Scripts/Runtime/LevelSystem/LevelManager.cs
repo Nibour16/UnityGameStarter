@@ -42,7 +42,7 @@ namespace UnityGameStarter.Gameplay.LevelManagement
 
             _initializationState = InitializationState.Initializing;
 
-            if (EventManager.Instance.GetListenerCount<EnterGameExitEvent>() > 0)
+            if (EventManager.Instance.GetListenerCount<InitializeLevelEvent>() > 0)
                 EventManager.Instance.Publish(new InitializeLevelEvent());
             else
                 OnInitializationComplete();
