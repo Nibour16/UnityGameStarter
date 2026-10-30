@@ -13,11 +13,18 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
     {
         [SerializeField] private UIRoot gameplayUIRoot;
         [SerializeField] private string targetPauseMenuName = "PauseMenu";
+        [SerializeField] private bool dontDestroyOnLoad = false;
 
         [Header("UI-less Settings")]
         [SerializeField] private bool pauseGame = true;
 
         public UIRoot GameplayUIRoot => gameplayUIRoot;
+
+        private void Awake()
+        {
+            if (dontDestroyOnLoad)
+                DontDestroyOnLoad(gameObject);
+        }
 
         public void SetPause()
         {
