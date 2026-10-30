@@ -5,6 +5,8 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
 {
     public class GridBasedMovement
     {
+        private SnappableGridManager _gridManager;
+
         private GameObject _owner;
         private string _currentLayer = "Default";
         private readonly string[] _blockLayers = { "Wall" };
@@ -16,7 +18,7 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
         private Vector2 _movingTarget = Vector2.zero;
         private bool _initiallySnapped = false;
 
-        public SnappableGridManager GridManager => SnappableGridManager.Instance;
+        public SnappableGridManager GridManager => _gridManager;
 
         public string CurrentLayer => _currentLayer;
         public Vector3Int CurrentGridID => _currentGridID;
@@ -58,9 +60,10 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
             }
         }
 
-        public GridBasedMovement(GameObject owner, string[] blockLayers) 
+        public GridBasedMovement(GameObject owner, SnappableGridManager manager, string[] blockLayers) 
         {
             _owner = owner;
+            _gridManager = manager;
             _blockLayers = blockLayers ?? System.Array.Empty<string>();
         }
 

@@ -11,7 +11,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public bool setToBlock = true;
     }
 
-    public class SnappableGridManager : Singleton<SnappableGridManager>
+    public class SnappableGridManager : MonoBehaviour
     {
         [SerializeField] private MonoBehaviour source;
 
@@ -27,9 +27,8 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public GridSnapper Snapper => _gridSnapper;
         public IGridSource Source => source as IGridSource;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             _gridSnapper = new GridSnapper(Source);
         }
 

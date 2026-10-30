@@ -6,6 +6,8 @@ using UnityGameStarter.Gameplay.PlayerSystem;
 [RequireComponent(typeof(InputManager2D))]
 public class Player2D_GridBased : BasePlayer, IGridSnappable
 {
+    [Header("Grid")]
+    [SerializeField] private SnappableGridManager gridManager;
     [SerializeField] private string[] blockableLayers = { "Wall" };
     [SerializeField] private bool releaseCurrentCellOnMovingStart = false;
 
@@ -41,7 +43,14 @@ public class Player2D_GridBased : BasePlayer, IGridSnappable
     protected override void OnInitialized()
     {
         _inputManager = GetComponent<InputManager2D>();
-        _movement = new GridBasedMovement(gameObject, blockableLayers);
+
+        if (!gridManager) 
+        {
+            Debug.LogError("GridManager is not setup");
+            return;
+        }
+
+        _movement = new GridBasedMovement(gameObject, gridManager, blockableLayers);
     }
 
     protected override void OnMoveVelocityHandled(MovementResult result)
