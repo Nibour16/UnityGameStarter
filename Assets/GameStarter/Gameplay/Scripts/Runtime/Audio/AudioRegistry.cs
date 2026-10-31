@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay.Audio 
 {   
-    public class AudioRegistry : Singleton<AudioRegistry>
+    public sealed class AudioRegistry : MonoBehaviour
     {
         [SerializeField] private Audio[] audioList;
 
