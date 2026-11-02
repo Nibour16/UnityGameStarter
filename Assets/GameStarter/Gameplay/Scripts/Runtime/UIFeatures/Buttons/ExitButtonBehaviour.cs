@@ -7,9 +7,9 @@ namespace UnityGameStarter.Gameplay.UI.Button
     {
         [SerializeField] private bool applicationQuit = false;
         
-        public override void OnPointerClicked()
+        public override void OnButtonClick<T>(T eventData)
         {
-            base.OnPointerClicked();
+            base.OnButtonClick(eventData);
 
             if (applicationQuit) 
             {

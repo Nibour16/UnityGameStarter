@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainUIRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 6795195629340086802, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
+      propertyPath: m_FirstSelected
+      value: 
+      objectReference: {fileID: 8441766067903220507}
     - target: {fileID: 9082810962171314965, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: dontDestroyOnLoad
       value: 0
@@ -201,5 +205,10 @@ PrefabInstance:
 --- !u!224 &3371640518210013097 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7574205282709828963, guid: 401b20f7f0764ed4fb197618e37e5c2f, type: 3}
+  m_PrefabInstance: {fileID: 5176468458937168586}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8441766067903220507 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3670907723520145873, guid: 401b20f7f0764ed4fb197618e37e5c2f, type: 3}
   m_PrefabInstance: {fileID: 5176468458937168586}
   m_PrefabAsset: {fileID: 0}

@@ -152,6 +152,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dadd80cf763a8144a02b95b67df693b, type: 3}
+--- !u!1 &3068817229869213223 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2009215352669069733, guid: 1dadd80cf763a8144a02b95b67df693b, type: 3}
+  m_PrefabInstance: {fileID: 3563626815466112898}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5250441465168133933 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8766778963683571887, guid: 1dadd80cf763a8144a02b95b67df693b, type: 3}
@@ -165,6 +170,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 230935954166835178, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
+      propertyPath: m_DeselectOnBackgroundClick
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1994053820662534207, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -209,6 +218,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameplayUIRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 6795195629340086802, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
+      propertyPath: m_FirstSelected
+      value: 
+      objectReference: {fileID: 3068817229869213223}
     - target: {fileID: 7099594405747404948, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25

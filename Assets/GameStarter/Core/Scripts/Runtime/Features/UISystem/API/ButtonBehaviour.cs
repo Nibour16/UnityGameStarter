@@ -1,15 +1,15 @@
 using UnityEngine;
-using UnityGameStarter.Interaction;
 
 namespace UnityGameStarter.UI.Button 
 {
+    using UnityEngine.EventSystems;
     using UnityEngine.UI;
+    using UnityGameStarter.PointerInteraction;
 
     [RequireComponent(typeof(Button))]
-    public abstract class ButtonBehaviour : MonoBehaviour, IPointerInteractable
+    public abstract class ButtonBehaviour : BasePointerInteractable,
+        ISelectHandler, IDeselectHandler, IMoveHandler, ISubmitHandler, ICancelHandler
     {
-        private Button _button;
-
         protected UIRoot OwnerRoot => GetComponentInParent<UIRoot>();
 
         protected RectTransform OwnerMenu 
@@ -37,21 +37,45 @@ namespace UnityGameStarter.UI.Button
             }
         }
 
-        protected virtual void Awake()
+        #region Pointer Interaction
+        public override void OnPointerClick(PointerEventData eventData)
         {
-            _button = GetComponent<Button>();
-            _button.onClick.AddListener(OnPointerClicked);
+            OnButtonClick(eventData);
         }
 
-        public abstract void OnPointerClicked();
+        public override void OnPointerEnter(PointerEventData eventData)
+        {
+            OnButtonHovered(eventData);
+        }
 
-        public virtual void OnHovered() { }
+        public override void OnPointerExit(PointerEventData eventData)
+        {
+            OnButtonUnhovered(eventData);
+        }
+        #endregion
 
-        public virtual void OnUnhovered() { }
+        public void OnSelect(BaseEventData eventData)
+        {
+            OnButtonHovered(eventData);
+        }
 
-        public virtual void OnPointerPressed() { }
+        public void OnDeselect(BaseEventData eventData)
+        {
+            OnButtonUnhovered(eventData);
+        }
 
-        public virtual void OnPointerReleased() { }
+        public void OnSubmit(BaseEventData eventData)
+        {
+            OnButtonClick(eventData);
+        }
+
+        public abstract void OnButtonClick<T>(T eventData) where T : BaseEventData;
+
+        public virtual void OnMove(AxisEventData eventData) { }
+        public virtual void OnCancel(BaseEventData eventData) { }
+
+        public virtual void OnButtonHovered<T>(T eventData) where T : BaseEventData { }
+        public virtual void OnButtonUnhovered<T>(T eventData) where T : BaseEventData { }
     }
 }
 

@@ -6,10 +6,10 @@ namespace UnityGameStarter.Gameplay.UI.Button
     public class OpenLevelButtonBehaviour : ResumeButtonBehaviour
     {
         [SerializeField] private string levelName = "NewScene";
-        
-        public override void OnPointerClicked()
+
+        public override void OnButtonClick<T>(T eventData)
         {
-            base.OnPointerClicked();
+            base.OnButtonClick(eventData);
 
             if (GameManager.TryGetInstance(out var instance))
                 instance.NextLevel(levelName);

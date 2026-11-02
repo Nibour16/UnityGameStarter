@@ -5,7 +5,7 @@ namespace UnityGameStarter.Gameplay.UI.Button
 {
     public class ResumeButtonBehaviour : ButtonBehaviour
     {
-        public override void OnPointerClicked()
+        public override void OnButtonClick<T>(T eventData)
         {
             if (OwnerRoot == null || OwnerMenu == null) 
             {
