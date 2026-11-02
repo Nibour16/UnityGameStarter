@@ -1,4 +1,4 @@
-namespace UnityGameStarter.Gameplay.Interaction 
+namespace UnityGameStarter.Interaction 
 {
     public interface IPointerInteractable
     {

@@ -2,18 +2,21 @@ namespace UnityGameStarter.Gameplay.Item
 {
     public abstract class ItemCollectionEvent
     {
-        private readonly BaseItem _item;
-        public BaseItem Item => _item;
-
+        public readonly BaseItem item;
+        
         public ItemCollectionEvent(BaseItem item)
         {
-            _item = item;
+            this.item = item;
         }
     }
 
     public class ItemCollectedEvent : ItemCollectionEvent
     {
-        public ItemCollectedEvent(BaseItem item) : base(item) { }
+        public readonly string log;
+        public ItemCollectedEvent(BaseItem item, string log = "") : base(item) 
+        {
+            this.log = log;
+        }
     }
 
     public class ItemRemovingEvent : ItemCollectionEvent

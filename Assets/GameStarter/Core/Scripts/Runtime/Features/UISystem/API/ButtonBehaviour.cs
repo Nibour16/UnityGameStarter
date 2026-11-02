@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityGameStarter.Gameplay.Interaction;
+using UnityGameStarter.Interaction;
 
 namespace UnityGameStarter.UI.Button 
 {

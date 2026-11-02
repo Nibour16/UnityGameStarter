@@ -7,8 +7,8 @@ namespace UnityGameStarter.Gameplay.Item
         [SerializeField] protected ItemData data;
 
         public ItemData Data => data;
-        internal virtual void OnAdded() { }
-        internal virtual void OnRemoved() { }
+        public virtual void OnAdded() { }
+        public virtual void OnRemoved() { }
 
         protected virtual void Awake() 
         {

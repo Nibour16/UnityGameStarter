@@ -1,6 +1,6 @@
 namespace UnityGameStarter.Gameplay.Interaction 
 {
-    public interface IInteractable
+    public interface IGameplayInteractable
     {
         void OnFocused();
         void OnUnfocused();

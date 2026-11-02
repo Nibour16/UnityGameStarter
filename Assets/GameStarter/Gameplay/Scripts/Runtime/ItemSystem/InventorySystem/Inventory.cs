@@ -8,24 +8,35 @@ namespace UnityGameStarter.Gameplay.Item
 {
     public class Inventory : MonoBehaviour
     {
-        [SerializeField] private List<ItemData> inventory;
-        [SerializeField] private int maxItemSlot = 10;
+        [SerializeField] private List<ItemData> slots;
+        [SerializeField] private int maxItemSlots = 10;
+        public int MaxItemSlots => maxItemSlots;
 
-        public void AddItem(BaseItem item) 
+        public bool TryAddItem(BaseItem item, out string reason) 
         {
-            if (item.Data == null) return;
+            if (item.Data == null) 
+            {
+                reason = "Invalid Data";
+                return false;
+            }
 
-            if (inventory.Count >= maxItemSlot) return;
+            if (slots.Count >= maxItemSlots) 
+            {
+                reason = "Inventory is full";
+                return false;
+            }
 
-            inventory.Add(item.Data);
+            slots.Add(item.Data);
 
+            reason = "Success";
             item.OnAdded();
-            EventManager.Instance.Publish(new ItemCollectedEvent(item));
+            EventManager.Instance.Publish(new ItemCollectedEvent(item, reason));
+            return true;
         }
 
         public ItemData GetItemData(string itemName) 
         {
-            var data = inventory.FirstOrDefault(x => x.Name == itemName);
+            var data = slots.FirstOrDefault(x => x.Name == itemName);
 
             if (data == null) 
             {
@@ -38,7 +49,7 @@ namespace UnityGameStarter.Gameplay.Item
 
         public ItemData GetItemData(BaseItem item) 
         {
-            var data = inventory.FirstOrDefault(x => x == item.Data);
+            var data = slots.FirstOrDefault(x => x == item.Data);
 
             if (data == null)
             {
@@ -54,7 +65,7 @@ namespace UnityGameStarter.Gameplay.Item
             if (item.Data == null) return;
 
             EventManager.Instance.Publish(new ItemRemovingEvent(item));
-            inventory.Remove(item.Data);
+            slots.Remove(item.Data);
             item.OnRemoved();
         }
     }
