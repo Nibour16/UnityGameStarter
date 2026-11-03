@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3313116446865362110}
   - component: {fileID: 6028084741939190056}
   - component: {fileID: 1067667883613252816}
+  - component: {fileID: -3485574875304788979}
   m_Layer: 0
   m_Name: StarterEventSystem
   m_TagString: Untagged
@@ -79,3 +80,15 @@ MonoBehaviour:
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
+--- !u!114 &-3485574875304788979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860833388757316627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebedbab7c08cf2448aa9389ad29107e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.UI.EventSystemSingleton

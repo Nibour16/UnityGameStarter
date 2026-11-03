@@ -10,6 +10,9 @@ namespace UnityGameStarter.SingletonPattern
         private static T _instance;
         private static bool _isQuitting = false;
 
+        protected virtual MonoBehaviour InstanceRef => this;
+        protected virtual bool DestroyGameObjectOnDuplicate => true;
+
         public static bool IsQuitting => _isQuitting;
 
         public static T Instance
@@ -26,18 +29,29 @@ namespace UnityGameStarter.SingletonPattern
 
         protected virtual void Awake()
         {
+            var instance = InstanceRef;
+
+            if (instance == null) return;
+
             if (_instance == null)
-                _instance = this as T;
-            else if (_instance != this)
-                Destroy(gameObject);
+                _instance = instance as T;
+            else if (_instance != instance)
+            {
+                if (DestroyGameObjectOnDuplicate)
+                    Destroy(instance.gameObject);
+                else
+                    Destroy(instance);
+            }
         }
 
         protected void EnableDontDestroyOnLoad() 
         {
-            if (Instance != this)
+            var instance = InstanceRef;
+
+            if (instance == null || Instance != instance)
                 return;
 
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(instance.gameObject);
         }
 
         public static bool TryGetInstance(out T instance, bool printWarningIfFailed = false)
@@ -46,7 +60,7 @@ namespace UnityGameStarter.SingletonPattern
 
             if (instance != null) return true;
 
-            instance = FindAnyObjectByType<T>();
+            instance = FindInstance();
 
             if (instance == null) 
             {
@@ -64,12 +78,27 @@ namespace UnityGameStarter.SingletonPattern
         {
             if (_isQuitting || !Application.isPlaying) return;
 
-            _instance = FindAnyObjectByType<T>();
+            _instance = FindInstance();
 
             if (_instance != null) return;
 
             var obj = new GameObject(typeof(T).Name);
-            _instance = obj.AddComponent<T>();
+            var component = obj.AddComponent<T>();
+
+            if (component is Singleton<T> singleton)
+                _instance = singleton.InstanceRef as T;
+        }
+
+        private static T FindInstance()
+        {
+            foreach (var component in FindObjectsByType<T>())
+            {
+                if (component is not Singleton<T> singleton) continue;
+
+                if (singleton.InstanceRef is T instance) return instance;
+            }
+
+            return null;
         }
 
         [SingletonReset]
@@ -86,7 +115,7 @@ namespace UnityGameStarter.SingletonPattern
 
         protected virtual void OnDestroy()
         {
-            if (_instance == this)
+            if (_instance == InstanceRef)
                 _instance = null;
         }
     }

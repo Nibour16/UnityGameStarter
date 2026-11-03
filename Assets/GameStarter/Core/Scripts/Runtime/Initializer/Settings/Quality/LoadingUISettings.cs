@@ -8,9 +8,11 @@ namespace UnityGameStarter.StarterSettings.Quality
     public sealed class LoadingUISettings : ScriptableObject, IStarterSetting
     {
         [SerializeField] private UIRoot loadingUIRoot;
+        [SerializeField] private bool forceDontDestroyOnLoad = true;
         [SerializeField] private string loadingUIName = "LoadingUI";
 
         public UIRoot LoadingUIRoot => loadingUIRoot;
+        public bool ForceDontDestroyOnLoad => forceDontDestroyOnLoad;
         public string LoadingUIName => loadingUIName;
     }
 }

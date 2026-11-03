@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityGameStarter.Events;
+using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.UI 
 {
     [RequireComponent(typeof(EventListenerRegister))]
-    public class UIRoot : MonoBehaviour, IAutoEventListener
+    public class UIRoot : OptionalSingleton<UIRoot>, IAutoEventListener
     {
         [SerializeField] private Canvas rootCanvas;
         [SerializeField] private bool dontDestroyOnLoad = true;
@@ -22,10 +23,12 @@ namespace UnityGameStarter.UI
             }
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+            
             if (dontDestroyOnLoad)
-                DontDestroyOnLoad(gameObject);
+                EnableDontDestroyOnLoad();
         }
 
         #if UNITY_EDITOR

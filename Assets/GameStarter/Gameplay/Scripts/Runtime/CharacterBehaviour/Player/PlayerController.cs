@@ -8,6 +8,7 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
     public struct OnPlayerPauseEvent { }
     public struct OnPlayerUnpauseEvent { }
 
+    [RequireComponent(typeof(GameplayEntity))]
     [RequireComponent(typeof(EventListenerRegister))]
     public class PlayerController : MonoBehaviour, IAutoEventListener
     {

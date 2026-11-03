@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 5057796797054592416}
   - component: {fileID: 960467254833576472}
   - component: {fileID: 9087017073582339253}
+  - component: {fileID: 5746450106116692404}
   m_Layer: 6
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -199,6 +200,20 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &5746450106116692404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7537880697181384891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6833ca62d153c3e4c8ad76e6afd5feac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.Object.RootGameObject
+  isStatic: 1
+  dontDestroyOnLoad: 1
 --- !u!1001 &8810422919540235261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,6 +301,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2636423194306226503}
+    - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7540191990011866650}
   m_SourcePrefab: {fileID: 100100000, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
 --- !u!1 &504469840963320352 stripped
 GameObject:
@@ -331,6 +349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.PlayerSystem.PlayerController
   gameplayUIRoot: {fileID: 0}
   targetPauseMenuName: PauseMenu
+  dontDestroyOnLoad: 1
   pauseGame: 1
 --- !u!114 &4457816698375499248
 MonoBehaviour:
@@ -422,6 +441,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Events.EventManagement.EventListenerRegister
   printLog: 0
+--- !u!114 &7540191990011866650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504469840963320352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 434a75f06bb83f14ca01eb8b80a44228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.GameplayEntity
 --- !u!4 &7219959147946031802 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2195111608349385031, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}

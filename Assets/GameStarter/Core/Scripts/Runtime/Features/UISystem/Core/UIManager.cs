@@ -80,8 +80,10 @@ namespace UnityGameStarter.UI
             {
                 foreach (var ui in _uiComponents[root].Values)
                 {
-                    if (ui.TryGetComponent<IUIComponent>(out var component))
-                        component.Deinit();
+                    var uiComps = ui.GetComponents<IUIComponent>();
+
+                    foreach (var comp in uiComps)
+                        comp.Deinit();
                 }
 
                 _uiComponents.Remove(root);
@@ -99,8 +101,10 @@ namespace UnityGameStarter.UI
 
             foreach (var ui in collection.Values)
             {
-                if (ui.TryGetComponent<IUIComponent>(out var component))
-                    component.Init();
+                var uiComps = ui.GetComponents<IUIComponent>();
+
+                foreach (var comp in uiComps)
+                    comp.Init();
             }
         }
 

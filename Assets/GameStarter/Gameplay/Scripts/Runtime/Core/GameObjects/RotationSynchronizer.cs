@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityGameStarter.Math.TransformStatics;
 using static UnityGameStarter.Math.TransformStatics.QuaternionLibrary;
 
-namespace UnityGameStarter.Gameplay.Spatial3D 
+namespace UnityGameStarter.Gameplay.Object 
 {
     public class RotationSynchronizer : MonoBehaviour
     {

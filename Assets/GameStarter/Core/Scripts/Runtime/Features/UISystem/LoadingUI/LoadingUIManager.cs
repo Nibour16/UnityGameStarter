@@ -36,6 +36,10 @@ namespace UnityGameStarter.UI.Loading
             }
 
             _uiRoot = Instantiate(rootPrefab);
+
+            if (settings.ForceDontDestroyOnLoad)
+                DontDestroyOnLoad(_uiRoot.gameObject);
+            
             _uiName = settings.LoadingUIName;
         }
 

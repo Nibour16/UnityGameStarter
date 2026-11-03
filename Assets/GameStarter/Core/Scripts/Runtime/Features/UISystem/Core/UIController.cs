@@ -37,8 +37,10 @@ namespace UnityGameStarter.UI
 
             _lastOpenedUI = rect;
 
-            if (rect.TryGetComponent<IUIComponent>(out var component))
-                component.OnOpened();
+            var uiComps = rect.GetComponents<IUIComponent>();
+
+            foreach (var comp in uiComps)
+                comp.OnOpened();
 
             return true;
         }
@@ -62,8 +64,10 @@ namespace UnityGameStarter.UI
 
             if (!IsValidUIElement(rect, uiName)) return false;
 
-            if (rect.TryGetComponent<IUIComponent>(out var component))
-                component.OnClosed();
+            var uiComps = rect.GetComponents<IUIComponent>();
+
+            foreach (var comp in uiComps)
+                comp.OnClosed();
 
             rect.gameObject.SetActive(false);
 

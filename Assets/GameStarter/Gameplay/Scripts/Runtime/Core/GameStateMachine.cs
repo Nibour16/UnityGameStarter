@@ -30,6 +30,7 @@ namespace UnityGameStarter.Gameplay
         protected override bool SetDefault => false;
 
         #region Game Exit
+        [Header("Advanced")]
         [SerializeField] private bool alwaysUseDefaultExit = false;
         public bool AlwaysUseDefaultExit => alwaysUseDefaultExit;
 
