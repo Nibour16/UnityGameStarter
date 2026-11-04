@@ -3,13 +3,22 @@ using UnityGameStarter.CursorStatics;
 
 namespace UnityGameStarter.Gameplay.Camera.Spatial3D 
 {
-    public class CameraController3D : MonoBehaviour
+    public class CameraController3D : MonoBehaviour, ICameraController
     {
-        [SerializeField] private Transform camera;
         [SerializeField] private CameraSettings setting;
         [SerializeField] private CameraRuntimeState state;
 
-        public Quaternion CameraRotation => camera.rotation;
+        private Transform _camera;
+
+        public bool IsMainCamera => true;
+
+        public UnityEngine.Camera Camera 
+        {
+            get => _camera.GetComponent<UnityEngine.Camera>();
+            set => _camera = value.transform;
+        }
+
+        public Quaternion CameraRotation => _camera.rotation;
 
         private void OnEnable()
         {
@@ -30,7 +39,8 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
             }
 
             state.targetPos = targetSource.position;
-            CameraControlLibrary.CalculateCameraTransform(ref camera, lookInput, ref state, setting);
+
+            CameraControlLibrary.CalculateCameraTransform(ref _camera, lookInput, ref state, setting);
         }
     }
 }
