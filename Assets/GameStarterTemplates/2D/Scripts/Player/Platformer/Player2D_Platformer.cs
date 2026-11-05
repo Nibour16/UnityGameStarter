@@ -6,7 +6,7 @@ using UnityGameStarter.Gameplay.CharacterMovement;
 [RequireComponent(typeof(InputManager2D_Platformer))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Rigidbody2DJumpModule))]
-public class Player2D_Platformer : BasePlayer
+public class Player2D_Platformer : BasePlayerMovement
 {
     #region References
     private InputManager2D_Platformer _inputManager;

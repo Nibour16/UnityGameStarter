@@ -92,3 +92,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebedbab7c08cf2448aa9389ad29107e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.UI.EventSystemSingleton
+  dontDestroyOnLoad: 1
+  disconnectFromParentDuringAwake: 1

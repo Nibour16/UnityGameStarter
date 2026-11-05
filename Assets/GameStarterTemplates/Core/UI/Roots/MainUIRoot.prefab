@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainUIRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 4775413539312039735, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
+      propertyPath: dontDestroyOnLoad
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6795195629340086802, guid: 1afcc0e8874f0c84687b4dcdfd87eb3d, type: 3}
       propertyPath: m_FirstSelected
       value: 

@@ -4,7 +4,7 @@ using UnityGameStarter.Gameplay.CharacterMovement;
 
 [RequireComponent(typeof(InputManager2D))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player2D : BasePlayer
+public class Player2D : BasePlayerMovement
 {
     #region References
     private InputManager2D _inputManager;

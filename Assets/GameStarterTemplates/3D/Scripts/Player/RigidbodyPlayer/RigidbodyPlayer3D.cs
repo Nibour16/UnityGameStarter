@@ -9,7 +9,7 @@ using UnityGameStarter.Math.TransformStatics;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CameraController3D))]
 [RequireComponent(typeof(RigidbodyJumpModule))]
-public class RigidbodyPlayer3D : BasePlayer
+public class RigidbodyPlayer3D : BasePlayerMovement
 {
     #region Settings
     [Header("References")]

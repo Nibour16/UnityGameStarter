@@ -4,7 +4,7 @@ using UnityGameStarter.Gameplay.GridSystem;
 using UnityGameStarter.Gameplay.PlayerSystem;
 
 [RequireComponent(typeof(InputManager2D))]
-public class Player2D_GridBased : BasePlayer, IGridSnappable
+public class Player2D_GridBased : BasePlayerMovement, IGridSnappable
 {
     [Header("Grid")]
     [SerializeField] private SnappableGridManager gridManager;

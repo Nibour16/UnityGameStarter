@@ -7,7 +7,7 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
 {
     [RequireComponent(typeof(PlayerController))]
     [RequireComponent(typeof(EventListenerRegister))]
-    public abstract class BasePlayer : MonoBehaviour, IAutoEventListener
+    public abstract class BasePlayerMovement : MonoBehaviour, IAutoEventListener
     {
         #region Settings
         [Header("Movement")]

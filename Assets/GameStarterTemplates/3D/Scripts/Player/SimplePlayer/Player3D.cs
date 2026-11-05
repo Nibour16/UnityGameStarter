@@ -9,7 +9,7 @@ using UnityGameStarter.Math.TransformStatics;
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CameraController3D))]
 [RequireComponent(typeof(CharacterJumpModule))]
-public class Player3D : BasePlayer
+public class Player3D : BasePlayerMovement
 {
     #region Serialized Fields
     [Header("Reference")]
