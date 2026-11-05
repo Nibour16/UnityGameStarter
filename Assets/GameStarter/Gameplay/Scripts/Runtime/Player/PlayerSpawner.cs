@@ -14,6 +14,10 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
         }
 
         public GameObject SpawnPlayer(Vector3 position, Quaternion rotation) 
-            => Instantiate(playerPrefab, position, rotation);
+        {
+            var player = Instantiate(playerPrefab, position, rotation);
+            player.name = playerPrefab.name;
+            return player;
+        }
     }
 }

@@ -29,5 +29,13 @@ namespace UnityGameStarter.Math.TransformStatics
 
         public static float GetRoll(this Transform trans)
             => trans.rotation.GetRoll();
+
+        public static void SetLossyScale(this Transform transform, Vector3 targetScale)
+        {
+            Vector3 parentScale = transform.parent != null? transform.parent.lossyScale : Vector3.one;
+
+            transform.localScale = new Vector3(
+                targetScale.x / parentScale.x, targetScale.y / parentScale.y, targetScale.z / parentScale.z);
+        }
     }
 }

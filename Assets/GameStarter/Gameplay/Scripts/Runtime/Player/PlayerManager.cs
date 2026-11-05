@@ -7,31 +7,6 @@ using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay.PlayerSystem 
 {
-    public class PlayerData 
-    {
-        public readonly string name;
-
-        internal GameObject reference;
-        internal Vector3 initialPosition;
-        internal Quaternion initialRotation;
-
-        public Vector3 currentPosition;
-        public Quaternion currentRotation;
-
-        public GameObject Reference => reference;
-        public Vector3 InitialPosition => initialPosition;
-        public Quaternion InitialRotation => initialRotation;
-
-        public PlayerData(GameObject reference) 
-        {
-            this.reference = reference;
-
-            name = reference.name;
-            initialPosition = reference.transform.position;
-            initialRotation = reference.transform.rotation;
-        }
-    }
-
     public class PlayerInitializedEvent 
     {
         private readonly List<PlayerData> _players;
@@ -58,6 +33,7 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
 
             SceneFacade.Instance.BindSceneLoaded(Initialization);
             SceneFacade.Instance.BindSceneLoaded(LoadPlayers);
+            SceneFacade.Instance.BindSceneUnloadStart(UpdatePlayerDuringUnload);
         }
 
         /// <summary>
@@ -65,20 +41,20 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
         /// </summary>
         public void JoinPlayer(GameObject player) => _players.Add(ConvertToPlayerData(player));
 
-        public PlayerData FindPlayerData(string playerName) => _players.Find(x => x.name == playerName);
+        public PlayerData FindPlayerData(string playerName) => _players.Find(x => x.Name == playerName);
         public PlayerData FindPlayerData(Transform player, bool checkReference = false) 
         {
             if (checkReference)
                 return _players.Find(x => x.Reference == player.gameObject);
 
-            return _players.Find(x => x.name == player.name);
+            return _players.Find(x => x.Name == player.name);
         }
         public PlayerData FindPlayerData(GameObject player, bool checkReference = false) 
         {
             if (checkReference)
                 return _players.Find(x => x.Reference == player);
 
-            return _players.Find(x => x.name == player.name);
+            return _players.Find(x => x.Name == player.name);
         }
 
         /// <summary>
@@ -105,6 +81,18 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
             data.currentRotation = player.rotation;
         }
 
+        /// <summary>
+        /// Update player current transform before unload the scene
+        /// </summary>
+        private void UpdatePlayerDuringUnload(Scene scene) 
+        {
+            foreach (var player in _players)
+                UpdatePlayer(player.Reference.transform);
+        }
+
+        /// <summary>
+        /// Initialize the data to collect all existing players in during the game start
+        /// </summary>
         private void Initialization(Scene scene, LoadSceneMode mode) 
         {
             if (_initialized) return;
@@ -114,10 +102,18 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
             foreach (var player in players)
                 JoinPlayer(player);
 
+            // Won't be counted as initialized if no player is found. For single player games you don't need any extra setup
+            if (_players.Count <= 0) return;
+
             EventManager.Instance.Publish(new PlayerInitializedEvent(_players));
             _initialized = true;
         }
 
+        /// <summary>
+        /// Load players to ensure all players that registered in the data are exist in the scene
+        /// Only execute when initialization is done.
+        /// Will remove all players that are not registered in the data. Usually for preventing duplication
+        /// </summary>
         private void LoadPlayers(Scene scene, LoadSceneMode mode) 
         {
             if (!_initialized) return;
@@ -134,12 +130,17 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
                     continue;
                 }
 
-                if (data.Reference == null) 
+                if (data.Reference == null)
                 {
                     if (!PlayerSpawner.TryGetInstance(out var instance, true))
-                        data.reference = player;
+                        data.SetReference(player);
                     else
-                        data.reference = instance.SpawnPlayer(data.InitialPosition, data.InitialRotation);
+                        data.SetReference(instance.SpawnPlayer(data.InitialPosition, data.InitialRotation));
+                }
+                else 
+                {
+                    // TODO: For now just return the player to the initial position
+                    data.ResetPlayerToInitial();
                 }
 
                 if (data.Reference != player) 
@@ -147,9 +148,6 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
                     Destroy(player);
                     continue;
                 }
-
-                data.initialPosition = player.transform.position;
-                data.initialRotation = player.transform.rotation;
             }
         }
 
