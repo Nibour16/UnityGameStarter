@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityGameStarter.Events;
@@ -12,12 +11,16 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
     {
         public readonly string name;
 
-        public readonly GameObject reference;
-        public readonly Vector3 initialPosition;
-        public readonly Quaternion initialRotation;
+        internal GameObject reference;
+        internal Vector3 initialPosition;
+        internal Quaternion initialRotation;
 
         public Vector3 currentPosition;
         public Quaternion currentRotation;
+
+        public GameObject Reference => reference;
+        public Vector3 InitialPosition => initialPosition;
+        public Quaternion InitialRotation => initialRotation;
 
         public PlayerData(GameObject reference) 
         {
@@ -63,8 +66,20 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
         public void JoinPlayer(GameObject player) => _players.Add(ConvertToPlayerData(player));
 
         public PlayerData FindPlayerData(string playerName) => _players.Find(x => x.name == playerName);
-        public PlayerData FindPlayerData(Transform player) => _players.Find(x => x.name == player.name);
-        public PlayerData FindPlayerData(GameObject player) => _players.Find(x => x.name == player.name);
+        public PlayerData FindPlayerData(Transform player, bool checkReference = false) 
+        {
+            if (checkReference)
+                return _players.Find(x => x.Reference == player.gameObject);
+
+            return _players.Find(x => x.name == player.name);
+        }
+        public PlayerData FindPlayerData(GameObject player, bool checkReference = false) 
+        {
+            if (checkReference)
+                return _players.Find(x => x.Reference == player);
+
+            return _players.Find(x => x.name == player.name);
+        }
 
         /// <summary>
         /// Remove player from the data
@@ -119,8 +134,22 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
                     continue;
                 }
 
-                if (data.reference != player)
+                if (data.Reference == null) 
+                {
+                    if (!PlayerSpawner.TryGetInstance(out var instance, true))
+                        data.reference = player;
+                    else
+                        data.reference = instance.SpawnPlayer(data.InitialPosition, data.InitialRotation);
+                }
+
+                if (data.Reference != player) 
+                {
                     Destroy(player);
+                    continue;
+                }
+
+                data.initialPosition = player.transform.position;
+                data.initialRotation = player.transform.rotation;
             }
         }
 
