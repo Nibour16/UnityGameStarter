@@ -1,11 +1,15 @@
 using UnityEngine;
 
+using UnityEngine.EventSystems;
+using UnityGameStarter.PointerInteraction;
+
 namespace UnityGameStarter.UI.Button 
 {
-    using UnityEngine.EventSystems;
     using UnityEngine.UI;
-    using UnityGameStarter.PointerInteraction;
 
+    /// <summary>
+    /// Base behaviour for button interaction with UI navigation support
+    /// </summary>
     [RequireComponent(typeof(Button))]
     public abstract class ButtonBehaviour : BasePointerInteractable,
         ISelectHandler, IDeselectHandler, IMoveHandler, ISubmitHandler, ICancelHandler

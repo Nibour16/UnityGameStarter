@@ -4,13 +4,16 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-using UnityGameStarter.ServiceLocatorPattern;
 using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.SceneManagement
 {
+    /// <summary>
+    /// Scene facade where methods that need to be executed during scene load/unload to register/unregister
+    /// Can also offer methods to load/unload scenes, includes async tasks
+    /// </summary>
     [RuntimeSingleton(-200)]
-    public class SceneFacade : Singleton<SceneFacade>, ISceneService
+    public class SceneFacade : Singleton<SceneFacade>
     {
         private event Action<Scene, LoadSceneMode> SceneLoadStarted;
         private event Action<Scene, LoadSceneMode> SceneLoaded;
@@ -23,8 +26,6 @@ namespace UnityGameStarter.SceneManagement
         #region Life Cycle
         private void OnEnable()
         {
-            ServiceLocator.Register(this);
-
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
@@ -33,8 +34,6 @@ namespace UnityGameStarter.SceneManagement
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
-
-            ServiceLocator.Unregister<SceneFacade>();
         }
         #endregion
 

@@ -1,24 +1,28 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityGameStarter.SingletonPattern;
 using UnityGameStarter.DataStructure;
+using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.TimerSystem
 {
+    /// <summary>
+    /// Manager that manages life cycles of all timers that are registered into the collection,
+    /// including timer creation/registration methods
+    /// </summary>
     [RuntimeSingleton]
     public class TimerManager : Singleton<TimerManager>
     {
         private readonly DeferredList<Timer> _timers = new();
 
-        private readonly Dictionary<object, HashSet<Timer>> _ownerIndex = new();
-        public Dictionary<object, HashSet<Timer>> OwnerIndex => _ownerIndex;
+        private readonly Dictionary<object, HashSet<Timer>> _owners = new();
+        public Dictionary<object, HashSet<Timer>> TimerOwners => _owners;
 
-        private readonly Dictionary<object, HashSet<Timer>> _tagIndex = new();
-        public Dictionary<object, HashSet<Timer>> TagIndex => _tagIndex;
+        private readonly Dictionary<object, HashSet<Timer>> _tags = new();
+        public Dictionary<object, HashSet<Timer>> TimerTags => _tags;
 
         #region API
-        public Timer CreateTimer(
-            object owner, float duration, string tag = "Default Timer", 
+        public Timer CreateTimer(object owner, float duration, string tag = "Default Timer", 
             TimerType timerType = TimerType.Default, bool autoStart = true) 
         {
             var timer = new Timer(owner, duration, tag, timerType);
@@ -29,15 +33,24 @@ namespace UnityGameStarter.TimerSystem
             return timer;
         }
 
-        public void Register(Timer timer)
-        {
-            _timers.EnqueueAdd(timer);
-        }
+        public void Register(Timer timer) => _timers.EnqueueAdd(timer);
 
         public void Unregister(Timer timer)
         {
             timer.OnRemoved();
             _timers.EnqueueRemove(timer);
+        }
+
+        public bool IsTimerStoped(Timer timer, bool includeIdle = false, bool includePaused = false)
+        {
+            return timer.TimerState switch
+            {
+                TimerState.Idle => includeIdle,
+                TimerState.Paused => includePaused,
+                TimerState.Completed => true,
+                TimerState.Cancelled => true,
+                _ => false
+            };
         }
         #endregion
 
@@ -46,11 +59,8 @@ namespace UnityGameStarter.TimerSystem
         {
             UpdateTimers();
 
-            OnTimersRemoved();
-            _timers.ApplyRemovals();
-
-            OnTimersAdded();
-            _timers.ApplyAdditions();
+            ApplyTimerRemovals();
+            ApplyTimerAdditions();
         }
 
         private void UpdateTimers() 
@@ -61,70 +71,74 @@ namespace UnityGameStarter.TimerSystem
             {
                 _timers[i].Update(dt);
 
-                if ((_timers[i].TimerState == TimerState.Completed || _timers[i].TimerState == TimerState.Cancelled)
-                    && _timers[i].TimerType == TimerType.AutoRemovable)
+                if (CanRemoveTimer(_timers[i]))
                     Unregister(_timers[i]);
             }
         }
 
-        private void OnTimersAdded()
+        private bool CanRemoveTimer(Timer timer) 
         {
-            foreach (var t in _timers.PendingAdds)
-            {
-                AddToIndex(t);
-            }
+            if (timer.TimerType != TimerType.AutoRemovable) return false;
+
+            return IsTimerStoped(timer);
         }
 
-        private void OnTimersRemoved()
+        private void ApplyTimerAdditions()
         {
-            foreach (var t in _timers.PendingRemoves)
+            foreach (var timer in _timers.PendingAdds) 
             {
-                RemoveFromIndex(t);
-            }
-        }
-        #endregion
-
-        #region Index Collection
-        private void AddToIndex(Timer t)
-        {
-            if (t.Owner != null)
-            {
-                if (!_ownerIndex.TryGetValue(t.Owner, out var set))
+                // Record to owner
+                if (timer.Owner != null)
                 {
-                    set = new HashSet<Timer>();
-                    _ownerIndex[t.Owner] = set;
-                }
-                set.Add(t);
-            }
+                    if (!_owners.TryGetValue(timer.Owner, out var set))
+                    {
+                        set = new HashSet<Timer>();
+                        _owners[timer.Owner] = set;
+                    }
 
-            if (t.Tag != null)
-            {
-                if (!_tagIndex.TryGetValue(t.Tag, out var set))
-                {
-                    set = new HashSet<Timer>();
-                    _tagIndex[t.Tag] = set;
+                    set.Add(timer);
                 }
-                set.Add(t);
+
+                // Record to tag
+                if (timer.Tag != null)
+                {
+                    if (!_tags.TryGetValue(timer.Tag, out var set))
+                    {
+                        set = new HashSet<Timer>();
+                        _tags[timer.Tag] = set;
+                    }
+
+                    set.Add(timer);
+                }
             }
+            
+            _timers.ApplyAdditions();
         }
 
-        private void RemoveFromIndex(Timer t)
+        private void ApplyTimerRemovals()
         {
-            if (t.Owner != null &&
-                _ownerIndex.TryGetValue(t.Owner, out var set1))
+            foreach (var timer in _timers.PendingRemoves) 
             {
-                set1.Remove(t);
-                if (set1.Count == 0)
-                    _ownerIndex.Remove(t.Owner);
+                // Remove from Owner
+                if (timer.Owner != null && _owners.TryGetValue(timer.Owner, out var set1))
+                {
+                    set1.Remove(timer);
+
+                    if (set1.Count == 0)
+                        _owners.Remove(timer.Owner);
+                }
+
+                // Remove from Tag
+                if (timer.Tag != null && _tags.TryGetValue(timer.Tag, out var set2))
+                {
+                    set2.Remove(timer);
+
+                    if (set2.Count == 0)
+                        _tags.Remove(timer.Tag);
+                }
             }
 
-            if (t.Tag != null &&
-                _tagIndex.TryGetValue(t.Tag, out var set2))
-            {
-                set2.Remove(t);
-                if (set2.Count == 0)
-                    _tagIndex.Remove(t.Tag);
-            }
+            _timers.ApplyRemovals();
         }
         #endregion
     }

@@ -3,6 +3,9 @@ using UnityEngine.EventSystems;
 
 namespace UnityGameStarter.PointerInteraction 
 {
+    /// <summary>
+    /// A base pointer interactable class that contains all pointer interfaces
+    /// </summary>
     public abstract class BasePointerInteractable : MonoBehaviour,
         IPointerDownHandler, IPointerUpHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {

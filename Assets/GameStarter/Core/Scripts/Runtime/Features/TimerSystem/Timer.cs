@@ -18,20 +18,20 @@ namespace UnityGameStarter.TimerSystem
         Loopable
     }
 
+    /// <summary>
+    /// A controllable timer that the states can be handled
+    /// </summary>
     public class Timer 
     {
-#nullable enable
+        #nullable enable
 
         #region Identity
-        /// <summary> Entity that owns the timer </summary>
         private readonly object? _owner;
         public object? Owner => _owner;
 
-        /// <summary> Tag that indetifies the timer </summary>
         private readonly string? _tag;
         public string? Tag => _tag;
 
-        /// <summary> Should remove the timer automatically when completed/cancelled </summary>
         private readonly TimerType _timerType;
         public TimerType TimerType => _timerType;
         #endregion
@@ -45,7 +45,6 @@ namespace UnityGameStarter.TimerSystem
         private float _elapsedTime;
         public float ElapsedTime => _elapsedTime;
 
-        /// <summary> Remaining time </summary>
         public float RemainingTime => MathF.Max(0f, _duration - _elapsedTime);
         #endregion
 
@@ -75,7 +74,7 @@ namespace UnityGameStarter.TimerSystem
         }
         #endregion
 
-        #region Event Life Cycle
+        #region Event Registration
         public void BindCompleted(Action completed) => Completed += completed;
         public void UnbindCompleted(Action completed) => Completed -= completed;
         public void UnbindCompletedAll() => Completed = null;
