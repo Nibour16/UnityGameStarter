@@ -8,7 +8,7 @@ namespace UnityGameStarter.TimerSystem
     [RuntimeSingleton]
     public class TimerManager : Singleton<TimerManager>
     {
-        private readonly DefferedList<Timer> _timers = new();
+        private readonly DeferredList<Timer> _timers = new();
 
         private readonly Dictionary<object, HashSet<Timer>> _ownerIndex = new();
         public Dictionary<object, HashSet<Timer>> OwnerIndex => _ownerIndex;
