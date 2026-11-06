@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.SingletonPattern;
-using UnityGameStarter.Pool.Internal;
 
 namespace UnityGameStarter.Pool
 {
+    /// <summary>
+    /// A Pool Manager that manages game objects that can be simulated in Unity pool
+    /// Users can just use spawn, despawn, destory and clear method to manipulate the pool
+    /// </summary>
     [RuntimeSingleton]
     public class PoolManager : Singleton<PoolManager>
     {
@@ -31,7 +34,7 @@ namespace UnityGameStarter.Pool
             if (_activeInstances.Remove(instance, out var pool))
                 pool.Release(instance);
             else
-                Destroy(instance);
+                Object.Destroy(instance);
         }
 
         public void Destroy(GameObject instance)
