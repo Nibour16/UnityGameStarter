@@ -29,7 +29,7 @@ namespace UnityGameStarter.Events
     public class EventListenerAttribute : Attribute { }
 
     /// <summary>
-    /// TODO: created a completed persistent event registry system to make Event Manager supports it.
+    /// TODO: create a completed persistent event registry system to make Event Manager supports it.
     /// 
     /// Manager for registering, unregistering, and publishing events, followed by Event Bus Pattern.
     /// The event manager constructs mainly for cross-system publishment.
