@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityGameStarter.CursorStatics;
+using UnityGameStarter.DoOnceStatics;
 
 namespace UnityGameStarter.Gameplay.Camera.Spatial3D 
 {
@@ -8,7 +9,14 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
         [SerializeField] private CameraSettings setting;
         [SerializeField] private CameraRuntimeState state;
 
+        [Header("Advanced")]
+        /// <summary>
+        /// TODO: Once multi-player system applied, remove this boolean
+        /// </summary>
+        [SerializeField] private bool forceLockCursor = true;
+
         private Transform _camera;
+        private string ID => $"{name}_CameraController3D";
 
         public bool IsMainCamera => true;
 
@@ -22,12 +30,23 @@ namespace UnityGameStarter.Gameplay.Camera.Spatial3D
 
         private void OnEnable()
         {
-            CursorLibrary.Lock();
+            gameObject.Lock();
         }
 
         private void OnDisable()
         {
-            CursorLibrary.Unlock();
+            gameObject.Unlock();
+
+            DoOnce.Reset(ID); // TODO: Once multi-player system applied, remove this line
+        }
+
+        /// <summary>
+        /// TODO: Once multi-player system applied, remove this method
+        /// </summary>
+        private void Update() 
+        {
+            if (forceLockCursor)
+                DoOnce.Run(ID, () => gameObject.Lock());
         }
 
         public void UpdateCamera(Transform targetSource, Vector2 lookInput)
