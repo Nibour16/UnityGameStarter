@@ -6,11 +6,21 @@ using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.UI 
 {
+    /// <summary>
+    /// UI root that can collect all UI elements. This is where your UI will cling to
+    /// </summary>
+    /// <remarks>
+    /// All UI elements that cling to the root must be children of the root canvas
+    /// </remarks>
     [RequireComponent(typeof(EventListenerRegister))]
     public class UIRoot : OptionalSingleton<UIRoot>, IAutoEventListener
     {
         [SerializeField] private Canvas rootCanvas;
+
         [SerializeField] private bool dontDestroyOnLoad = true;
+        [SerializeField] private bool isStatic = true;
+
+        protected override bool IsStatic => isStatic;
 
         public Canvas RootCanvas 
         {

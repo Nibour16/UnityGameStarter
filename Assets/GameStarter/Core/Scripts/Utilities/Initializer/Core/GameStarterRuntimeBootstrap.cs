@@ -41,26 +41,18 @@ namespace UnityGameStarter.RuntimeCore
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         private static void AfterAssembliesLoaded()
-        {
-            Execute(RuntimeInitializeLoadType.AfterAssembliesLoaded);
-        }
+            => Execute(RuntimeInitializeLoadType.AfterAssembliesLoaded);
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void BeforeSceneLoad()
-        {
-            Execute(RuntimeInitializeLoadType.BeforeSceneLoad);
-        }
+            => Execute(RuntimeInitializeLoadType.BeforeSceneLoad);
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void AfterSceneLoad()
-        {
-            Execute(RuntimeInitializeLoadType.AfterSceneLoad);
-        }
+            => Execute(RuntimeInitializeLoadType.AfterSceneLoad);
 
         private static void Execute(RuntimeInitializeLoadType loadType)
-        {
-            BootstrapLibrary.Execute(_initializers, loadType);
-        }
+            => BootstrapLibrary.Execute(_initializers, loadType);
 
         private static void Reset() 
         {

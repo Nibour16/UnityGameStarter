@@ -1,9 +1,8 @@
 using UnityEditor;
-using UnityGameStarter.EditorWindowUtilities;
 
-namespace UnityGameStarter.EditorUtilities.ScriptCreator
+namespace UnityGameStarter.EditorUtilities.Creator
 {
-    public sealed class MetaScriptCreator : BaseScriptCreator
+    public sealed class MetaScriptCreator : ScriptCreator
     {
         protected override string Template =>
 @"using UnityEditor;
@@ -36,7 +35,6 @@ using UnityGameStarter.EditorWindowUtilities.Data;
 public sealed class {1} : ScriptCreatorWindow<{0}>
 {{
     protected override string Title => ""{3}"";
-
     protected override string FileNameLabel => ""Class Name"";
 
     protected override ContentDefinition File => new() {{ value = ""New{2}"" }};

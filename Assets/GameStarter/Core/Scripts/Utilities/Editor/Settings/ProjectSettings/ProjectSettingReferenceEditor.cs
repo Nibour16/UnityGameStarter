@@ -14,7 +14,6 @@ namespace UnityGameStarter.ProjectSettings.Editor
                 guiHandler = _ =>
                 {
                     var current = ProjectSettingReference<T>.Get(key);
-
                     var result = (T)EditorGUILayout.ObjectField(label, current, typeof(T), false);
 
                     if (result != current)

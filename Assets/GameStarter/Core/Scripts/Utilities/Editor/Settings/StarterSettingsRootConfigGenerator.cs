@@ -17,21 +17,17 @@ namespace UnityGameStarter.StarterSettings.Config
             ConfigEditorLibrary.EnsureBootstrapFolder();
 
             string path = ConfigLibrary.GetBootstrapAssetPath("StarterSettingsRootConfig");
-
             var config = AssetDatabase.LoadAssetAtPath<StarterSettingsRootConfig>(path);
 
             if (config == null)
             {
                 config = ScriptableObject.CreateInstance<StarterSettingsRootConfig>();
-
                 config.SetConfig(root);
-
                 AssetDatabase.CreateAsset(config, path);
             }
             else
             {
                 config.SetConfig(root);
-
                 EditorUtility.SetDirty(config);
             }
 

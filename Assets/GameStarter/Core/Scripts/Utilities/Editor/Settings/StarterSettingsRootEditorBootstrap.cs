@@ -19,16 +19,10 @@ namespace UnityGameStarter.StarterSettings.Editor
                 BakeStarterSettings();
         }
 
-        private static void BakeStarterSettings()
-        {
-            StarterSettingsRootConfigGenerator.Sync();
-        }
+        private static void BakeStarterSettings() => StarterSettingsRootConfigGenerator.Sync();
 
         [GameStarterBuild(GameStarterBuildPhase.Prebake, -500)]
-        private static void BakeStarterSettingsForBuild()
-        {
-            StarterSettingsRootConfigGenerator.Sync();
-        }
+        private static void BakeStarterSettingsForBuild() => StarterSettingsRootConfigGenerator.Sync();
     }
     #endif
 }

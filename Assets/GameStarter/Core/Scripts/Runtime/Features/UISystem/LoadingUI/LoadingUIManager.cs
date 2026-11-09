@@ -7,8 +7,11 @@ using UnityGameStarter.StarterSettings.Quality;
 
 namespace UnityGameStarter.UI.Loading 
 {
+    /// <summary>
+    /// Manager that spawns loading UI root through Starter Settings, and handles open/close during scene loads
+    /// </summary>
     [RuntimeSingleton(-80)]
-    public sealed class LoadingUIManager : Singleton<LoadingUIManager>
+    internal sealed class LoadingUIManager : Singleton<LoadingUIManager>
     {
         private UIRoot _uiRoot;
         private string _uiName;

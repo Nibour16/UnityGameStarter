@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using UnityGameStarter.EditorUtilities.ScriptCreator;
-using UnityGameStarter.EditorWindowUtilities.Data;
-
-namespace UnityGameStarter.EditorWindowUtilities.Creator 
+namespace UnityGameStarter.EditorUtilities.Creator
 {
     using UnityGameStarter.StringLibrary;
 
-    public abstract class ScriptCreatorWindow<T> : CreatorWindow where T : BaseScriptCreator, new()
+    public abstract class ScriptCreatorWindow<T> : CreatorWindow where T : ScriptCreator, new()
     {
         protected static readonly T Creator = new();
 

@@ -7,10 +7,10 @@ using UnityGameStarter.RuntimeCore;
 
 namespace UnityGameStarter.SingletonPattern
 {
-    public static class SingletonBootstrap
+    static class SingletonBootstrap
     {
         [GameStarterRuntime(RuntimeInitializeLoadType.SubsystemRegistration, -290)]
-        public static void Reset()
+        private static void Reset()
         {
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes())
                 .Where(t => !t.IsAbstract && t.GetCustomAttribute<RuntimeSingletonAttribute>() != null);
@@ -18,19 +18,17 @@ namespace UnityGameStarter.SingletonPattern
             foreach (var type in types)
             {
                 var method = FindResetMethod(type);
-
                 method?.Invoke(null, null);
             }
         }
 
         [GameStarterRuntime(RuntimeInitializeLoadType.BeforeSceneLoad, -290)]
-        public static void Initialize()
+        private static void Initialize()
         {
-            var types = AppDomain.CurrentDomain
-                .GetAssemblies().SelectMany(
-                    a => a.GetTypes()).Where(t =>!t.IsAbstract && IsValidRuntimeSingleton(t) &&
-                    t.GetCustomAttribute<RuntimeSingletonAttribute>() != null)
-                .OrderBy(t => t.GetCustomAttribute<RuntimeSingletonAttribute>()!.Order);
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes())
+                .Where(t => !t.IsAbstract && IsValidRuntimeSingleton(t))
+                .Select(t => (type: t, attribute: t.GetCustomAttribute<RuntimeSingletonAttribute>()))
+                .Where(x => x.attribute != null).OrderBy(x => x.attribute!.Order).Select(x => x.type);
 
             foreach (var type in types)
                 InitializeRuntimeSingleton(type);
@@ -43,8 +41,7 @@ namespace UnityGameStarter.SingletonPattern
 
             if (property?.GetValue(null) is not MonoBehaviour instance) 
             {
-                Debug.LogError(
-                    $"RuntimeSingletonBootstrap: " +
+                Debug.LogError($"RuntimeSingletonBootstrap: " +
                     $"{ type.Name} is marked RuntimeSingleton but failed to provide " +
                     $"a valid Singleton<T> MonoBehaviour instance.");
 
@@ -63,11 +60,8 @@ namespace UnityGameStarter.SingletonPattern
 
             while (baseType != null)
             {
-                if (baseType.IsGenericType &&
-                    baseType.GetGenericTypeDefinition() == typeof(Singleton<>))
-                {
+                if (baseType.IsGenericType && baseType.GetGenericTypeDefinition() == typeof(Singleton<>))
                     return true;
-                }
 
                 baseType = baseType.BaseType;
             }
@@ -79,8 +73,7 @@ namespace UnityGameStarter.SingletonPattern
         {
             while (type != null)
             {
-                var method = type.GetMethods(
-                    BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+                var method = type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
                     .FirstOrDefault(m => m.GetCustomAttribute<SingletonResetAttribute>() != null);
 
                 if (method != null) return method;

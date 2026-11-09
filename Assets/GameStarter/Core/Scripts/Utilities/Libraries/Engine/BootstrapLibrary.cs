@@ -11,26 +11,20 @@ namespace UnityGameStarter.BootstrapLibrary
 {
     public static class BootstrapLibrary
     {
-        public static void Execute<TPhase>(
-            List<Initializer<TPhase>> initializers, TPhase phase)
+        public static void Execute<TPhase>(List<Initializer<TPhase>> initializers, TPhase phase)
             where TPhase : Enum
         {
-            ExecuteInternal(
-                phase, initializers.Select(x => (x.phase, x.action)));
+            ExecuteInternal(phase, initializers.Select(x => (x.phase, x.action)));
         }
 
-        public static void Execute<TPhase, TContext>(
-            List<Initializer<TPhase, TContext>> initializers,
-            TPhase phase, TContext context)
-            where TPhase : Enum where TContext : GameStarterContext
+        public static void Execute<TPhase, TContext>(List<Initializer<TPhase, TContext>> initializers,
+            TPhase phase, TContext context) where TPhase : Enum where TContext : GameStarterContext
         {
-            ExecuteInternal(
-                phase, initializers.Select(x => (x.phase, (Action)(() => x.action(context)))));
+            ExecuteInternal(phase, initializers.Select(x => (x.phase, (Action)(() => x.action(context)))));
         }
 
         private static void ExecuteInternal<TPhase>(
-            TPhase targetPhase, IEnumerable<(TPhase phase, Action invoke)> actions)
-            where TPhase : Enum
+            TPhase targetPhase, IEnumerable<(TPhase phase, Action invoke)> actions) where TPhase : Enum
         {
             foreach (var (phase, invoke) in actions)
             {
@@ -42,10 +36,8 @@ namespace UnityGameStarter.BootstrapLibrary
         }
 
         public static void Discover<TAttribute, TPhase>(
-            List<Initializer<TPhase>> initializers, 
-            Func<TAttribute, TPhase> phaseSelector,
-            Func<TPhase, int> phaseOrder) 
-            where TAttribute : OrderedAttribute where TPhase : Enum
+            List<Initializer<TPhase>> initializers, Func<TAttribute, TPhase> phaseSelector,
+            Func<TPhase, int> phaseOrder) where TAttribute : OrderedAttribute where TPhase : Enum
         {
             initializers.Clear();
 
@@ -57,14 +49,8 @@ namespace UnityGameStarter.BootstrapLibrary
 
                 try
                 {
-                    var action = (Action)Delegate.CreateDelegate(
-                        typeof(Action), method);
-
-                    initializers.Add(
-                        new Initializer<TPhase>(
-                            phaseSelector(attribute),
-                            attribute.Order,
-                            action));
+                    var action = (Action)Delegate.CreateDelegate(typeof(Action), method);
+                    initializers.Add(new Initializer<TPhase>(phaseSelector(attribute), attribute.Order, action));
                 }
                 catch (Exception e)
                 {
@@ -78,10 +64,8 @@ namespace UnityGameStarter.BootstrapLibrary
 
         public static void Discover<TAttribute, TPhase, TContext>(
             List<Initializer<TPhase, TContext>> initializers,
-            Func<TAttribute, TPhase> phaseSelector,
-            Func<TPhase, int> phaseOrder)
-            where TAttribute : OrderedAttribute
-            where TPhase : Enum where TContext : GameStarterContext
+            Func<TAttribute, TPhase> phaseSelector, Func<TPhase, int> phaseOrder)
+            where TAttribute : OrderedAttribute where TPhase : Enum where TContext : GameStarterContext
         {
             initializers.Clear();
 
@@ -97,8 +81,7 @@ namespace UnityGameStarter.BootstrapLibrary
 
                 try
                 {
-                    var action = (Action<TContext>)Delegate.CreateDelegate(
-                        typeof(Action<TContext>), method);
+                    var action = (Action<TContext>)Delegate.CreateDelegate(typeof(Action<TContext>), method);
 
                     initializers.Add(
                         new Initializer<TPhase, TContext>(phaseSelector(attribute), attribute.Order, action));
@@ -114,8 +97,7 @@ namespace UnityGameStarter.BootstrapLibrary
         }
 
         private static void DiscoverMethods<TAttribute>(
-            Action<MethodInfo, TAttribute> callback)
-            where TAttribute : Attribute
+            Action<MethodInfo, TAttribute> callback) where TAttribute : Attribute
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -134,8 +116,7 @@ namespace UnityGameStarter.BootstrapLibrary
         }
 
         private static void Sort<T>(
-            this List<Initializer<T>> initializers, Func<T, int> phaseOrder) 
-            where T : Enum
+            this List<Initializer<T>> initializers, Func<T, int> phaseOrder) where T : Enum
         {
             initializers.SortInternal(x => x.phase, x => x.order, phaseOrder);
         }
@@ -148,10 +129,8 @@ namespace UnityGameStarter.BootstrapLibrary
         }
 
         private static void SortInternal<TInitializer, TPhase>(
-            this List<TInitializer> initializers,
-            Func<TInitializer, TPhase> phaseSelector, 
-            Func<TInitializer, int> orderSelector,
-            Func<TPhase, int> phaseOrder)
+            this List<TInitializer> initializers, Func<TInitializer, TPhase> phaseSelector, 
+            Func<TInitializer, int> orderSelector, Func<TPhase, int> phaseOrder)
             where TPhase : Enum
         {
             initializers.Sort((a, b) =>

@@ -5,25 +5,22 @@ namespace UnityGameStarter.BuildCore
 {
     using UnityGameStarter.BootstrapLibrary;
 
-    public static class GameStarterBuildBootstrap<TContext> where TContext : GameStarterBuildContext
+    internal static class GameStarterBuildBootstrap<TContext> where TContext : GameStarterBuildContext
     {
-        private static readonly List<Initializer<GameStarterBuildPhase, TContext>> 
-            _initializers = new();
+        private static readonly List<Initializer<GameStarterBuildPhase, TContext>> _initializers = new();
 
         private static bool _discovered;
 
-        internal static void Execute(GameStarterBuildPhase phase, TContext context)
-        {
-            BootstrapLibrary.Execute(_initializers, phase, context);
-        }
+        public static void Execute(GameStarterBuildPhase phase, TContext context)
+            => BootstrapLibrary.Execute(_initializers, phase, context);
 
-        internal static void Reset()
+        public static void Reset()
         {
             _initializers.Clear();
             _discovered = false;
         }
 
-        internal static void Discover()
+        public static void Discover()
         {
             if (_discovered) return;
 

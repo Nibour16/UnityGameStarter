@@ -16,20 +16,9 @@ namespace UnityGameStarter.Events
 
         private bool _isRegistered = false;
 
-        private void Awake() 
-        {
-            _listeners = GetComponents<IAutoEventListener>();
-        }
-
-        private void OnEnable()
-        {
-            Register();
-        }
-
-        private void OnDisable()
-        {
-            Unregister();
-        }
+        private void Awake() => _listeners = GetComponents<IAutoEventListener>();
+        private void OnEnable() => Register();
+        private void OnDisable() => Unregister();
 
         private void Register() 
         {

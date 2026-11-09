@@ -1,10 +1,8 @@
 using UnityEditor;
-using UnityGameStarter.EditorUtilities.ScriptCreator;
-using UnityGameStarter.EditorWindowUtilities;
 
-namespace UnityGameStarter.StateMachine.EditorUtilities
+namespace UnityGameStarter.EditorUtilities.Creator.StateMachine
 {
-    public class StateMachineScriptCreator : BaseScriptCreator
+    public class StateMachineScriptCreator : ScriptCreator
     {
         protected override string Template =>
 @"using System;

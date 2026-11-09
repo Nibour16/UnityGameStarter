@@ -1,10 +1,8 @@
 using UnityEditor;
-using UnityGameStarter.EditorUtilities.ScriptCreator;
-using UnityGameStarter.EditorWindowUtilities;
 
-namespace UnityGameStarter.EditorUtilities.InputSystem
+namespace UnityGameStarter.EditorUtilities.Creator.InputSystem
 {
-    public class InputManagerCreator : BaseScriptCreator
+    public class InputManagerCreator : ScriptCreator
     {
         protected override string Template =>
 @"using UnityEngine;

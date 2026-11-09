@@ -4,6 +4,10 @@ using UnityGameStarter.UnityObjectStatics;
 
 namespace UnityGameStarter.UI 
 {
+    /// <summary>
+    /// UI elements organization tool that helps to organize all UI to be 
+    /// children of the canvas of the specific UI root
+    /// </summary>
     public class UIOrganizer : MonoBehaviour
     {
         [Header("References")]
@@ -35,18 +39,14 @@ namespace UnityGameStarter.UI
 
             if (canvas == null) return;
 
-            var rects = ObjectLibrary.FindObjectsInCurrentStage<RectTransform>();
+            var rects = ObjectLibrary.FindObjectsInCurrentStage<RectTransform>(true);
 
             foreach (var rect in rects)
             {
                 if (CanOrganize(rect))
-                {
                     rect.SetParent(canvas.transform, false);
-                }
-                if (!IsResolvable(canvas, rect))
-                {
-                    continue;
-                }
+
+                if (!IsResolvable(canvas, rect)) continue;
 
                 if (normalizeLayout)
                     NormalizeLayout(rect);
@@ -58,8 +58,7 @@ namespace UnityGameStarter.UI
 
         private bool CanOrganize(RectTransform rect)
         {
-            if (rect.GetComponentInParent<UIRoot>() != null)
-                return false;
+            if (rect.GetComponentInParent<UIRoot>() != null) return false;
 
             return rect.IsTopLevelUI();
         }
@@ -93,8 +92,7 @@ namespace UnityGameStarter.UI
         {
             Transform canvas = root.RootCanvas.transform;
 
-            if (rect == canvas || rect.parent != canvas)
-                return;
+            if (rect == canvas || rect.parent != canvas) return;
 
             rect.Normalize();
         }

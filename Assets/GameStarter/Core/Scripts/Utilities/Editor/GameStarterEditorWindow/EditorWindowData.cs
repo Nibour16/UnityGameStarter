@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UnityGameStarter.EditorWindowUtilities.Data
+namespace UnityGameStarter.EditorUtilities
 {
     public class ContentDefinition
     {

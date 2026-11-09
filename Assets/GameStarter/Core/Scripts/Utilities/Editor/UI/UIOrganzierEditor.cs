@@ -15,9 +15,7 @@ namespace UnityGameStarter.UI.EditorUtilities
             var organizer = (UIOrganizer)target;
 
             if (GUILayout.Button(buttonName))
-            {
                 organizer.Organize();
-            }
         }
     }
 }

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityGameStarter.EditorWindowUtilities.Data;
 
-namespace UnityGameStarter.EditorWindowUtilities
+namespace UnityGameStarter.EditorUtilities
 {
     public abstract class EditorWindowWithInputs : EditorWindow
     {

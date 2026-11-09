@@ -1,10 +1,7 @@
 using System;
 
-namespace UnityGameStarter.EditorUtilities.ScriptCreator 
+namespace UnityGameStarter.EditorUtilities.Creator 
 {
-    /// <summary>
-    /// Data of the script creator
-    /// </summary>
     public class ScriptCreatorData
     {
         public string fileName;

@@ -16,24 +16,17 @@ namespace UnityGameStarter.EditorUtilities.EditorProcessor
     }
     
     [InitializeOnLoad]
-    public static class EditorProcessor
+    static class EditorProcessor
     {
+        private readonly static MethodInfo[] _processors;
+
         private static bool _isProcessing = false;
         private static bool _scheduled = false;
 
-        private static MethodInfo[] _processors;
-
         static EditorProcessor()
         {
-            CacheProcessors();
-
+            _processors = TypeCache.GetMethodsWithAttribute<EditorProcessAttribute>().OrderBy(GetOrder).ToArray();
             EditorApplication.hierarchyChanged += OnHierarchyChanged;
-        }
-
-        private static void CacheProcessors()
-        {
-            _processors = TypeCache.GetMethodsWithAttribute<EditorProcessAttribute>()
-                .OrderBy(GetOrder).ToArray();
         }
 
         private static int GetOrder(MethodInfo method)
@@ -81,8 +74,7 @@ namespace UnityGameStarter.EditorUtilities.EditorProcessor
                     if (processor.GetParameters().Length != 0)
                     {
                         Debug.LogError(
-                            $"EditorProcessor: {processor.DeclaringType}.{processor.Name} " +
-                            $"must have no parameters.");
+                            $"EditorProcessor: {processor.DeclaringType}.{processor.Name} must have no parameters.");
                         continue;
                     }
 

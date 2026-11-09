@@ -3,8 +3,19 @@ using UnityEngine;
 
 namespace UnityGameStarter.SingletonPattern
 {
+    /// <summary>
+    /// Optional marker-only interface, used for singleton identification in easier way
+    /// </summary>
     public interface ISingleton { }
 
+    /// <summary>
+    /// A base class implemented Singleton Design Pattern for MonoBehaviour classes.
+    /// </summary>
+    /// <remarks>
+    /// When directly get property <see cref="Instance"/>, 
+    /// a new instance object of the specific type will be instantiated if the property is null.
+    /// To prevent being instantiated, use <see cref="TryGetInstance(out T, bool)"/> instead
+    /// </remarks>
     public class Singleton<T> : MonoBehaviour, ISingleton where T : MonoBehaviour
     {
         private static T _instance;
@@ -42,6 +53,17 @@ namespace UnityGameStarter.SingletonPattern
                 else
                     Destroy(instance);
             }
+        }
+
+        protected virtual void OnApplicationQuit()
+        {
+            _isQuitting = true;
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (_instance == InstanceRef)
+                _instance = null;
         }
 
         protected void EnableDontDestroyOnLoad() 
@@ -106,17 +128,6 @@ namespace UnityGameStarter.SingletonPattern
         {
             _instance = null;
             _isQuitting = false;
-        }
-
-        protected virtual void OnApplicationQuit()
-        {
-            _isQuitting = true;
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (_instance == InstanceRef)
-                _instance = null;
         }
     }
 }

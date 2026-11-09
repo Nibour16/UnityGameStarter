@@ -24,9 +24,7 @@ namespace UnityGameStarter.BuildCore
     {
         public GameStarterBuildPhase Phase { get; }
 
-        public GameStarterBuildAttribute(
-            GameStarterBuildPhase phase,
-            int order = 0) : base(order)
+        public GameStarterBuildAttribute(GameStarterBuildPhase phase, int order = 0) : base(order)
         {
             Phase = phase;
         }
