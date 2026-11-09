@@ -9,7 +9,7 @@ namespace UnityGameStarter.NewUpdateSystem
     /// </summary>
     /// 
     /// <remarks>
-    /// This class used the timer system
+    /// This class used the timer system, see <see cref="TimerManager"/>
     /// </remarks>
     public abstract class LazyUpdatable : MonoBehaviour
     {

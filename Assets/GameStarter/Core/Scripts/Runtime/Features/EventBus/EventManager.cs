@@ -29,12 +29,13 @@ namespace UnityGameStarter.Events
     public class EventListenerAttribute : Attribute { }
 
     /// <summary>
-    /// TODO: create a completed persistent event registry system to make Event Manager supports it.
-    /// 
     /// Manager for registering, unregistering, and publishing events, followed by Event Bus Pattern.
     /// The event manager constructs mainly for cross-system publishment.
     /// Role will be acted as an extension of Unity Events.
     /// </summary>
+    /// <remarks>
+    /// TODO: create a completed persistent event registry system to make Event Manager supports it.
+    /// </remarks>
     [RuntimeSingleton(-300)]
     public sealed class EventManager : Singleton<EventManager>
     {

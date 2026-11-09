@@ -12,6 +12,13 @@ using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.UI 
 {
+    /// <summary>
+    /// An event class for requesting UI Manager through Unity Game Starter's Event System
+    /// </summary>
+    /// <remarks>
+    /// Unity Game Starter's Event System is an appllication of Event Bus Pattern and Unity Events, 
+    /// different from Unity's EventSystem. See <see cref="EventManager"/>
+    /// </remarks>
     public sealed class UICollectRequest
     {
         public Action<UIRoot, Dictionary<string, RectTransform>> Callback { get; }
@@ -22,13 +29,14 @@ namespace UnityGameStarter.UI
         }
     }
 
+    /// <summary>
+    /// Manager that collects all UI root with their collected UI elements like menus and/or huds
+    /// </summary>
     [RuntimeSingleton(-90)]
     public sealed class UIManager : Singleton<UIManager>
     {
-        private readonly Dictionary<UIRoot, Dictionary<string, RectTransform>> _uiComponents = new();
-
+        private readonly Dictionary<UIRoot, Dictionary<string, RectTransform>> _ui = new();
         private readonly Dictionary<Scene, InitializationState> _initializeStates = new();
-        public Dictionary<Scene, InitializationState> InitializeStates => _initializeStates;
 
         #region Life Cycle
         protected override void Awake()
@@ -72,13 +80,13 @@ namespace UnityGameStarter.UI
 
         private void Deinitialize(Scene e) 
         {
-            var removeRoots = _uiComponents.Keys.Where(
+            var removeRoots = _ui.Keys.Where(
                 root => root != null && root.gameObject != null &&
                 root.gameObject.scene.IsValid() && root.gameObject.scene == e).ToArray();
 
             foreach (var root in removeRoots)
             {
-                foreach (var ui in _uiComponents[root].Values)
+                foreach (var ui in _ui[root].Values)
                 {
                     var uiComps = ui.GetComponents<IUIComponent>();
 
@@ -86,7 +94,7 @@ namespace UnityGameStarter.UI
                         comp.Deinit();
                 }
 
-                _uiComponents.Remove(root);
+                _ui.Remove(root);
             }
 
             _initializeStates.Remove(e);
@@ -96,7 +104,7 @@ namespace UnityGameStarter.UI
         #region Private Methods
         private void InitializeRoot(UIRoot root)
         {
-            if (!_uiComponents.TryGetValue(root, out var collection))
+            if (!_ui.TryGetValue(root, out var collection))
                 return;
 
             foreach (var ui in collection.Values)
@@ -110,10 +118,10 @@ namespace UnityGameStarter.UI
 
         private void OnCollected(UIRoot root, Dictionary<string, RectTransform> data) 
         {
-            if (!_uiComponents.TryGetValue(root, out var collection))
+            if (!_ui.TryGetValue(root, out var collection))
             {
                 collection = new(StringComparer.Ordinal);
-                _uiComponents.Add(root, collection);
+                _ui.Add(root, collection);
             }
 
             collection.AddRangeSafe(data);
@@ -123,7 +131,7 @@ namespace UnityGameStarter.UI
         #region API
         public bool TryGetRect(UIRoot root, string uiName, out RectTransform rect, bool printDebug = false)
         {
-            if (!_uiComponents.TryGetValue(root, out var components))
+            if (!_ui.TryGetValue(root, out var components))
             {
                 rect = null;
 

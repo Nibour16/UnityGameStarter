@@ -4,11 +4,19 @@ using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.UI 
 {
+    /// <summary>
+    /// Functionality for open/close a specific UI element
+    /// </summary>
     [RuntimeSingleton(-85)]
     public sealed class UIController : Singleton<UIController>
     {
+        #region The Default UI Root Field and Property
         private UIRoot _defaultRoot;
 
+        /// <summary>
+        /// Property of default root, it is defined by FindAnyObjectByType, 
+        /// which will return the first and default root
+        /// </summary>
         public UIRoot DefaultRoot
         {
             get
@@ -19,14 +27,17 @@ namespace UnityGameStarter.UI
                 return _defaultRoot;
             }
         }
+        #endregion
 
+        #region Last Open/close UI fields and properties
         private RectTransform _lastOpenedUI;
         private RectTransform _lastClosedUI;
 
         public RectTransform LastOpenedUI => _lastOpenedUI;
         public RectTransform LastClosedUI => _lastClosedUI;
+        #endregion
 
-        #region API
+        #region API - Open UI
         public bool OpenUI(UIRoot root, string uiName, bool printLogIfNotFound = false)
         {
             if (!UIManager.Instance.TryGetRect(root, uiName, out var rect, printLogIfNotFound)) return false;
@@ -34,7 +45,6 @@ namespace UnityGameStarter.UI
             if (!IsValidUIElement(rect, uiName)) return false;
 
             rect.gameObject.SetActive(true);
-
             _lastOpenedUI = rect;
 
             var uiComps = rect.GetComponents<IUIComponent>();
@@ -57,7 +67,9 @@ namespace UnityGameStarter.UI
 
         public bool OpenUI<T>(T uiComponent, bool printLogIfNotFound = false) where T : Component
             => OpenUI(DefaultRoot, uiComponent, printLogIfNotFound);
-        
+        #endregion
+
+        #region API - Close UI
         public bool CloseUI(UIRoot root, string uiName, bool printLogIfNotFound = false)
         {
             if (!UIManager.Instance.TryGetRect(root, uiName, out var rect, printLogIfNotFound)) return false;
@@ -70,7 +82,6 @@ namespace UnityGameStarter.UI
                 comp.OnClosed();
 
             rect.gameObject.SetActive(false);
-
             _lastClosedUI = rect;
 
             return true;
@@ -88,8 +99,11 @@ namespace UnityGameStarter.UI
 
         public bool CloseUI<T>(T uiComponent, bool printLogIfNotFound = false) where T : Component
             => CloseUI(DefaultRoot, uiComponent, printLogIfNotFound);
+        #endregion
 
-        public bool TryGetUI<T>(UIRoot root, string uiName, out T ui, bool printLogIfNotFound = false) where T : Component
+        #region API - Get UI
+        public bool TryGetUI<T>(UIRoot root, string uiName, out T ui, bool printLogIfNotFound = false) 
+            where T : Component
         {
             if (!UIManager.Instance.TryGetRect(root, uiName, out var rect, printLogIfNotFound))
             {
@@ -115,7 +129,6 @@ namespace UnityGameStarter.UI
         }
         #endregion
 
-        #region Private Methods
         private bool IsValidUIElement(RectTransform rect, string uiName)
         {
             if (rect.IsCanvasRoot())
@@ -132,6 +145,5 @@ namespace UnityGameStarter.UI
 
             return true;
         }
-        #endregion
     }
 }

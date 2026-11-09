@@ -56,8 +56,7 @@ namespace UnityGameStarter.SceneManagement
         {
             if (!scene.IsValid())
             {
-                Debug.LogError(
-                    $"Cannot load scene: Scene is invalid. " +
+                Debug.LogError($"Cannot load scene: Scene is invalid. " +
                     $"name=[{scene.name}], buildIndex=[{scene.buildIndex}], path=[{scene.path}]");
 
                 return;
