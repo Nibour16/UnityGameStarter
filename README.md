@@ -70,7 +70,13 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 - Only **repository maintainers** and **approved contributors** can directly modify the main repository.
 
-- Be nice, **NSFW, harassment, and disrespectful behaviours are NOT welcome**
+## Community Standards
+
+- No NSFW content.
+- No harassment, bullying, or personal attacks.
+- No AI-related hostility, discrimination, or targeted abuse.
+- Criticism must remain constructive and respectful.
+- Disagreements regarding AI usage are still welcome, provided discussions remain respectful.
 
 ---
 
@@ -92,5 +98,5 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 ## Acknowledgements
 
-- This project was developed with assistance from various learning resources, such as Youtube tutorials, ChatGPT (OpenAI) for development assistance, documentation support, technical discussions, and code references.
+- This project was developed with assistance from various learning resources, such as Youtube tutorials and ChatGPT (OpenAI) for development assistance, documentation support, technical discussions, and code references.
 
