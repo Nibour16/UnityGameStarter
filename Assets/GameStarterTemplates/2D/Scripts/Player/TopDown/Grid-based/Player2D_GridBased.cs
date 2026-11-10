@@ -3,7 +3,7 @@ using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.Gameplay.GridSystem;
 using UnityGameStarter.Gameplay.PlayerSystem;
 
-[RequireComponent(typeof(InputManager2D))]
+[RequireComponent(typeof(InputManager))]
 public class Player2D_GridBased : BasePlayerMovement, IGridSnappable
 {
     [Header("Grid")]
@@ -13,7 +13,7 @@ public class Player2D_GridBased : BasePlayerMovement, IGridSnappable
 
     [HideInInspector] public GameObject deadEntity = null;
 
-    private InputManager2D _inputManager;
+    private InputManager _inputManager;
 
     private GridBasedMovement _movement;
     public GridBasedMovement Movement => _movement;
@@ -42,7 +42,7 @@ public class Player2D_GridBased : BasePlayerMovement, IGridSnappable
 
     protected override void OnInitialized()
     {
-        _inputManager = GetComponent<InputManager2D>();
+        _inputManager = GetComponent<InputManager>();
 
         if (!gridManager) 
         {

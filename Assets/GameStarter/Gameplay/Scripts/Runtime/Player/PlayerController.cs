@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.Events;
+using UnityGameStarter.InputSystem;
 using UnityGameStarter.PauseManagement;
 using UnityGameStarter.UI;
 
@@ -10,6 +11,7 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
     public struct OnPlayerUnpauseEvent { }
 
     [RequireComponent(typeof(GameplayEntity))]
+    [RequireComponent(typeof(Inputs))]
     [RequireComponent(typeof(EventListenerRegister))]
     public class PlayerController : MonoBehaviour, IAutoEventListener
     {
@@ -21,9 +23,12 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
         [SerializeField] private bool pauseGame = true;
 
         [Header("Advanced")]
+        [SerializeField] private bool keepInputMode = false;
         [SerializeField] private bool removeOtherPlayerUI = true;
 
+        private Inputs _inputs;
         private UIRoot _gameplayUIRoot;
+
         public UIRoot GameplayUIRoot => _gameplayUIRoot;
 
         private void Awake()
@@ -31,6 +36,7 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
             if (dontDestroyOnLoad)
                 DontDestroyOnLoad(gameObject);
 
+            _inputs = GetComponent<Inputs>();
             InitializeGameplayRoot();
         }
 
@@ -80,6 +86,9 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
                     if (ui.CloseUI(targetPauseMenuName)) return;
                 }
 
+                if (!keepInputMode)
+                    _inputs.inputMode = InputMode.Game;
+
                 if (pauseGame)
                     instance.EnterGame();
                 else
@@ -94,6 +103,9 @@ namespace UnityGameStarter.Gameplay.PlayerSystem
 
                     if (ui.OpenUI(targetPauseMenuName)) return;
                 }
+
+                if (!keepInputMode)
+                    _inputs.inputMode = InputMode.UI;
 
                 if (pauseGame)
                     instance.PauseGame();

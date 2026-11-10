@@ -5,7 +5,7 @@ using UnityGameStarter.Gameplay.PlayerSystem;
 using UnityGameStarter.Gameplay.Character.JumpModule;
 using UnityGameStarter.Math.TransformStatics;
 
-[RequireComponent(typeof(InputManager3D))]
+[RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CameraController3D))]
 [RequireComponent(typeof(RigidbodyJumpModule))]
@@ -24,7 +24,7 @@ public class RigidbodyPlayer3D : BasePlayerMovement
     #endregion
 
     #region References
-    private InputManager3D _inputManager;
+    private InputManager _inputManager;
     private Rigidbody _rb;
     private CameraController3D _cameraController;
     private RigidbodyJumpModule _jumpModule;
@@ -42,7 +42,7 @@ public class RigidbodyPlayer3D : BasePlayerMovement
     #region Life Cycle
     protected override void OnInitialized() 
     {
-        _inputManager = GetComponent<InputManager3D>();
+        _inputManager = GetComponent<InputManager>();
         _rb = GetComponent<Rigidbody>();
         _cameraController = GetComponent<CameraController3D>();
         _jumpModule = GetComponent<RigidbodyJumpModule>();

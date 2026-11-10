@@ -225,19 +225,22 @@ PrefabInstance:
       addedObject: {fileID: 2342852602322420825}
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 632260925989703012}
+    - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 723865825508635647}
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6514019471908713868}
+      addedObject: {fileID: 7932041992195370035}
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6456894328632299708}
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3607529075795688444}
+      addedObject: {fileID: 1232473498092514264}
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1232473498092514264}
+      addedObject: {fileID: 3607529075795688444}
     - targetCorrespondingSourceObject: {fileID: 9026573006081876445, guid: 24afbc12ef6485049afe58e47dbde5c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 998847130575841630}
@@ -277,6 +280,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &632260925989703012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044829040705874678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edf158cb00d76be4399ab01bc9203df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.PlayerSystem.PlayerControlInputs
+  inputData:
+  - name: Movement
+    inputType: 0
+    inputActionReference: {fileID: -2633562659567340665, guid: 6945a9fcc12239d4fafeffba3346652e, type: 3}
+  - name: Look
+    inputType: 0
+    inputActionReference: {fileID: -135520779798071874, guid: 6945a9fcc12239d4fafeffba3346652e, type: 3}
+  - name: Jump
+    inputType: 0
+    inputActionReference: {fileID: -2393605861692584489, guid: 6945a9fcc12239d4fafeffba3346652e, type: 3}
+  - name: Pause
+    inputType: 2
+    inputActionReference: {fileID: 2226927322326185832, guid: 6945a9fcc12239d4fafeffba3346652e, type: 3}
+  inputMode: 2
 --- !u!114 &723865825508635647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,8 +322,9 @@ MonoBehaviour:
   targetPauseMenuName: PauseMenu
   dontDestroyOnLoad: 1
   pauseGame: 1
+  keepInputMode: 0
   removeOtherPlayerUI: 1
---- !u!114 &6514019471908713868
+--- !u!114 &7932041992195370035
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -303,9 +333,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4044829040705874678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3362009314c68054b8d7955744d4fd17, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d014474a61ee45449523de74270d3f5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputManager3D
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
 --- !u!114 &6456894328632299708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +354,30 @@ MonoBehaviour:
   turnSpeed: 15
   instantTurn: 0
   useControlRotation: 1
+--- !u!114 &1232473498092514264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044829040705874678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2600dbd558013f4590502c762df73ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RigidbodyJumpModule
+  jumpStrength: 20
+  gravityScale: 5
+  fallingGravityScale: 5
+  coyoteTime: 0
+  extraJumpCount: 0
+  flappyJump: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 9
+  enableMaxGroundAngle: 0
+  maxGroundAngle: 45
+  groundedResetDelay: 0.1
 --- !u!114 &3607529075795688444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,30 +405,7 @@ MonoBehaviour:
     pitch: 0
     yaw: 0
     targetPos: {x: 0, y: 0, z: 0}
---- !u!114 &1232473498092514264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4044829040705874678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2600dbd558013f4590502c762df73ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RigidbodyJumpModule
-  jumpStrength: 20
-  gravityScale: 5
-  fallingGravityScale: 5
-  coyoteTime: 0
-  extraJumpCount: 0
-  flappyJump: 0
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 9
-  enableMaxGroundAngle: 0
-  maxGroundAngle: 45
-  groundedResetDelay: 0.1
+  forceLockCursor: 1
 --- !u!114 &998847130575841630
 MonoBehaviour:
   m_ObjectHideFlags: 0
