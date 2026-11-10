@@ -5,7 +5,7 @@ using UnityGameStarter.Gameplay.CharacterMovement;
 using UnityGameStarter.Gameplay.PlayerSystem;
 using UnityGameStarter.Math.TransformStatics;
 
-[RequireComponent(typeof(InputManager3D))]
+[RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CameraController3D))]
 [RequireComponent(typeof(CharacterJumpModule))]
@@ -22,7 +22,7 @@ public class Player3D : BasePlayerMovement
     #endregion
 
     #region References
-    private InputManager3D _inputManager;
+    private InputManager _inputManager;
     private CharacterController _motionController;
     private CameraController3D _cameraController;
     private CharacterJumpModule _jumpModule;
@@ -50,7 +50,7 @@ public class Player3D : BasePlayerMovement
 
     protected override void OnInitialized()
     {
-        _inputManager = GetComponent<InputManager3D>();
+        _inputManager = GetComponent<InputManager>();
         _motionController = GetComponent<CharacterController>();
         _cameraController = GetComponent<CameraController3D>();
         _jumpModule = GetComponent<CharacterJumpModule>();

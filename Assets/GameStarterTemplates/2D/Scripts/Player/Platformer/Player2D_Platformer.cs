@@ -3,13 +3,13 @@ using UnityGameStarter.Gameplay.Character.JumpModule;
 using UnityGameStarter.Gameplay.PlayerSystem;
 using UnityGameStarter.Gameplay.CharacterMovement;
 
-[RequireComponent(typeof(InputManager2D_Platformer))]
+[RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Rigidbody2DJumpModule))]
 public class Player2D_Platformer : BasePlayerMovement
 {
     #region References
-    private InputManager2D_Platformer _inputManager;
+    private InputManager _inputManager;
     private Rigidbody2D _rb;
     private Rigidbody2DJumpModule _jumpModule;
     #endregion
@@ -28,7 +28,7 @@ public class Player2D_Platformer : BasePlayerMovement
     #region Life Cycle
     protected override void OnInitialized()
     {
-        _inputManager = GetComponent<InputManager2D_Platformer>();
+        _inputManager = GetComponent<InputManager>();
         _rb = GetComponent<Rigidbody2D>();
         _jumpModule = GetComponent<Rigidbody2DJumpModule>();
     }

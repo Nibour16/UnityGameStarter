@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7979293185829589836}
   - component: {fileID: 4065176717274246024}
   - component: {fileID: 2783353926029227515}
+  - component: {fileID: 3986869875488690534}
   - component: {fileID: 720684324810919035}
   - component: {fileID: 4547318733646734836}
   - component: {fileID: 7865169018142504055}
@@ -106,6 +107,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &3986869875488690534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4877215146579372781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edf158cb00d76be4399ab01bc9203df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityGameStarter.Gameplay.PlayerSystem.PlayerControlInputs
+  inputData:
+  - name: Movement
+    inputType: 0
+    inputActionReference: {fileID: -2633562659567340665, guid: 6945a9fcc12239d4fafeffba3346652e, type: 3}
+  - name: Jump
+    inputType: 0
+    inputActionReference: {fileID: -2393605861692584489, guid: 6945a9fcc12239d4fafeffba3346652e, type: 3}
+  - name: Pause
+    inputType: 2
+    inputActionReference: {fileID: 2226927322326185832, guid: 6945a9fcc12239d4fafeffba3346652e, type: 3}
+  inputMode: 2
 --- !u!114 &720684324810919035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +146,7 @@ MonoBehaviour:
   targetPauseMenuName: PauseMenu
   dontDestroyOnLoad: 1
   pauseGame: 1
+  keepInputMode: 0
   removeOtherPlayerUI: 1
 --- !u!114 &4547318733646734836
 MonoBehaviour:
@@ -135,6 +160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d014474a61ee45449523de74270d3f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager2D_Platformer
+  move: Movement
+  jump: Jump
+  pause: Pause
 --- !u!114 &7865169018142504055
 MonoBehaviour:
   m_ObjectHideFlags: 0

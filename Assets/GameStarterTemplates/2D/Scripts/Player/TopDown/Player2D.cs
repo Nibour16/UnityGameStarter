@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityGameStarter.Gameplay.PlayerSystem;
 using UnityGameStarter.Gameplay.CharacterMovement;
 
-[RequireComponent(typeof(InputManager2D))]
+[RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player2D : BasePlayerMovement
 {
     #region References
-    private InputManager2D _inputManager;
+    private InputManager _inputManager;
     private Rigidbody2D _rb;
     #endregion
 
@@ -23,7 +23,7 @@ public class Player2D : BasePlayerMovement
     #region Implementation
     protected override void OnInitialized()
     {
-        _inputManager = GetComponent<InputManager2D>();
+        _inputManager = GetComponent<InputManager>();
         _rb = GetComponent<Rigidbody2D>();
     }
 
