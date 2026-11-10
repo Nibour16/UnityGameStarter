@@ -11,32 +11,18 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 ---
 
-## 🎮 Gameplay Features
+## 🎮 Features
 
 | Feature | Description |
 |---|---|
 | Starting Players | You will have any kind of player controls including 2D and 3D |
 | Scene Facade | A facade script that makes Unity Scene Management easier to use and suitable to be applied by other features and systems |
-
-## 🛠️ Framework Features
-
-| Feature | Description |
-|---|---|
-| State Machine | State Pattern Logic (FSM) |
-| Starter Singleton Pattern | Singleton Pattern framework for singleton entities like game manager with runtime singleton bootstrap for additional support |
-| Event System | System with Event Bus Pattern and Event Manager for event-driven logic support |
+| State Machines | Simple State Pattern Logic (FSM) for any kind of finite state-driven logic |
+| Starter Singleton Pattern | Singleton Pattern framework for singleton entities like game manager with such as runtime singleton bootstrap for additional support |
+| Event System | System with Event Manager applied Event Bus Design Pattern for event-driven logic support |
 | Timer System | System that can manage time delays like skill CD |
 | New Update System | System that includes base MonoBehaviour with lazy update logic and starter custom update management |
-| Object Pool Management | Manages Unity Object Pooling for users to understand and use easier |
-| Service Locator Pattern | Design pattern logic that supports for large/complex systems connections|
-
-## ⚙️ Engine System Features
-
-| Feature | Description |
-|---|---|
-| Starter Engine Runtime Management | Manages runtime of all logics including the needing to be initialized before scene construction, where they don't require to manually putting into the scene |
-| Starter Editor Utilities | A starter editor utility framework that helps to make editor windows with inputs and creators like script creators |
-| Starter Customizable Project Settings | A framework that serves Unity's Project Setting, allows users to design custom project settings more comfortable |
+| Object Pool Management | Manages Unity Object Pooling for users to use more comfortable |
 
 ---
 
@@ -46,32 +32,13 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 ## 💻 Development Environment
 
-- Unity 6.5 (tested)
-- Visual Studio 2026 (tested)
+- Unity 6000.5.0f1 (i.e. Unity 6.5)
+- Visual Studio 2026
 
 ## 📋 Requirements
 
-- Unity 6.0 or later
+- Unity 6.5 or later
 - Visual Studio 2022 or 2026 (depending on the chosen version)
-
----
-
-# 📝 Notes
-
-> [!NOTE]
-> This project is currently developed and tested with Unity Engine 6.5.
-> 
-> Other Unity Engine versions like Unity 2022 or 2023 may work, but have not been thoroughly tested.
-> 
-> Compatibility of early Unreal Engine versions like Unity Engine 2019 or 2020 are unknown.
-> 
-> The project is primarily developed in Unity C#, while Unity Visual Scripting is used selectively for event-based logic, such as dialogues, switches, and scripted gameplay events. The core gameplay systems and architecture are fully implemented in C#.
-
----
-
-# 🛠️ Project Architecture
-
-- C#-friendly workflow
 
 ---
 
@@ -84,9 +51,6 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 - Documentation
   https://docs.unity3d.com/Manual/index.html?ampDeviceId=38bd8577-0209-46e3-8bb9-0f59ca2c25e4&ampSessionId=1781574676012&ampTimestamp=1782170803648
-
-- Visual Scripting
-  https://docs.unity3d.com/Manual/visual-scripting.html
   
 ## Programming
 
@@ -104,7 +68,9 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 - Please fork the repository and submit a pull request for review.
 
-- Only repository maintainers and approved contributors can directly modify the main repository.
+- Only **repository maintainers** and **approved contributors** can directly modify the main repository.
+
+- Be nice, **NSFW, harassment, and disrespectful behaviours are NOT welcome**
 
 ---
 
@@ -126,7 +92,5 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 ## Acknowledgements
 
-- This project was developed with assistance from various learning resources. 
-
-- Including ChatGPT (OpenAI) for development assistance, documentation support, technical discussions, and code references.
+- This project was developed with assistance from various learning resources, such as Youtube tutorials, ChatGPT (OpenAI) for development assistance, documentation support, technical discussions, and code references.
 
