@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 
 using UnityEngine;
@@ -15,13 +16,18 @@ namespace UnityGameStarter.SceneManagement
     [RuntimeSingleton(-200)]
     public class SceneFacade : Singleton<SceneFacade>
     {
+        #region Track of scene load events
         private event Action<Scene, LoadSceneMode> SceneLoadStarted;
         private event Action<Scene, LoadSceneMode> SceneLoaded;
         private event Action<Scene> SceneUnloadStarted;
         private event Action<Scene> SceneUnloaded;
+        #endregion
 
+        #region Scene Getters
         public Scene ActiveScene => SceneManager.GetActiveScene();
         public string ActiveSceneName => ActiveScene.name;
+        public Scene GetSceneByName(string sceneName) => SceneManager.GetSceneByName(sceneName);
+        #endregion
 
         #region Life Cycle
         private void OnEnable()
@@ -52,110 +58,91 @@ namespace UnityGameStarter.SceneManagement
         #endregion
 
         #region Load
-        public void Load(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
+        public bool Load(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            if (!scene.IsValid())
-            {
-                Debug.LogError($"Cannot load scene: Scene is invalid. " +
-                    $"name=[{scene.name}], buildIndex=[{scene.buildIndex}], path=[{scene.path}]");
-
-                return;
-            }
-
-            if (string.IsNullOrEmpty(scene.name))
-            {
-                Debug.LogError("Cannot load scene: Scene name is empty.");
-                return;
-            }
-
-            SceneLoadStarted?.Invoke(scene, mode);
-            SceneManager.LoadScene(scene.name, mode);
-        }
-
-        public bool Load(string sceneName, LoadSceneMode mode = LoadSceneMode.Single, bool printError = false)
-        {
-            if (string.IsNullOrEmpty(sceneName))
-            {
-                if (printError)
-                    Debug.LogError("Cannot load scene: sceneName is null or empty.");
-                
-                return false;
-            }
+            if (!IsSceneNameValid(sceneName)) return false;
 
             SceneLoadStarted?.Invoke(GetSceneByName(sceneName), mode);
             SceneManager.LoadScene(sceneName, mode);
             return true;
         }
 
-        public async Task LoadAsync(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
+        public bool Load(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            SceneLoadStarted?.Invoke(scene, mode);
+            if (!IsSceneValid(scene)) return false;
 
-            AsyncOperation operation = SceneManager.LoadSceneAsync(scene.name, mode);
+            return Load(scene.name, mode);
+        }
 
-            if (operation == null)
-            {
-                Debug.LogError($"Scene {scene.name} cannot be loaded.");
-                return;
-            }
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => SceneLoaded?.Invoke(scene, mode);
+        #endregion
 
-            while (!operation.isDone)
-                await Task.Yield();
+        #region Load Async
+        public Task LoadAsync(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
+        {
+            if (!IsSceneValid(scene)) return Task.CompletedTask;
+
+            return LoadAsync(scene.name, mode);
         }
 
         public async Task LoadAsync(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
         {
+            if (!IsSceneNameValid(sceneName)) return;
+
             SceneLoadStarted?.Invoke(GetSceneByName(sceneName), mode);
 
-            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, mode);
-
-            if (operation == null)
-            {
-                Debug.LogError($"Scene {sceneName} cannot be loaded.");
-                return;
-            }
+            if (!TryGetLoadSceneAsyncOperation(sceneName, out var operation, mode)) return;
 
             while (!operation.isDone)
                 await Task.Yield();
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        public IEnumerator DoLoadAsyncTask(string sceneName, LoadSceneMode mode = LoadSceneMode.Single) 
         {
-            SceneLoaded?.Invoke(scene, mode);
+            Task task = LoadAsync(sceneName, mode);
+
+            while (!task.IsCompleted) yield return null;
+
+            ValidateTaskStatus(task);
         }
+
+        public IEnumerator DoLoadAsyncTask(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
+            => DoLoadAsyncTask(scene.name, mode);
+
         #endregion
 
         #region Unload
-        public async Task UnloadAsync(Scene scene)
+        public Task UnloadAsync(Scene scene)
         {
-            SceneUnloadStarted?.Invoke(scene);
+            if (!IsSceneValid(scene)) return Task.CompletedTask;
 
-            AsyncOperation operation = SceneManager.UnloadSceneAsync(scene);
-
-            if (operation == null)
-                return;
-
-            while (!operation.isDone)
-                await Task.Yield();
+            return UnloadAsync(scene.name);
         }
 
         public async Task UnloadAsync(string sceneName)
         {
+            if (!IsSceneNameValid(sceneName)) return;
+            
             SceneUnloadStarted?.Invoke(GetSceneByName(sceneName));
 
-            AsyncOperation operation = SceneManager.UnloadSceneAsync(sceneName);
-
-            if (operation == null)
-                return;
+            if (!TryGetUnloadSceneAsyncOperation(sceneName, out var operation)) return;
 
             while (!operation.isDone)
                 await Task.Yield();
         }
 
-        private void OnSceneUnloaded(Scene scene) 
+        public IEnumerator DoUnloadAsyncTask(string sceneName)
         {
-            SceneUnloaded?.Invoke(scene);
+            Task task = UnloadAsync(sceneName);
+
+            while (!task.IsCompleted) yield return null;
+
+            ValidateTaskStatus(task);
         }
+
+        public IEnumerator DoUnloadAsyncTask(Scene scene) => DoUnloadAsyncTask(scene.name);
+
+        private void OnSceneUnloaded(Scene scene) => SceneUnloaded?.Invoke(scene);
         #endregion
 
         #region Reload
@@ -163,15 +150,55 @@ namespace UnityGameStarter.SceneManagement
         public Task ReloadAsync(LoadSceneMode mode = LoadSceneMode.Single) => LoadAsync(ActiveScene, mode);
         #endregion
 
-        #region Other API
-        public Scene GetSceneByName(string sceneName)
-            => SceneManager.GetSceneByName(sceneName);
+        #region Async Operation Handlers
+        private bool TryGetLoadSceneAsyncOperation(string sceneName, out AsyncOperation operation,
+            LoadSceneMode mode = LoadSceneMode.Single)
+        {
+            operation = SceneManager.LoadSceneAsync(sceneName, mode);
 
-        public bool IsValidScene(Scene scene)
-            => scene.IsValid();
+            return operation != null;
+        }
 
-        public bool IsValidScene(string sceneName)
-            => IsValidScene(GetSceneByName(sceneName));
+        private bool TryGetUnloadSceneAsyncOperation(string sceneName, out AsyncOperation operation)
+        {
+            operation = SceneManager.UnloadSceneAsync(sceneName);
+
+            return operation != null;
+        }
+        #endregion
+
+        #region Validation
+        public bool IsSceneValid(Scene scene)
+        {
+            if (!scene.IsValid())
+            {
+                Debug.LogError($"Invalid scene: name=[{scene.name}], " +
+                    $"buildIndex=[{scene.buildIndex}], path=[{scene.path}]", this);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool IsSceneNameValid(string sceneName)
+        {
+            if (string.IsNullOrEmpty(sceneName))
+            {
+                Debug.LogError("Scene name is empty.", this);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ValidateTaskStatus(Task task)
+        {
+            if (task.IsFaulted)
+                Debug.LogException(task.Exception, this);
+            else if (task.IsCanceled)
+                Debug.LogWarning("Scene task was canceled.", this);
+        }
         #endregion
     }
 }
