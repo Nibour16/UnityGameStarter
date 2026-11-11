@@ -78,14 +78,19 @@ namespace UnityGameStarter.SceneManagement
         #endregion
 
         #region Load Async
-        public Task LoadAsync(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
+        public IEnumerator LoadAsync(string sceneName, LoadSceneMode mode = LoadSceneMode.Single) 
         {
-            if (!IsSceneValid(scene)) return Task.CompletedTask;
+            Task task = GetLoadAsyncTask(sceneName, mode);
 
-            return LoadAsync(scene.name, mode);
+            while (!task.IsCompleted) yield return null;
+
+            ValidateTaskStatus(task);
         }
 
-        public async Task LoadAsync(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
+        public IEnumerator LoadAsync(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
+            => LoadAsync(scene.name, mode);
+
+        private async Task GetLoadAsyncTask(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
         {
             if (!IsSceneNameValid(sceneName)) return;
 
@@ -96,33 +101,24 @@ namespace UnityGameStarter.SceneManagement
             while (!operation.isDone)
                 await Task.Yield();
         }
+        #endregion
 
-        public IEnumerator DoLoadAsyncTask(string sceneName, LoadSceneMode mode = LoadSceneMode.Single) 
+        #region Unload
+        public IEnumerator UnloadAsync(string sceneName)
         {
-            Task task = LoadAsync(sceneName, mode);
+            Task task = GetUnloadAsyncTask(sceneName);
 
             while (!task.IsCompleted) yield return null;
 
             ValidateTaskStatus(task);
         }
 
-        public IEnumerator DoLoadAsyncTask(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
-            => DoLoadAsyncTask(scene.name, mode);
+        public IEnumerator UnloadAsync(Scene scene) => UnloadAsync(scene.name);
 
-        #endregion
-
-        #region Unload
-        public Task UnloadAsync(Scene scene)
-        {
-            if (!IsSceneValid(scene)) return Task.CompletedTask;
-
-            return UnloadAsync(scene.name);
-        }
-
-        public async Task UnloadAsync(string sceneName)
+        private async Task GetUnloadAsyncTask(string sceneName)
         {
             if (!IsSceneNameValid(sceneName)) return;
-            
+
             SceneUnloadStarted?.Invoke(GetSceneByName(sceneName));
 
             if (!TryGetUnloadSceneAsyncOperation(sceneName, out var operation)) return;
@@ -131,23 +127,13 @@ namespace UnityGameStarter.SceneManagement
                 await Task.Yield();
         }
 
-        public IEnumerator DoUnloadAsyncTask(string sceneName)
-        {
-            Task task = UnloadAsync(sceneName);
-
-            while (!task.IsCompleted) yield return null;
-
-            ValidateTaskStatus(task);
-        }
-
-        public IEnumerator DoUnloadAsyncTask(Scene scene) => DoUnloadAsyncTask(scene.name);
-
         private void OnSceneUnloaded(Scene scene) => SceneUnloaded?.Invoke(scene);
         #endregion
 
         #region Reload
         public void Reload(LoadSceneMode mode = LoadSceneMode.Single) => Load(ActiveScene, mode);
-        public Task ReloadAsync(LoadSceneMode mode = LoadSceneMode.Single) => LoadAsync(ActiveScene, mode);
+        public IEnumerator ReloadAsync(LoadSceneMode mode = LoadSceneMode.Single) 
+            => LoadAsync(ActiveScene, mode);
         #endregion
 
         #region Async Operation Handlers

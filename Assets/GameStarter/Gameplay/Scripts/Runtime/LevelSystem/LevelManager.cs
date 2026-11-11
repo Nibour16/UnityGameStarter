@@ -115,9 +115,8 @@ namespace UnityGameStarter.Gameplay.LevelManagement
         #region On Application Quit
         protected override void OnApplicationQuit()
         {
-            if (EventManager.TryGetInstance(out var instance) && 
-                _initializationState == InitializationState.Initialized)
-                instance.Publish(new ExitLevelEvent());
+            if (!GameManager.TryGetInstance(out _))
+                EventManager.Instance.Publish(new ExitLevelEvent());
 
             ResetState();
             base.OnApplicationQuit();

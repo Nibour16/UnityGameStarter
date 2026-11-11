@@ -11,22 +11,26 @@ namespace UnityGameStarter.Gameplay
     public class GameManager : Singleton<GameManager>
     {
         [SerializeField] private GameplayData data;
-        
-        private GameStateMachine stateMachine;
+        private GameStateMachine _stateMachine;
 
         public GameplayData Data => data;
-
-        public bool IsPaused => stateMachine.CurrentState.GetType() == typeof(PauseState);
+        public bool IsPaused => _stateMachine.CurrentState.GetType() == typeof(PauseState);
 
         protected override void Awake()
         {
             base.Awake();
 
-            stateMachine = GetComponent<GameStateMachine>();
-            stateMachine.SetState(typeof(InitialGameState));
+            _stateMachine = GetComponent<GameStateMachine>();
+            _stateMachine.SetState(typeof(InitialGameState));
 
             if (data != null)
                 EventManager.Instance.Publish(new RuntimeScale(data.gameTimeScale));
+        }
+
+        protected override void OnApplicationQuit()
+        {
+            LeaveGame();
+            base.OnApplicationQuit();
         }
 
         /*public void SaveGame() 
@@ -36,24 +40,24 @@ namespace UnityGameStarter.Gameplay
         
         public void LoadGame() 
         {
-            stateMachine.SetState(typeof(LoadingState));
+            _stateMachine.SetState(typeof(LoadingState));
         }
 
         public void PauseGame() 
         {
-            stateMachine.SetState(typeof(PauseState));
+            _stateMachine.SetState(typeof(PauseState));
         }
 
         public void EnterGame() 
         {
-            stateMachine.SetState(typeof(GameplayState));
+            _stateMachine.SetState(typeof(GameplayState));
         }
 
         public void NextLevel(Scene newLevel)
         {
-            stateMachine.reason = ExitGameReason.OpenNewLevel;
-            stateMachine.nextTargetScene = newLevel;
-            stateMachine.SetState(typeof(ExitGameState));
+            _stateMachine.reason = ExitGameReason.OpenNewLevel;
+            _stateMachine.nextTargetScene = newLevel;
+            _stateMachine.SetState(typeof(ExitGameState));
         }
 
         public void NextLevel(string levelName)
@@ -61,14 +65,14 @@ namespace UnityGameStarter.Gameplay
 
         public void RestartGame() 
         {
-            stateMachine.reason = ExitGameReason.Restart;
-            stateMachine.SetState(typeof(ExitGameState));
+            _stateMachine.reason = ExitGameReason.Restart;
+            _stateMachine.SetState(typeof(ExitGameState));
         }
 
         public void LeaveGame() 
         {
-            stateMachine.reason = ExitGameReason.Exit;
-            stateMachine.SetState(typeof(ExitGameState));
+            _stateMachine.reason = ExitGameReason.Exit;
+            _stateMachine.SetState(typeof(ExitGameState));
         }
     }
 }
