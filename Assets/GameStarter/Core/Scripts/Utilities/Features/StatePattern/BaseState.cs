@@ -19,7 +19,7 @@ namespace UnityGameStarter.FiniteStateMachine
             => TypeLibrary.TryCast(this.stateMachine, out stateMachine);
 
         public abstract void EnterState();
-        public abstract void UpdateState();
+        public virtual void UpdateState() { }
         public virtual void ExitState() { }
     }
 }

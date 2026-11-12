@@ -31,11 +31,7 @@ namespace UnityGameStarter.EditorUtilities.Creator
             List<object> args = new();
 
             foreach (var definition in content.Values)
-            {
-                args.Add(
-                    StringLibrary.Parse(definition.value)
-                );
-            }
+                args.Add(StringLibrary.Parse(definition.value));
 
             var creatorData = new MultipleScriptCreatorData
             {
@@ -59,8 +55,7 @@ namespace UnityGameStarter.EditorUtilities.Creator
 
             foreach (var definition in content.Values)
             {
-                if (definition.secondaryValues == null)
-                    continue;
+                if (definition.secondaryValues == null) continue;
 
                 foreach (var value in definition.secondaryValues)
                 {

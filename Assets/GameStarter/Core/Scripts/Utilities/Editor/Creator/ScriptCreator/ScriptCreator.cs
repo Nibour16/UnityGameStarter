@@ -46,7 +46,7 @@ namespace UnityGameStarter.EditorUtilities.Creator
 
         private string CreateFile(string folder, string fileName, string template, object[] args)
         {
-            if (ValidateFile(folder, fileName, out var path)) return "";
+            if (!ValidateFile(folder, fileName, out var path)) return "";
 
             string content = string.Format(template, args);
 
@@ -59,8 +59,19 @@ namespace UnityGameStarter.EditorUtilities.Creator
         /// </summary>
         private bool ValidateFiles(string folder, IEnumerable<ScriptCreatorData> files)
         {
+            HashSet<string> fileNames = new(StringComparer.OrdinalIgnoreCase);
+
             foreach (var file in files)
-                if (!ValidateFile(folder, file.fileName, out _)) return false;
+            {
+                if (!fileNames.Add(file.fileName))
+                {
+                    EditorUtility.DisplayDialog("Error", $"Duplicate file name '{file.fileName}.cs'!", "OK");
+                    return false;
+                }
+
+                if (!ValidateFile(folder, file.fileName, out _))
+                    return false;
+            }
 
             return true;
         }
