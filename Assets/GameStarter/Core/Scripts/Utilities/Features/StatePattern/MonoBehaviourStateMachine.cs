@@ -22,11 +22,6 @@ namespace UnityGameStarter.FiniteStateMachine
         [SerializeField] private MonoBehaviour[] initialStates;
 
         /// <summary>
-        /// If true, the states can exist even if they inherit each other
-        /// </summary>
-        protected virtual bool AllowInheritances => true;
-
-        /// <summary>
         /// Resolved property of current state, makes it more accurate
         /// </summary>
         public override MonoBehaviour CurrentState 
@@ -136,8 +131,7 @@ namespace UnityGameStarter.FiniteStateMachine
             {
                 Type existingType = x.Key;
 
-                return AllowInheritances ? targetType == existingType :
-                    targetType.IsAssignableFrom(existingType) || existingType.IsAssignableFrom(targetType);
+                return targetType == existingType;
             });
         }
         #endregion
