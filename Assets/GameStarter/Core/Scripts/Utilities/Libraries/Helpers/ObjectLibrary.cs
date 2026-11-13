@@ -28,5 +28,23 @@ namespace UnityGameStarter.UnityObjectStatics
             return Object.FindObjectsByType<T>(
                 includeInactive? FindObjectsInactive.Include : FindObjectsInactive.Exclude);
         }
+
+        public static bool HasCircularReference<T>(
+            this T current, T target, System.Func<T, IEnumerable<T>> getChildren, HashSet<T> visited = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(current, target)) return true;
+
+            visited ??= new HashSet<T>();
+
+            if (!visited.Add(current)) return false;
+
+            foreach (var child in getChildren(current))
+            {
+                if (HasCircularReference(child, target, getChildren, visited))
+                    return true;
+            }
+
+            return false;
+        }
     }
 }
