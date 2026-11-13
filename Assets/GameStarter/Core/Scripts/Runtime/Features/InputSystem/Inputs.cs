@@ -9,16 +9,62 @@ namespace UnityGameStarter.InputSystem
         [SerializeField] private InputData[] inputData;
         public InputMode inputMode = InputMode.GameAndUI;
 
+        private InputActionAsset _asset;
+
+        private void Awake() 
+        {
+            InputActionAsset sourceAsset = null;
+
+            foreach (var data in inputData)
+            {
+                if (data == null || data.inputActionReference == null) continue;
+
+                var asset = data.inputActionReference.asset;
+
+                // Since first data check did not setup the source asset,
+                // therefore it means that it checks if the data are all refer to the first one
+                if (sourceAsset == null)
+                {
+                    sourceAsset = asset;
+                    continue;
+                }
+
+                if (sourceAsset != asset)
+                {
+                    Debug.LogError("All InputActionReferences must belong to the same InputActionAsset.", this);
+                    return;
+                }
+            }
+
+            if (sourceAsset == null)
+            {
+                Debug.LogError("No valid InputActionAsset found.", this);
+                return;
+            }
+
+            _asset = Instantiate(sourceAsset);
+        }
+
         private void OnEnable()
         {
-            foreach (var data in inputData)
-                SetActionEnable(data.inputActionReference, true);
+            if (_asset == null) return;
+
+            _asset.Enable();
         }
 
         private void OnDisable()
         {
-            foreach (var data in inputData)
-                SetActionEnable(data.inputActionReference, false);
+            if (_asset == null) return;
+
+            _asset.Disable();
+        }
+
+        private void OnDestroy()
+        {
+            if (_asset == null) return;
+
+            Destroy(_asset);
+            _asset = null;
         }
 
         public InputAction GetAction(string actionName) 
@@ -41,7 +87,7 @@ namespace UnityGameStarter.InputSystem
 
         public InputAction GetAction(InputData data) 
         {
-            if (IsDataValid(data, out var action))
+            if (!IsDataValid(data, out var action)) return null;
 
             if (inputMode == InputMode.GameAndUI || data.inputType == InputMode.GameAndUI)
                 return action;
@@ -53,35 +99,41 @@ namespace UnityGameStarter.InputSystem
         {
             action = null;
 
-            if (data == null) 
+            if (data == null)
             {
                 Debug.LogError("Data is not valid", this);
                 return false;
             }
-            
-            action = data.inputActionReference;
 
-            if (action == null)
+            if (data.inputActionReference == null)
+            {
+                Debug.LogWarning("Input Action Reference is null", this);
+                return false;
+            }
+
+            if (_asset == null)
+            {
+                Debug.LogError("Instance of the Input Action Asset is not generated", this);
+                return false;
+            }
+
+            var originalAction = data.inputActionReference.action;
+
+            if (originalAction == null)
             {
                 Debug.LogWarning("Target action is null", this);
                 return false;
             }
 
-            return true;
-        }
+            action = _asset.FindAction(originalAction.id);
 
-        private void SetActionEnable(InputAction action, bool enable) 
-        {
-            if (action == null) 
+            if (action == null)
             {
-                Debug.LogError("Input Action is null", this);
-                return;
+                Debug.LogWarning($"Runtime action not found: {originalAction.name}", this);
+                return false;
             }
 
-            if (enable)
-                action.Enable();
-            else
-                action.Disable();
+            return true;
         }
     }
 }

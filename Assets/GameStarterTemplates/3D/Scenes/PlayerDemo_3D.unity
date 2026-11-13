@@ -506,6 +506,10 @@ PrefabInstance:
       propertyPath: printLog
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6019261184987488167, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
+      propertyPath: asset
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 6945a9fcc12239d4fafeffba3346652e, type: 3}
     - target: {fileID: 7219959147946031802, guid: 692a97a261ae8ed4285934264e4fb22a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.5000873
