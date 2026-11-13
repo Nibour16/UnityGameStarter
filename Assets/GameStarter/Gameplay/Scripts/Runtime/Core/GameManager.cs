@@ -21,7 +21,7 @@ namespace UnityGameStarter.Gameplay
             base.Awake();
 
             _stateMachine = GetComponent<GameStateMachine>();
-            _stateMachine.SetState(typeof(InitialGameState));
+            _stateMachine.SetState<InitialGameState>();
 
             if (data != null)
                 EventManager.Instance.Publish(new RuntimeScale(data.gameTimeScale));
@@ -40,24 +40,24 @@ namespace UnityGameStarter.Gameplay
         
         public void LoadGame() 
         {
-            _stateMachine.SetState(typeof(LoadingState));
+            _stateMachine.SetState<LoadingState>();
         }
 
         public void PauseGame() 
         {
-            _stateMachine.SetState(typeof(PauseState));
+            _stateMachine.SetState<PauseState>();
         }
 
         public void EnterGame() 
         {
-            _stateMachine.SetState(typeof(GameplayState));
+            _stateMachine.SetState<GameplayState>();
         }
 
         public void NextLevel(Scene newLevel)
         {
             _stateMachine.reason = ExitGameReason.OpenNewLevel;
             _stateMachine.nextTargetScene = newLevel;
-            _stateMachine.SetState(typeof(ExitGameState));
+            _stateMachine.SetState<ExitGameState>();
         }
 
         public void NextLevel(string levelName)
@@ -66,13 +66,13 @@ namespace UnityGameStarter.Gameplay
         public void RestartGame() 
         {
             _stateMachine.reason = ExitGameReason.Restart;
-            _stateMachine.SetState(typeof(ExitGameState));
+            _stateMachine.SetState<ExitGameState>();
         }
 
         public void LeaveGame() 
         {
             _stateMachine.reason = ExitGameReason.Exit;
-            _stateMachine.SetState(typeof(ExitGameState));
+            _stateMachine.SetState<ExitGameState>();
         }
     }
 }

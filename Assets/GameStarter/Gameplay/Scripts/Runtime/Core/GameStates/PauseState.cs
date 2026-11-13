@@ -6,7 +6,7 @@ namespace UnityGameStarter.Gameplay
 {
     public class PauseState : BaseEventState<PauseState>
     {
-        public PauseState(BaseStateMachine stateMachine) : base(stateMachine) { }
+        public PauseState(StateMachine stateMachine) : base(stateMachine) { }
 
         public override void EnterState() 
         {

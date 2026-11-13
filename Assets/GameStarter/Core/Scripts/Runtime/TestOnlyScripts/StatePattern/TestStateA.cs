@@ -2,11 +2,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityGameStarter.FiniteStateMachine;
 
-namespace UnityGameStarter.TestOnlyScripts.StateMachine
+namespace UnityGameStarter.TestOnlyScripts.FiniteStateMachine
 {
     public class TestStateA : BaseState
     {
-        public TestStateA(BaseStateMachine stateMachine) : base(stateMachine) { }
+        public TestStateA(StateMachine stateMachine) : base(stateMachine) { }
 
         public override void EnterState()
         {
@@ -16,7 +16,7 @@ namespace UnityGameStarter.TestOnlyScripts.StateMachine
         public override void UpdateState()
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
-                stateMachine.SetState(typeof(TestStateB));
+                stateMachine.SetState<TestStateB>();
         }
 
         public override void ExitState()

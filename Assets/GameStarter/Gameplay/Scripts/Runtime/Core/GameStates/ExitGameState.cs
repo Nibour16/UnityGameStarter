@@ -13,7 +13,7 @@ namespace UnityGameStarter.Gameplay
     {
         public override bool Lock => true;
 
-        public ExitGameState(BaseStateMachine stateMachine) : base(stateMachine) { }
+        public ExitGameState(StateMachine stateMachine) : base(stateMachine) { }
 
         public override void EnterState()
         {

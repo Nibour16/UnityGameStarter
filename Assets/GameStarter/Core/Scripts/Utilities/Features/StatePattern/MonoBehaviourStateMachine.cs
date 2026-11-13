@@ -1,56 +1,76 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityGameStarter.UnityObjectStatics;
 
 namespace UnityGameStarter.FiniteStateMachine 
 {
-    public class MonoBehaviourStateMachine : MonoBehaviour
+    public interface IStateBehaviour { }
+    
+    /// <summary>
+    /// A type of state machine that supports any MonoBehaviours as states, 
+    /// but they are required to implement <see cref="IStateBehaviour"/>.
+    /// 
+    /// This state machine supports HFSM, which means that the state can also be a state machine.
+    /// </summary>
+    /// <remarks>
+    /// Since the states are MonoBehaviours, which it won't support pure C# states like 
+    /// <see cref="BaseState"/> from <see cref="BaseStateMachine"/>
+    /// </remarks>
+    public class MonoBehaviourStateMachine : BaseStateMachine<MonoBehaviour>, IStateBehaviour
     {
-        [SerializeField] private MonoBehaviour[] states;
-        private readonly List<MonoBehaviour> _stateList = new();
-
-        protected virtual bool SetDefault => true;
-        protected virtual bool AllowInheritances => false;
+        [SerializeField] private MonoBehaviour[] initialStates;
 
         /// <summary>
-        /// Lazy updated field
+        /// If true, the states can exist even if they inherit each other
         /// </summary>
-        private MonoBehaviour _currentState;
+        protected virtual bool AllowInheritances => true;
 
         /// <summary>
-        /// Resolved field, makes it more accurate
+        /// Resolved property of current state, makes it more accurate
         /// </summary>
-        public MonoBehaviour CurrentState 
+        public override MonoBehaviour CurrentState 
         {
             get 
             {
-                if (!_currentState || !_currentState.isActiveAndEnabled) 
+                if (!currentState || !currentState.isActiveAndEnabled) 
                 {
                     if (!isActiveAndEnabled) return null;
 
-                    return _currentState = _stateList.FirstOrDefault(x => x && x.isActiveAndEnabled);
+                    SyncCurrentState();
                 }
 
-                return _currentState;
+                return currentState;
             }
 
-            private set => _currentState = value;
+            protected set => base.CurrentState = value;
         }
 
-        protected virtual void Awake() 
+        #region Life Cycle
+        protected override void Awake() 
         {
-            foreach (var state in states) 
+            if (initialStates.Length <= 0) 
+            {
+                Debug.LogError("States are not implemented in inspector", this);
+                return;
+            }
+            
+            foreach (var state in initialStates) 
             {
                 if (!state) 
                 {
                     Debug.LogWarning("An invalid state is detected", this);
                     continue;
                 }
-                
-                if (state is MonoBehaviourStateMachine stateMachine &&
-                    stateMachine.HasCircularReference(this, x => x.states.OfType<MonoBehaviourStateMachine>())) 
+
+                if (state is not IStateBehaviour)
+                {
+                    Debug.LogWarning("The target component does not implement IStateBehaviour", this);
+                    continue;
+                }
+
+                if (state is MonoBehaviourStateMachine stateMachine && stateMachine.HasCircularReference(
+                    this, x => x.initialStates.OfType<MonoBehaviourStateMachine>())) 
                 {
                     Debug.LogWarning("The state cannot be self", this);
                     continue;
@@ -63,41 +83,99 @@ namespace UnityGameStarter.FiniteStateMachine
                 }
 
                 state.enabled = false;
-                _stateList.Add(state);
+                states.Add(state.GetType(), state);
             }
         }
 
-        protected virtual void Start() 
+        protected virtual void OnEnable() 
         {
-            if (SetDefault)
-                SetState(_stateList.FirstOrDefault());
+            if (currentState)
+                currentState.enabled = true;
         }
 
-        protected virtual void Update() 
+        protected virtual void OnDisable() 
         {
-            var activeState = _stateList.FirstOrDefault(x => x && x.isActiveAndEnabled);
+            SyncCurrentState();
 
-            if (activeState != _currentState)
-                CurrentState = activeState;
+            foreach (var state in states.Values)
+            {
+                if (state.enabled)
+                    state.enabled = false;
+            }
+        }
 
-            foreach (var state in _stateList)
+        protected override void Update() 
+        {
+            SyncCurrentState();
+
+            foreach (var state in states.Values)
             {
                 if (state != CurrentState && state.enabled)
                     state.enabled = false;
             }
         }
+        #endregion
 
-        public void SetState(MonoBehaviour state) 
+        #region Tool Methods
+        /// <summary>
+        /// Update <see cref="_currentState"/> to the actual result
+        /// </summary>
+        private void SyncCurrentState()
         {
-            if (!state || !_stateList.Contains(state)) 
+            var activeState = states.Values.FirstOrDefault(x => x && x.isActiveAndEnabled);
+
+            if (activeState != currentState)
+                currentState = activeState;
+        }
+
+        private bool IsStateDuplicated(MonoBehaviour state)
+        {
+            Type targetType = state.GetType();
+
+            return states.Any(x =>
+            {
+                Type existingType = x.Key;
+
+                return AllowInheritances ? targetType == existingType :
+                    targetType.IsAssignableFrom(existingType) || existingType.IsAssignableFrom(targetType);
+            });
+        }
+        #endregion
+
+        #region API
+        public override bool TryGetStateByType<T>(out T state)
+        {
+            state = null;
+
+            if (!states.TryGetValue(typeof(T), out var monoState))
+            {
+                Debug.LogError("The target state is not found", this);
+                return false;
+            }
+
+            state = (T)monoState;
+            return true;
+        }
+
+        public override void SetState(MonoBehaviour state, bool reset = false) 
+        {
+            if (!state || !states.TryGetValue(state.GetType(), out var registeredState) ||
+                registeredState != state)
             {
                 Debug.LogError("The target state is not found", this);
                 return;
             }
 
-            if (state == CurrentState) return;
+            if (state == CurrentState)
+            {
+                if (!reset) return;
 
-            foreach (var itemState in _stateList)
+                state.enabled = false;
+                state.enabled = true;
+                return;
+            }
+
+            foreach (var itemState in states.Values)
             {
                 if (itemState != state && itemState.enabled)
                     itemState.enabled = false;
@@ -107,37 +185,11 @@ namespace UnityGameStarter.FiniteStateMachine
             state.enabled = true;
         }
 
-        public void SetState<T>() where T : MonoBehaviour
+        public override void SetState<T>(bool reset = false)
         {
-            var state = GetStateBehaviour<T>();
-
-            SetState(state);
+            if (TryGetStateByType<T>(out var state))
+                SetState(state, reset);
         }
-
-        private bool IsStateDuplicated(MonoBehaviour state) 
-        {
-            Type targetType = state.GetType();
-
-            return _stateList.Any(x =>
-            {
-                Type existingType = x.GetType();
-
-                return AllowInheritances? targetType == existingType : 
-                    targetType.IsAssignableFrom(existingType) || existingType.IsAssignableFrom(targetType);
-            });
-        }
-
-        public T GetStateBehaviour<T>() where T : MonoBehaviour
-        {
-            var state = (T)_stateList.Find(x => x is T);
-
-            if (state == null) 
-            {
-                Debug.LogError("The target state is not found", this);
-                return null;
-            }
-
-            return state;
-        }
+        #endregion
     }
 }

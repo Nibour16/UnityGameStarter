@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
-using UnityGameStarter.FiniteStateMachine;        
+using UnityGameStarter.FiniteStateMachine;
 
-namespace UnityGameStarter.TestOnlyScripts.StateMachine
+namespace UnityGameStarter.TestOnlyScripts.FiniteStateMachine
 {
-    public class TestStateMachine : BaseStateMachine
+    public class TestStateMachine : StateMachine
     {
-        protected override Type[] GetInitialStates() => new[] { typeof(TestStateA), typeof(TestStateB) };
+        protected override Type[] InitialStates => new[] { typeof(TestStateA), typeof(TestStateB) };
 
         protected override void Start()
         {

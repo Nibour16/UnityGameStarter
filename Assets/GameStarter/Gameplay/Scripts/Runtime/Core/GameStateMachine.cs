@@ -25,7 +25,7 @@ namespace UnityGameStarter.Gameplay
         }
     }
 
-    public class GameStateMachine : BaseStateMachine
+    public class GameStateMachine : StateMachine
     {
         protected override bool SetDefault => false;
 
@@ -38,16 +38,13 @@ namespace UnityGameStarter.Gameplay
         internal Scene nextTargetScene = default;
         #endregion
 
-        protected override Type[] GetInitialStates()
+        protected override Type[] InitialStates => new[]
         {
-            return new[]
-            {
-                typeof(InitialGameState),
-                typeof(LoadingState),
-                typeof(GameplayState),
-                typeof(PauseState),
-                typeof(ExitGameState)
-            };
-        }
+            typeof(InitialGameState),
+            typeof(LoadingState),
+            typeof(GameplayState),
+            typeof(PauseState),
+            typeof(ExitGameState)
+        };
     }
 }

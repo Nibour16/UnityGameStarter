@@ -5,7 +5,7 @@ namespace UnityGameStarter.FiniteStateMachine.EventState
 {
     public abstract class BaseEventState<T> : BaseState where T : BaseEventState<T>
     {
-        public BaseEventState(BaseStateMachine stateMachine) : base(stateMachine) { }
+        public BaseEventState(StateMachine stateMachine) : base(stateMachine) { }
 
         public override void EnterState()
         {

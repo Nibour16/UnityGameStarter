@@ -5,6 +5,6 @@ namespace UnityGameStarter.Gameplay
 {
     public class LoadingState : BaseEventState<LoadingState>
     {
-        public LoadingState(BaseStateMachine stateMachine) : base(stateMachine) { }
+        public LoadingState(StateMachine stateMachine) : base(stateMachine) { }
     }
 }
