@@ -24,8 +24,7 @@ namespace UnityGameStarter.CommonData
         }
     }
 
-    public class Initializer<T, TContext> : BaseInitializer<T> 
-        where T : Enum where TContext : GameStarterContext
+    public class Initializer<T, TContext> : BaseInitializer<T> where T : Enum where TContext : GameStarterContext
     {
         public Action<TContext> action;
 

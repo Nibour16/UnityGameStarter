@@ -7,6 +7,9 @@ using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay
 {
+    /// <summary>
+    /// Central gameplay manager that handles the gameplay states tracking and the gameplay loop
+    /// </summary>
     [RequireComponent(typeof(GameStateMachine))]
     public class GameManager : Singleton<GameManager>
     {

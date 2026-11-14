@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.Events;
+using UnityGameStarter.Gameplay.Object;
 using UnityGameStarter.InputSystem;
 using UnityGameStarter.PauseManagement;
 using UnityGameStarter.UI;

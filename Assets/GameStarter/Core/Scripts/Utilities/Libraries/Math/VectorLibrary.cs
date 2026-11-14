@@ -89,19 +89,10 @@ namespace UnityGameStarter.Math.TransformStatics
             return new(x, y, z);
         }
 
-        public static Vector2 Scale(this Vector2 vector, float magnitude)
-            => vector * magnitude;
-
-        public static Vector3 Scale(this Vector3 vector, float magnitude)
-            => vector * magnitude;
-
         public static Vector2 OffsetComponents(this Vector2 vector, float value)
             => new (vector.x + value, vector.y + value);
 
         public static Vector3 OffsetComponents(this Vector3 vector, float value)
             => new (vector.x + value, vector.y + value, vector.z + value);
-
-        public static Vector3 ToOffset(this Vector3 target, Vector3 offset)
-            => target + offset;
     }
 }

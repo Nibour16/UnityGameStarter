@@ -3,6 +3,9 @@ using UnityGameStarter.Gameplay.GridSystem;
 
 namespace UnityGameStarter.Gameplay.CharacterMovement 
 {
+    /// <summary>
+    /// A module for movement handling in an actual grid, communicated with <see cref="SnappableGridManager"/>
+    /// </summary>
     public class GridBasedMovement
     {
         private SnappableGridManager _gridManager;

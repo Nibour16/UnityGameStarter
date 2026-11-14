@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityGameStarter.Events;
 
-namespace UnityGameStarter.Gameplay 
+namespace UnityGameStarter.Gameplay.Object
 {
     /// <summary>
     /// This MonoBehaviour will destroy its owning gameObject when exit the game.

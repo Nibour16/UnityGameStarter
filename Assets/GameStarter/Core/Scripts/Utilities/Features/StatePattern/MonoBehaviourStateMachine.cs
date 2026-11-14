@@ -101,6 +101,8 @@ namespace UnityGameStarter.FiniteStateMachine
 
         protected override void Update() 
         {
+            // Ensure only the current state is active, other states must remain disabled
+
             SyncCurrentState();
 
             foreach (var state in states.Values)
@@ -123,6 +125,9 @@ namespace UnityGameStarter.FiniteStateMachine
                 currentState = activeState;
         }
 
+        /// <summary>
+        /// Is there a state type that is equal to the <paramref name="state"/> in the states data
+        /// </summary>
         private bool IsStateDuplicated(MonoBehaviour state)
         {
             Type targetType = state.GetType();
@@ -130,7 +135,6 @@ namespace UnityGameStarter.FiniteStateMachine
             return states.Any(x =>
             {
                 Type existingType = x.Key;
-
                 return targetType == existingType;
             });
         }

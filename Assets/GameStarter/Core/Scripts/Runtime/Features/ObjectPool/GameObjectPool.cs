@@ -6,7 +6,7 @@ namespace UnityGameStarter.Pool
     /// <summary>
     /// Pool data that manipulates Unity's Pool to simulate pooling to make it more suitable for an game object
     /// </summary>
-    internal class GameObjectPool
+    class GameObjectPool
     {
         public GameObject Prefab { get;}
 

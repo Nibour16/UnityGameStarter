@@ -6,7 +6,7 @@ namespace UnityGameStarter.RuntimeCore
 {
     using UnityGameStarter.BootstrapLibrary;
 
-    static class GameStarterRuntimeBootstrap
+    static class GameStarterRuntimeBootstrapManager
     {
         private static readonly List<Initializer<RuntimeInitializeLoadType>> _initializers = new();
         private static bool _discovered;

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityGameStarter.Math.TransformStatics;
 
 namespace UnityGameStarter.Gameplay.PhysicsStatics 
 {
@@ -15,10 +14,10 @@ namespace UnityGameStarter.Gameplay.PhysicsStatics
 
         public static void ApplyExtraGravity(
             this Rigidbody rb, float mass, float gravityScale, ForceMode forceMode = ForceMode.Force)
-            => rb.ApplyForce(mass, Physics.gravity.Scale(gravityScale), forceMode);
+            => rb.ApplyForce(mass, Physics.gravity * gravityScale, forceMode);
 
         public static void ApplyExtraGravity2D(
             this Rigidbody2D rb, float mass, float gravityScale, ForceMode2D forceMode = ForceMode2D.Force)
-            => rb.ApplyForce2D(mass, Physics.gravity.Scale(gravityScale), forceMode);
+            => rb.ApplyForce2D(mass, Physics.gravity * gravityScale, forceMode);
     }
 }

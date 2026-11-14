@@ -36,6 +36,9 @@ namespace UnityGameStarter.FiniteStateMachine
                 SetState(states.Values.FirstOrDefault());
         }
 
+        /// <summary>
+        /// Implement this method to update states
+        /// </summary>
         protected abstract void Update();
         #endregion
 

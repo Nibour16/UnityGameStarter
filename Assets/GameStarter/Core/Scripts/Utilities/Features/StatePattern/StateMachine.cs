@@ -22,8 +22,6 @@ namespace UnityGameStarter.FiniteStateMachine
         #region Life Cycle
         protected override void Awake()
         {
-            states.Clear();
-            
             foreach (var stateType in InitialStates)
             {
                 if (!TypeLibrary.IsSubclassOf<BaseState>(stateType)) continue;
@@ -35,6 +33,7 @@ namespace UnityGameStarter.FiniteStateMachine
         
         protected override void Update()
         {
+            // Just update the current state there
             currentState?.UpdateState();
         }
         #endregion
