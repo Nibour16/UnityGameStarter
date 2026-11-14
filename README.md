@@ -6,8 +6,9 @@
 
 A modular Unity Engine starter framework for both 2D and 3D game development.
 
-> [!WARNING]
-> This framework is currently in active development and is not considered production-ready yet.
+> **Project Status:** Early Developmennt
+>
+> All core features are implemented, and some features may be incomplete or subject to change
 
 ---
 
