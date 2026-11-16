@@ -130,18 +130,18 @@ PrefabInstance:
     - target: {fileID: -7031656818019940085, guid: 27557734433ccd6499b1eee360e4b3fc, type: 3}
       propertyPath: playerPrefab
       value: 
-      objectReference: {fileID: 4877215146579372781, guid: dc02ef9daf2c7ea49a5d8311d66eace0, type: 3}
+      objectReference: {fileID: 4877215146579372781, guid: f16e55e62cc79da4f98adbc3de1a65f4, type: 3}
     - target: {fileID: 972575403632766427, guid: 27557734433ccd6499b1eee360e4b3fc, type: 3}
       propertyPath: m_Name
       value: PlayerSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 2552956570007478753, guid: 27557734433ccd6499b1eee360e4b3fc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.680273
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2552956570007478753, guid: 27557734433ccd6499b1eee360e4b3fc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.702157
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2552956570007478753, guid: 27557734433ccd6499b1eee360e4b3fc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -188,17 +188,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 720684324810919035, guid: dc02ef9daf2c7ea49a5d8311d66eace0, type: 3}
-      propertyPath: gameplayUIRoot
-      value: 
-      objectReference: {fileID: 1738744672}
     - target: {fileID: 4877215146579372781, guid: f16e55e62cc79da4f98adbc3de1a65f4, type: 3}
       propertyPath: m_Name
       value: TopDownPlayer2D
-      objectReference: {fileID: 0}
-    - target: {fileID: 6206436532309715975, guid: dc02ef9daf2c7ea49a5d8311d66eace0, type: 3}
-      propertyPath: moveSpeed
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7979293185829589836, guid: f16e55e62cc79da4f98adbc3de1a65f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -239,6 +231,14 @@ PrefabInstance:
     - target: {fileID: 7979293185829589836, guid: f16e55e62cc79da4f98adbc3de1a65f4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 720684324810919035, guid: dc02ef9daf2c7ea49a5d8311d66eace0, type: 3}
+      propertyPath: gameplayUIRoot
+      value: 
+      objectReference: {fileID: 1738744672}
+    - target: {fileID: 6206436532309715975, guid: dc02ef9daf2c7ea49a5d8311d66eace0, type: 3}
+      propertyPath: moveSpeed
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
