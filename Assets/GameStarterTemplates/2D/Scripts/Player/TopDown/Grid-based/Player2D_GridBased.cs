@@ -24,7 +24,7 @@ public class Player2D_GridBased : BasePlayerMovement, IGridSnappable
     protected override Vector2 MoveInput => _inputManager.Move;
     protected override bool PauseInput => _inputManager.Pause;
 
-    public override Vector2 MoveDirection2D => _movement.Direction(MoveInput);
+    public override Vector2 MoveDirection2D => _movement.GetDirection(MoveInput);
 
     private void OnEnable() 
     {

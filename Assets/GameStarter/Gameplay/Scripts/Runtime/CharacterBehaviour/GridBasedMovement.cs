@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityGameStarter.Gameplay.GridSystem;
 
@@ -27,6 +28,7 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
         public Vector3Int CurrentGridID => _currentGridID;
         public Vector3Int CurrentCoord => _currentCoord;
 
+        #region Grid Properties
         public GridSystem.Grid CurrentGrid 
         {
             get 
@@ -47,7 +49,7 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
             {
                 if (!IsValidGrid()) return null;
 
-                System.Collections.Generic.List<GridSystem.Grid> grids = new();
+                List<GridSystem.Grid> grids = new();
                 
                 foreach (string layer in _blockLayers) 
                 {
@@ -62,6 +64,7 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
                 return grids.ToArray();
             }
         }
+        #endregion
 
         public GridBasedMovement(GameObject owner, SnappableGridManager manager, string[] blockLayers) 
         {
@@ -79,21 +82,20 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
         public void Move(Vector2 input, float maxDistanceDelta, bool isPaused = false,
             bool releaseCurrentCellOnMovingStart = false)
         {
-            if (!IsValidGrid()) return;
-
-            if (!_initiallySnapped) return;
+            if (!IsValidGrid() || !_initiallySnapped) return;
 
             if (!_isMoving)
             {
-                var direction = Direction(input);
+                var direction = GetDirection(input);
 
                 if (direction == Vector2.zero) return;
 
                 _movingTarget = (Vector2)_owner.transform.position + direction * GridManager.Source.CellSize;
 
-                if (!CanMoveToTarget())
+                if (!CanMoveToTarget(out var entities))
                 {
                     _isMoving = false;
+                    HitEntities(entities);
                     return;
                 }
 
@@ -105,9 +107,10 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
 
             if (isPaused) return;
 
-            _owner.transform.position = Vector2.MoveTowards(_owner.transform.position, _movingTarget, maxDistanceDelta);
+            _owner.transform.position = Vector2.MoveTowards(
+                _owner.transform.position, _movingTarget, maxDistanceDelta);
 
-            if (Vector2.Distance(_owner.transform.position, _movingTarget) < 0.001f)
+            if (Vector2.Distance(_owner.transform.position, _movingTarget) < 0.01f)
             {
                 if (!releaseCurrentCellOnMovingStart)
                     ReleaseCurrentCell();
@@ -117,11 +120,20 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
             }
         }
 
+        private void HitEntities(HashSet<GameObject> entities) 
+        {
+            foreach (var entity in entities)
+            {
+                foreach (var component in entity.GetComponents<IGridCollideEvent>())
+                    component.OnHit(_owner);
+            }
+        }
+
         public void SnapOwner()
         {
             if (!IsValidGrid()) return;
             
-            GridManager.Snapper.TrySnapToGrid(_owner, _currentLayer, out _, out _);
+            GridManager.TrySnapToGrid(_owner, _currentLayer, out _, out _);
         }
 
         public void OnSnapped(string snappedLayer, Vector3Int gridID, Vector3Int coord)
@@ -133,7 +145,7 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
             _currentCoord = coord;
         }
 
-        public Vector2 Direction(Vector2 input) 
+        public Vector2 GetDirection(Vector2 input) 
         {
             if (input.x > 0) return Vector2.right;
             else if (input.x < 0) return Vector2.left;
@@ -159,25 +171,29 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
         {
             var manager = GridManager;
 
-            return manager != null && manager.Source != null
-                && manager.Source.IsGridGenerated && manager.Snapper != null;
+            return manager != null && manager.Source != null && manager.Source.IsGridGenerated;
         }
 
-        private bool CanMoveToTarget()
+        private bool CanMoveToTarget(out HashSet<GameObject> targetEntities)
         {
             var currentGrid = CurrentGrid;
+            targetEntities = new HashSet<GameObject>();
 
             if (currentGrid == null) return false;
 
             Vector3Int targetCoord = currentGrid.WorldToLocalCell(_movingTarget);
 
-            GridState currentLayerState = currentGrid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].state;
+            var currentLayerState = currentGrid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].state;
+            targetEntities = currentGrid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].entities;
 
             if (currentLayerState == GridState.Passable)
             {
                 foreach (var grid in BlockGrids) 
                 {
                     GridState blockLayerState = grid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].state;
+
+                    foreach (var entity in grid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].entities)
+                        targetEntities.Add(entity);
 
                     if (blockLayerState == GridState.Blocked)
                         return false;

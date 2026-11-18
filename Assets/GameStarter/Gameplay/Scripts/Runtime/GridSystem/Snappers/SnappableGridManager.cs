@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityGameStarter.SingletonPattern;
 
 namespace UnityGameStarter.Gameplay.GridSystem 
 {
@@ -22,20 +22,13 @@ namespace UnityGameStarter.Gameplay.GridSystem
         [SerializeField] private string defaultLayer = "Default";
         [SerializeField] private bool defaultSetToBlockWhenSnapping = true;
 
-        private GridSnapper _gridSnapper;
-
-        public GridSnapper Snapper => _gridSnapper;
         public IGridSource Source => source as IGridSource;
 
-        private void Awake()
-        {
-            _gridSnapper = new GridSnapper(Source);
-        }
-
+        #region Life Cycle
         private void Start() => SnapAllEntities();
 
         /// <summary>
-        /// Only entities with IGridSnappable interface component can be snapped during initialization
+        /// Only entities with IGridEntity interface component can be snapped during initialization
         /// </summary>
         private void SnapAllEntities()
         {
@@ -47,7 +40,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             foreach(var entity in entities) 
             {
-                if (!entity.TryGetComponent<IGridSnappable>(out _))
+                if (!entity.TryGetComponent<IGridEntity>(out _))
                     continue;
                 
                 if (IsSpecialSnappableEntity(entity, out var config)) 
@@ -56,17 +49,45 @@ namespace UnityGameStarter.Gameplay.GridSystem
                     setToBlock = config.setToBlock;
                 }
 
-                _gridSnapper.TrySnapToGrid(entity, targetLayer, out _, out _, setToBlock);
+                TrySnapToGrid(entity, targetLayer, out _, out _, setToBlock);
             }
         }
+        #endregion
 
-        private bool IsSpecialSnappableEntity(GameObject entity, out SnappableConfig config) 
+        public bool TrySnapToGrid(GameObject entity, string layerName, out Vector3Int gridID,
+            out Vector3Int coord, bool setToBlock = true)
+        {
+            gridID = default;
+            coord = default;
+
+            if (Source == null || !Source.IsGridGenerated) return false;
+
+            if (entity == null || !Source.TryGetGridByLayerName(layerName, out Grid grid) || grid == null)
+                return false;
+
+            Vector3 entityPos = entity.transform.position;
+
+            entity.transform.position = grid.GetCellCenterWorldPosition(entityPos);
+
+            if (!grid.TrySetEntity(entity, out gridID, out coord, setToBlock))
+            {
+                entity.transform.position = entityPos;
+                return false;
+            }
+
+            foreach (var snappable in entity.GetComponents<IGridSnappable>())
+                snappable.OnSnapped(layerName, gridID, coord);
+
+            return true;
+        }
+
+        private bool IsSpecialSnappableEntity(GameObject entity, out SnappableConfig config)
         {
             config = null;
-            
-            foreach (var special in specialSnappables) 
+
+            foreach (var special in specialSnappables)
             {
-                if (entity == special.entity) 
+                if (entity == special.entity)
                 {
                     config = special;
                     return true;
