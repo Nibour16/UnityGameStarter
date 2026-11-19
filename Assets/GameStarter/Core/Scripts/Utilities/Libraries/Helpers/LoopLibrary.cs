@@ -30,10 +30,10 @@ namespace UnityGameStarter.LoopHelper
             }
 
             int[] indices = new int[dimensions.Length];
-            LoopRecursive(dimensions, indices, 0, action);
+            LoopRecursion(dimensions, indices, 0, action);
         }
 
-        private static void LoopRecursive(
+        private static void LoopRecursion(
             int[] dimensions, int[] indices, int dimension, Action<int[]> action)
         {
             if (dimension == dimensions.Length)
@@ -45,7 +45,7 @@ namespace UnityGameStarter.LoopHelper
             for (int i = 0; i < dimensions[dimension]; i++)
             {
                 indices[dimension] = i;
-                LoopRecursive(dimensions, indices, dimension + 1, action);
+                LoopRecursion(dimensions, indices, dimension + 1, action);
             }
         }
     }

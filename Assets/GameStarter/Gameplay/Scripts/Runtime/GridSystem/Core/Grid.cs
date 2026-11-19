@@ -4,7 +4,6 @@ using UnityGameStarter.LoopHelper;
 using UnityGameStarter.Math;
 using UnityGameStarter.Math.GridStatics;
 using UnityGameStarter.Surface;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace UnityGameStarter.Gameplay.GridSystem
 {
