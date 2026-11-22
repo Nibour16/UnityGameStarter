@@ -1,9 +1,15 @@
 using UnityEngine;
 
-namespace UnityGameStarter.Gameplay.GridSystem 
+namespace UnityGameStarter.Gameplay.GridSystem.TestOnly
 {
-    public sealed class TestSnappable : MonoBehaviour, IGridSnappable
+    public sealed class TestGridEntity : MonoBehaviour, IGridCollideEvent, IGridSnappable
     {
+        public void OnHit(GameObject other)
+        {
+            if (other.CompareTag("Player"))
+                Debug.Log("Hey, it's you, player!");
+        }
+
         public void OnSnapped(string snappedLayer, Vector3Int gridID, Vector3Int coord)
         {
             Debug.Log(

@@ -7,6 +7,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
     {
         [Header("State Colors")]
         [SerializeField] private Color passableColor = Color.green;
+        [SerializeField] private Color occupiedColor = Color.blue;
         [SerializeField] private Color blockedColor = Color.red;
         [SerializeField] private Color invalidColor = Color.gray;
 
@@ -34,7 +35,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             {
                 if (x < 0 || x >= sx || y < 0 || y >= sy || z < 0 || z >= sz) return false;
 
-                return data[x, y, z].state != GridState.Invalid;
+                return data[x, y, z].State != GridState.Invalid;
             }
 
             Gizmos.color = boundsColor;
@@ -85,7 +86,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             {
                 GridElement element = data[x, y, z];
 
-                if (!TryGetStateColor(element.state, out Color color)) return;
+                if (!TryGetStateColor(element.State, out Color color)) return;
 
                 Gizmos.color = color;
 
@@ -113,7 +114,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
             {
                 GridElement element = data[x, y, z];
 
-                if (!TryGetStateColor(element.state, out Color color)) return;
+                if (!TryGetStateColor(element.State, out Color color)) return;
 
                 Gizmos.color = color;
 
@@ -140,6 +141,10 @@ namespace UnityGameStarter.Gameplay.GridSystem
             {
                 case GridState.Passable:
                     color = passableColor;
+                    return true;
+
+                case GridState.Occupied:
+                    color = occupiedColor;
                     return true;
 
                 case GridState.Blocked:

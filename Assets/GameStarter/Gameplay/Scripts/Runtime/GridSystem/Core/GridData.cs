@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace UnityGameStarter.Gameplay.GridSystem
@@ -8,7 +7,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
     public enum CenterOriginMode { Intersection, CellCenter }
 
-    public enum GridState { Passable, Blocked, Invalid }
+    public enum GridState { Passable, Occupied, Blocked, Invalid }
 
     public readonly struct GridOriginData
     {
@@ -29,8 +28,30 @@ namespace UnityGameStarter.Gameplay.GridSystem
         public readonly Vector3Int coordinate;
         public readonly Quaternion faceRotator;
 
-        public GridState state;
-        public HashSet<GameObject> entities;
+        private readonly HashSet<GameObject> _entities;
+
+        private readonly GridState _originalState;
+        private GridState _state;
+        public GridState State 
+        {
+            get 
+            {
+                if (Entities.Count <= 0 && _state == GridState.Occupied)
+                    _state = _originalState;
+
+                return _state;
+            }
+            set => _state = value;
+        }
+
+        public readonly HashSet<GameObject> Entities 
+        {
+            get 
+            {
+                _entities.RemoveWhere(entity => entity == null);
+                return _entities;
+            }
+        }
 
         public GridElement(
             Vector3Int coordinate, Quaternion faceRotator, 
@@ -38,9 +59,10 @@ namespace UnityGameStarter.Gameplay.GridSystem
         {
             this.coordinate = coordinate;
             this.faceRotator = faceRotator;
-            this.state = state;
+            _state = state;
+            _originalState = _state;
 
-            this.entities = new HashSet<GameObject>(entities ?? System.Array.Empty<GameObject>());
+            _entities = new HashSet<GameObject>(entities ?? System.Array.Empty<GameObject>());
         }
     }
 

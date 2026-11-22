@@ -151,7 +151,7 @@ namespace UnityGameStarter.Gameplay.GridSystem
         #region Record Entity To Grid
         public bool TrySetEntity(
             GameObject entity, out Vector3Int gridID, out Vector3Int relativeCoord, 
-            bool setToBlock = true, HalfToIntMode mode = HalfToIntMode.Up) 
+            bool setToOccupy = true, HalfToIntMode mode = HalfToIntMode.Up) 
         {
             if (entity == null) 
             {
@@ -172,12 +172,12 @@ namespace UnityGameStarter.Gameplay.GridSystem
 
             GridElement element = _grid[gridID.x, gridID.y, gridID.z];
 
-            if (element.state == GridState.Invalid) return false;
+            if (element.State == GridState.Invalid) return false;
 
-            element.entities.Add(entity);
+            element.Entities.Add(entity);
 
-            if (setToBlock)
-                element.state = GridState.Blocked;
+            if (setToOccupy && element.State == GridState.Passable)
+                element.State = GridState.Occupied;
 
             _grid[gridID.x, gridID.y, gridID.z] = element;
 

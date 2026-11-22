@@ -161,10 +161,10 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
             if (grid == null) return;
 
             if (deadEntity)
-                grid.GridData[_currentGridID.x, _currentGridID.y, _currentGridID.z].entities.Add(deadEntity);
+                grid.GridData[_currentGridID.x, _currentGridID.y, _currentGridID.z].Entities.Add(deadEntity);
 
-            grid.GridData[_currentGridID.x, _currentGridID.y, _currentGridID.z].entities.Remove(_owner);
-            grid.GridData[_currentGridID.x, _currentGridID.y, _currentGridID.z].state = GridState.Passable;
+            grid.GridData[_currentGridID.x, _currentGridID.y, _currentGridID.z].Entities.Remove(_owner);
+            grid.GridData[_currentGridID.x, _currentGridID.y, _currentGridID.z].State = GridState.Passable;
         }
 
         public bool IsValidGrid() 
@@ -183,19 +183,19 @@ namespace UnityGameStarter.Gameplay.CharacterMovement
 
             Vector3Int targetCoord = currentGrid.WorldToLocalCell(_movingTarget);
 
-            var currentLayerState = currentGrid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].state;
-            targetEntities = currentGrid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].entities;
+            var currentLayerState = currentGrid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].State;
+            targetEntities = currentGrid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].Entities;
 
             if (currentLayerState == GridState.Passable)
             {
-                foreach (var grid in BlockGrids) 
+                foreach (var grid in BlockGrids)
                 {
-                    GridState blockLayerState = grid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].state;
+                    GridState blockLayerState = grid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].State;
 
-                    foreach (var entity in grid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].entities)
+                    foreach (var entity in grid.GridData[targetCoord.x, targetCoord.y, targetCoord.z].Entities)
                         targetEntities.Add(entity);
 
-                    if (blockLayerState == GridState.Blocked)
+                    if (blockLayerState == GridState.Blocked || blockLayerState == GridState.Occupied)
                         return false;
                 }
 
