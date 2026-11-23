@@ -1,6 +1,6 @@
 {
   "name": "com.nibour.unity-game-starter",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "displayName": "Unity Game Starter",
   "description": "A modular framework for Unity game development.",
   "unity": "6000.5",
@@ -8,5 +8,11 @@
     "com.unity.inputsystem": "1.19.0",
     "com.unity.ugui": "2.5.0"
   },
-  "hideInEditor": false
+  "hideInEditor": false,
+  "author": {
+    "name": "Nibour",
+    "url": "https://github.com/Nibour16",
+    "email": "ruobinh3@hotmail.com"
+  },
+  "licensesUrl": "https://www.gnu.org/licenses/gpl-3.0.html"
 }
