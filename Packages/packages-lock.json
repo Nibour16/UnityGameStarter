@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.nibour.unity-game-starter": {
+      "version": "file:com.nibour.unity-game-starter",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.inputsystem": "1.19.0",
+        "com.unity.ugui": "2.5.0"
+      }
+    },
     "com.unity.2d.animation": {
       "version": "15.1.0",
       "depth": 1,

@@ -1,0 +1,20 @@
+{
+    "name": "UnityGameStarter.Editor",
+    "rootNamespace": "UnityGameStarter",
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:30c2992b3da6d8242b7c545e9a2afb5f",
+        "GUID:29427c75fc527de4fb59524eeb39c6da"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
