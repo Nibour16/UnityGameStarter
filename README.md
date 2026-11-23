@@ -29,7 +29,7 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 # 🚀 Get Started
 
-- Install Unity Engine if you haven't yet
+- Install Unity Engine if you haven't yet, see [Requirements](#Requirements) below
 
 - Create new project, or open the project you want to apply for
 
@@ -49,6 +49,7 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 ## 📋 Requirements
 
 - Unity 6.5 or later
+- Universal Render Pipeline (URP) projects only
 - Visual Studio 2022 or 2026 (depending on the chosen version)
 
 ---
