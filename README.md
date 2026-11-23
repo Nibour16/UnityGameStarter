@@ -29,7 +29,17 @@ A modular Unity Engine starter framework for both 2D and 3D game development.
 
 # 🚀 Get Started
 
-- Clone the repository and open the project using Unity Hub.
+- Install Unity Engine if you haven't yet
+
+- Create new project, or open the project you want to apply for
+
+- Open Package Manager, click the plus button at the left corner, then select "Install package from git URL"
+
+- Copy the link below to fill the blank, then click install
+
+  <https://github.com/Nibour16/UnityGameStarter.git?path=/Packages/com.nibour.unity-game-starter>
+
+- Once the editor finishes the installation, you are done!
 
 ## 💻 Development Environment
 
