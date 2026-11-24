@@ -14,17 +14,19 @@ namespace UnityGameStarter.EditorUtilities.Installation
         private const string _sortingLayers = "m_SortingLayers";
         private const string _renderingLayers = "m_RenderingLayers";
 
+        private const string _tagManagerAsset = "TagManager.asset";
+
         static TagsAndLayersConfig()
         {
             ProjectSettingsInitializer.BindToInitializers(Initialize);
         }
 
         private static string GetTemplatePath(UnityEditor.PackageManager.PackageInfo info)
-            => Path.Combine(info.resolvedPath, "ProjectSettingsTemplates~", "TagManager.asset");
+            => Path.Combine(info.resolvedPath, PackageCopier.projectSettingsPackage, _tagManagerAsset);
 
         private static void Initialize(UnityEditor.PackageManager.PackageInfo info) 
         {
-            const string targetPath = "ProjectSettings/TagManager.asset";
+            string targetPath = $"{PackageCopier.projectSettingsSource}/{_tagManagerAsset}";
 
             var templateAssets = InternalEditorUtility.LoadSerializedFileAndForget(GetTemplatePath(info));
             var targetAssets = InternalEditorUtility.LoadSerializedFileAndForget(targetPath);

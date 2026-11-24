@@ -15,21 +15,42 @@ namespace UnityGameStarter.EditorUtilities.Installation
 
         private static readonly (string source, string target)[] _directories =
         {
-            ("GameStarterTemplates", "templates~"),
-            ("ProjectSettings", "ProjectSettingsTemplates~")
+            (starterTemplatesSource, starterTemplatesPackage),
+            (projectSettingsSource, projectSettingsPackage)
         };
+
+        private const string developmentMarker = ".unity-game-starter-dev";
+        private const string packageName = "com.nibour.unity-game-starter";
+
+        internal const string starterTemplatesSource = "GameStarterTemplates";
+        internal const string starterTemplatesPackage = "Templates~";
+        internal const string projectSettingsSource = "ProjectSettings";
+        internal const string projectSettingsPackage = "ProjectSettingsTemplates~";
 
         static PackageCopier()
         {
-            InitializeWatchers();
+            if (!IsDevelopmentProject(out string projectPath)) return;
+            
+            InitializeWatchers(projectPath);
 
             EditorApplication.update += OnEditorUpdate;
             EditorApplication.delayCall += Copy;
         }
 
-        private static void InitializeWatchers()
+        private static bool IsDevelopmentProject(out string projectPath)
         {
-            string projectPath = Directory.GetParent(Application.dataPath).FullName;
+            projectPath = Directory.GetParent(Application.dataPath).FullName;
+
+            if (!File.Exists(Path.Combine(projectPath, developmentMarker))) return false;
+
+            var info = UnityEditor.PackageManager.PackageInfo.FindForAssembly(
+                typeof(PackageCopier).Assembly);
+
+            return info != null && info.name == packageName;
+        }
+
+        private static void InitializeWatchers(string projectPath)
+        {
             _watchers = new FileSystemWatcher[_directories.Length];
 
             for (int i = 0; i < _directories.Length; i++)
@@ -68,9 +89,11 @@ namespace UnityGameStarter.EditorUtilities.Installation
             EditorApplication.delayCall += Copy;
         }
 
-        public static void Copy()
+        private static void Copy()
         {
             if (_isCoping) return;
+
+            if (!IsDevelopmentProject(out string projectPath)) return;
 
             _isCoping = true;
 
@@ -85,8 +108,7 @@ namespace UnityGameStarter.EditorUtilities.Installation
                     return;
                 }
 
-                string projectPath = Directory.GetParent(Application.dataPath).FullName;
-                string packagePath = Path.Combine(projectPath, info.assetPath);
+                string packagePath = info.resolvedPath;
 
                 foreach (var (source, target) in _directories)
                 {

@@ -7,9 +7,6 @@ namespace UnityGameStarter.EditorUtilities.Installation
     [InitializeOnLoad]
     static class TemplateInstaller
     {
-        private const string sourceFolder = "Templates~";
-        private const string targetFolder = "GameStarterTemplates";
-
         static TemplateInstaller()
         {
             PackageInitializer.RequestInstall(Install);
@@ -19,10 +16,11 @@ namespace UnityGameStarter.EditorUtilities.Installation
         {
             if (info == null) return;
             
-            string targetPath = Path.Combine(Application.dataPath, targetFolder);
+            string targetPath = Path.Combine(Application.dataPath, PackageCopier.starterTemplatesSource);
+
             if (Directory.Exists(targetPath)) return;
 
-            string sourcePath = Path.Combine(info.resolvedPath, sourceFolder);
+            string sourcePath = Path.Combine(info.resolvedPath, PackageCopier.starterTemplatesPackage);
 
             if (!Directory.Exists(sourcePath))
             {
