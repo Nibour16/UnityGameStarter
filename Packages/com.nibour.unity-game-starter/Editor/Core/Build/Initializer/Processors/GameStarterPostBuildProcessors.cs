@@ -1,7 +1,7 @@
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
-namespace UnityGameStarter.BuildCore.Processors 
+namespace UnityGameStarter.EditorUtilities.BuildCore.Processors 
 {
     internal sealed class GameStarterPostBakeProcessor : IPostprocessBuildWithReport
     {

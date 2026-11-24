@@ -1,8 +1,7 @@
 using UnityEditor;
-using UnityGameStarter.BuildCore;
-using UnityGameStarter.StarterSettings.Config;
+using UnityGameStarter.EditorUtilities.BuildCore;
 
-namespace UnityGameStarter.StarterSettings.Editor
+namespace UnityGameStarter.EditorUtilities.StarterSettings
 {
     #if UNITY_EDITOR
     [InitializeOnLoad]

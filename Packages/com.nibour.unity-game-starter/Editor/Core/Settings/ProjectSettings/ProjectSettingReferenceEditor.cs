@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameStarter.ProjectSettings.Editor
+namespace UnityGameStarter.EditorUtilities.ProjectSettings
 {
     public static class ProjectSettingReferenceEditor<T> where T : ScriptableObject
     {

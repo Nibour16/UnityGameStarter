@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityGameStarter.CommonData;
 
-namespace UnityGameStarter.BuildCore 
+namespace UnityGameStarter.EditorUtilities.BuildCore 
 {
     using UnityGameStarter.BootstrapLibrary;
 

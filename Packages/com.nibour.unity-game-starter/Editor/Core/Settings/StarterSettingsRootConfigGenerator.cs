@@ -1,10 +1,11 @@
 using UnityEditor;
 using UnityEngine;
 using UnityGameStarter.Config;
-using UnityGameStarter.Config.Editor;
-using UnityGameStarter.ProjectSettings;
+using UnityGameStarter.EditorUtilities.Config;
+using UnityGameStarter.EditorUtilities.ProjectSettings;
+using UnityGameStarter.StarterSettings;
 
-namespace UnityGameStarter.StarterSettings.Config
+namespace UnityGameStarter.EditorUtilities.StarterSettings
 {
     public static class StarterSettingsRootConfigGenerator
     {

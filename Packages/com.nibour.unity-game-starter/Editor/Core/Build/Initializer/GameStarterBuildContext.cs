@@ -2,7 +2,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine.SceneManagement;
 using UnityGameStarter.CommonData;
 
-namespace UnityGameStarter.BuildCore 
+namespace UnityGameStarter.EditorUtilities.BuildCore 
 {
     public abstract class GameStarterBuildContext : GameStarterContext
     {

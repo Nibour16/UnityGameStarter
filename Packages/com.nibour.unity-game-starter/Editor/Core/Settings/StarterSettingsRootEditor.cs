@@ -1,7 +1,8 @@
 using UnityEditor;
-using UnityGameStarter.ProjectSettings.Editor;
+using UnityGameStarter.EditorUtilities.ProjectSettings;
+using UnityGameStarter.StarterSettings;
 
-namespace UnityGameStarter.StarterSettings.Editor
+namespace UnityGameStarter.EditorUtilities.StarterSettings
 {
     #if UNITY_EDITOR
     public static class StarterSettingsRootEditor

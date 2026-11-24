@@ -5,8 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 
 using UnityGameStarter.EditorUtilities.EditorProcessor;
+using UnityGameStarter.UI;
 
-namespace UnityGameStarter.UI.EditorUtilities 
+namespace UnityGameStarter.EditorUtilities.UI
 {
     public static class UIEventSystemProcessor
     {

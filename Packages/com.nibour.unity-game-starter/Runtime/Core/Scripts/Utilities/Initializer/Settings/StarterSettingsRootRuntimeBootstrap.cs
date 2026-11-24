@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityGameStarter.Config;
 using UnityGameStarter.RuntimeCore;
-using UnityGameStarter.StarterSettings.Config;
 
 namespace UnityGameStarter.StarterSettings.Runtime
 {

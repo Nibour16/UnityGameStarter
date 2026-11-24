@@ -1,8 +1,9 @@
 using UnityEditor;
 
-namespace UnityGameStarter.Config.Editor 
+namespace UnityGameStarter.EditorUtilities.Config 
 {
-    using UnityGameStarter.AssetManagementLibrary;
+    using UnityGameStarter.Config;
+    using UnityGameStarter.EditorUtilities.AssetManagement;
 
     public static class ConfigEditorLibrary
     {

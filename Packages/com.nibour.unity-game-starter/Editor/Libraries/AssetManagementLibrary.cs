@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEditor;
 
-namespace UnityGameStarter.AssetManagementLibrary
+namespace UnityGameStarter.EditorUtilities.AssetManagement
 {
     public static class AssetManagementLibrary
     {

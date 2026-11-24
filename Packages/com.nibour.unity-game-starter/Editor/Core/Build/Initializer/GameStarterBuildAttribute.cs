@@ -1,7 +1,7 @@
 using System;
 using UnityGameStarter.StarterAttributes;
 
-namespace UnityGameStarter.BuildCore 
+namespace UnityGameStarter.EditorUtilities.BuildCore 
 {
     public enum GameStarterBuildPhase
     {

@@ -2,34 +2,27 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameStarter.TemplateInstallation
+namespace UnityGameStarter.EditorUtilities.Installation
 {
     [InitializeOnLoad]
-    public static class TemplateInstaller
+    static class TemplateInstaller
     {
         private const string sourceFolder = "Templates~";
         private const string targetFolder = "GameStarterTemplates";
 
         static TemplateInstaller()
         {
-            EditorApplication.delayCall += Install;
+            PackageInitializer.RequestInstall(Install);
         }
 
-        private static void Install() 
+        private static void Install(UnityEditor.PackageManager.PackageInfo info) 
         {
+            if (info == null) return;
+            
             string targetPath = Path.Combine(Application.dataPath, targetFolder);
             if (Directory.Exists(targetPath)) return;
 
-            var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(
-                typeof(TemplateInstaller).Assembly);
-
-            if (packageInfo == null)
-            {
-                Debug.LogError("Unable to locate Unity Game Starter package.");
-                return;
-            }
-
-            string sourcePath = Path.Combine(packageInfo.resolvedPath, sourceFolder);
+            string sourcePath = Path.Combine(info.resolvedPath, sourceFolder);
 
             if (!Directory.Exists(sourcePath))
             {

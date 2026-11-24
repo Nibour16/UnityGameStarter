@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGameStarter.ProjectSettings 
+namespace UnityGameStarter.EditorUtilities.ProjectSettings 
 {
     public static class ProjectSettingReference<T> where T : ScriptableObject
     {

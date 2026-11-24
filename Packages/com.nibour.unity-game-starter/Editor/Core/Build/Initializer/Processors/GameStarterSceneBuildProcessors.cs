@@ -2,7 +2,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine.SceneManagement;
 
-namespace UnityGameStarter.BuildCore.Processors 
+namespace UnityGameStarter.EditorUtilities.BuildCore.Processors 
 {
     internal sealed class GameStarterSceneBuildProcessor : IProcessSceneWithReport
     {

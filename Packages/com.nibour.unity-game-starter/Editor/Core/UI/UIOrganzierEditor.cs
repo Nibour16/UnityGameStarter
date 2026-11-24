@@ -1,7 +1,8 @@
 using UnityEditor;
 using UnityEngine;
+using UnityGameStarter.UI;
 
-namespace UnityGameStarter.UI.EditorUtilities 
+namespace UnityGameStarter.EditorUtilities.UI
 {
     [CustomEditor(typeof(UIOrganizer))]
     public class UIOrganzierEditor : Editor

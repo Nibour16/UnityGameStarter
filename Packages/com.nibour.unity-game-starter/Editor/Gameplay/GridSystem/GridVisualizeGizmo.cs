@@ -1,6 +1,7 @@
 using UnityEditor;
+using UnityGameStarter.Gameplay.GridSystem;
 
-namespace UnityGameStarter.Gameplay.GridSystem.Editor 
+namespace UnityGameStarter.EditorUtilities.Gameplay.GridSystem 
 {
     public static class GridVisualizeGizmo
     {

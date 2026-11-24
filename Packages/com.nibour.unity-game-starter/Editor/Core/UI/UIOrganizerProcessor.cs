@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityGameStarter.EditorUtilities.EditorProcessor;
+using UnityGameStarter.UI;
 
-namespace UnityGameStarter.UI.EditorUtilities 
+namespace UnityGameStarter.EditorUtilities.UI
 {
     public static class UIOrganizerProcessor
     {
