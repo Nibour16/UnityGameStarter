@@ -51,8 +51,16 @@ namespace UnityGameStarter.EditorUtilities.Installation
             ApplySortingLayers(template.FindProperty(_sortingLayers), target.FindProperty(_sortingLayers));
             ApplyRenderingLayers(template.FindProperty(_renderingLayers), target.FindProperty(_renderingLayers));
 
+            Debug.Log($"Saving TagManager to: {targetPath}");
+            Debug.Log($"Template path: {GetTemplatePath(info)}");
+
             target.ApplyModifiedProperties();
-            AssetDatabase.SaveAssets();
+            InternalEditorUtility.SaveToSerializedFileAndForget(targetAssets, targetPath, true);
+
+            var verifyAssets = InternalEditorUtility.LoadSerializedFileAndForget(targetPath);
+            var verify = new SerializedObject(verifyAssets[0]);
+
+            Debug.Log($"Tags count after save: {verify.FindProperty(_tags).arraySize}");
         }
 
         private static void ApplyTags(SerializedProperty source, SerializedProperty target)
