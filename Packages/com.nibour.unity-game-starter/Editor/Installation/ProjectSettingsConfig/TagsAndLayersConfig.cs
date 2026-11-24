@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace UnityGameStarter.EditorUtilities.Installation
@@ -20,16 +20,20 @@ namespace UnityGameStarter.EditorUtilities.Installation
         }
 
         private static string GetTemplatePath(UnityEditor.PackageManager.PackageInfo info)
-            => $"{info.assetPath}/Templates/ProjectSettings/TagManager.asset";
+            => Path.Combine(info.resolvedPath, "ProjectSettingsTemplates~", "TagManager.asset");
 
         private static void Initialize(UnityEditor.PackageManager.PackageInfo info) 
         {
             const string targetPath = "ProjectSettings/TagManager.asset";
 
-            var templateAssets = AssetDatabase.LoadAllAssetsAtPath(GetTemplatePath(info));
-            var targetAssets = AssetDatabase.LoadAllAssetsAtPath(targetPath);
+            var templateAssets = InternalEditorUtility.LoadSerializedFileAndForget(GetTemplatePath(info));
+            var targetAssets = InternalEditorUtility.LoadSerializedFileAndForget(targetPath);
 
-            if (templateAssets.Length == 0 || targetAssets.Length == 0) return;
+            if (templateAssets.Length == 0 || targetAssets.Length == 0)
+            {
+                Debug.LogWarning("[Unity Game Starter] Template or target asset is not found.");
+                return;
+            }
 
             var template = new SerializedObject(templateAssets[0]);
             var target = new SerializedObject(targetAssets[0]);
@@ -41,8 +45,6 @@ namespace UnityGameStarter.EditorUtilities.Installation
 
             target.ApplyModifiedProperties();
             AssetDatabase.SaveAssets();
-
-            Debug.Log("[Unity Game Starter] Tag Manager Updated");
         }
 
         private static void ApplyTags(SerializedProperty source, SerializedProperty target)
