@@ -41,6 +41,8 @@ namespace UnityGameStarter.EditorUtilities.Installation
 
             target.ApplyModifiedProperties();
             AssetDatabase.SaveAssets();
+
+            Debug.Log("[Unity Game Starter] Tag Manager Updated");
         }
 
         private static void ApplyTags(SerializedProperty source, SerializedProperty target)

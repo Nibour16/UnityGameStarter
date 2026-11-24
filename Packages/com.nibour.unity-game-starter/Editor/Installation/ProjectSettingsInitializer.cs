@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,8 +19,19 @@ namespace UnityGameStarter.EditorUtilities.Installation
         {
             if (_initializers == null) return;
 
-            _initializers.Invoke(info);
-            Debug.Log("Unity Game Starter: Project settings initialized.");
+            foreach (Action<UnityEditor.PackageManager.PackageInfo> initializer 
+                in _initializers.GetInvocationList().Cast<Action<UnityEditor.PackageManager.PackageInfo>>())
+            {
+                try
+                {
+                    initializer.Invoke(info);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+            }
+            Debug.Log("[Unity Game Starter] Project settings initialized.");
         }
 
         public static void BindToInitializers(Action<UnityEditor.PackageManager.PackageInfo> action) 

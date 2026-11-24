@@ -56,7 +56,7 @@ namespace UnityGameStarter.EditorUtilities.Installation
             currentVersion = null;
             var packageInfo = PackageInfo;
 
-            if (PackageInfo != null)
+            if (packageInfo != null)
                 currentVersion = packageInfo.version;
 
             string installedVersion = EditorPrefs.GetString(_versionPrefsKey, string.Empty);
