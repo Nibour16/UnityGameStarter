@@ -98,6 +98,9 @@ namespace UnityGameStarter.EditorUtilities.Installation
                 existingIds.Add(element.FindPropertyRelative("uniqueID").intValue);
             }
 
+            int sourceDefaultIndex = FindDefaultSortingLayerIndex(source);
+            int targetDefaultIndex = FindDefaultSortingLayerIndex(target);
+
             for (int i = 0; i < source.arraySize; i++)
             {
                 var element = source.GetArrayElementAtIndex(i);
@@ -108,13 +111,19 @@ namespace UnityGameStarter.EditorUtilities.Installation
 
                 if (string.IsNullOrWhiteSpace(name) || existingNames.Contains(name)) continue;
 
-                if (id == 0 || existingIds.Contains(id))
+                if (existingIds.Contains(id))
                 {
-                    Debug.LogWarning($"Unity Game Starter: Sorting Layer ID conflict: {name} ({id}).");
+                    Debug.LogWarning($"[Unity Game Starter] Sorting Layer ID conflict: {name} ({id}).");
                     continue;
                 }
 
-                int index = target.arraySize;
+                int index;
+
+                if (sourceDefaultIndex >= 0 && targetDefaultIndex >= 0)
+                    index = i < sourceDefaultIndex ? targetDefaultIndex : targetDefaultIndex + 1;
+                else
+                    index = target.arraySize;
+
                 target.InsertArrayElementAtIndex(index);
 
                 var newElement = target.GetArrayElementAtIndex(index);
@@ -125,7 +134,21 @@ namespace UnityGameStarter.EditorUtilities.Installation
 
                 existingNames.Add(name);
                 existingIds.Add(id);
+
+                if (index <= targetDefaultIndex)
+                    targetDefaultIndex++;
             }
+        }
+
+        private static int FindDefaultSortingLayerIndex(SerializedProperty property)
+        {
+            for (int i = 0; i < property.arraySize; i++)
+            {
+                if (property.GetArrayElementAtIndex(i).FindPropertyRelative("name").stringValue == "Default")
+                    return i;
+            }
+
+            return -1;
         }
 
         private static void ApplyRenderingLayers(SerializedProperty source, SerializedProperty target)
