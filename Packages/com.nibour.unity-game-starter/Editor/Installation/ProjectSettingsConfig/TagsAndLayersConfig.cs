@@ -26,10 +26,16 @@ namespace UnityGameStarter.EditorUtilities.Installation
 
         private static void Initialize(UnityEditor.PackageManager.PackageInfo info) 
         {
-            string targetPath = $"{PackageCopier.projectSettingsSource}/{_tagManagerAsset}";
-
-            var templateAssets = InternalEditorUtility.LoadSerializedFileAndForget(GetTemplatePath(info));
+            string templatePath = GetTemplatePath(info);
+            string targetPath = Path.Combine(Directory.GetParent(Application.dataPath).FullName,
+                PackageCopier.projectSettingsSource, _tagManagerAsset);
+            
+            var templateAssets = InternalEditorUtility.LoadSerializedFileAndForget(templatePath);
             var targetAssets = InternalEditorUtility.LoadSerializedFileAndForget(targetPath);
+
+            Debug.Log($"Template path: {templatePath}");
+            Debug.Log($"Template exists: {File.Exists(templatePath)}");
+            Debug.Log($"Template assets: {templateAssets?.Length ?? -1}");
 
             if (templateAssets.Length == 0 || targetAssets.Length == 0)
             {
