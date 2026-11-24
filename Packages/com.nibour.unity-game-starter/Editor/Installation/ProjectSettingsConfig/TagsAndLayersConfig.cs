@@ -33,10 +33,6 @@ namespace UnityGameStarter.EditorUtilities.Installation
             var templateAssets = InternalEditorUtility.LoadSerializedFileAndForget(templatePath);
             var targetAssets = InternalEditorUtility.LoadSerializedFileAndForget(targetPath);
 
-            Debug.Log($"Template path: {templatePath}");
-            Debug.Log($"Template exists: {File.Exists(templatePath)}");
-            Debug.Log($"Template assets: {templateAssets?.Length ?? -1}");
-
             if (templateAssets.Length == 0 || targetAssets.Length == 0)
             {
                 Debug.LogWarning("[Unity Game Starter] Template or target asset is not found.");
@@ -51,16 +47,8 @@ namespace UnityGameStarter.EditorUtilities.Installation
             ApplySortingLayers(template.FindProperty(_sortingLayers), target.FindProperty(_sortingLayers));
             ApplyRenderingLayers(template.FindProperty(_renderingLayers), target.FindProperty(_renderingLayers));
 
-            Debug.Log($"Saving TagManager to: {targetPath}");
-            Debug.Log($"Template path: {GetTemplatePath(info)}");
-
             target.ApplyModifiedProperties();
             InternalEditorUtility.SaveToSerializedFileAndForget(targetAssets, targetPath, true);
-
-            var verifyAssets = InternalEditorUtility.LoadSerializedFileAndForget(targetPath);
-            var verify = new SerializedObject(verifyAssets[0]);
-
-            Debug.Log($"Tags count after save: {verify.FindProperty(_tags).arraySize}");
         }
 
         private static void ApplyTags(SerializedProperty source, SerializedProperty target)
