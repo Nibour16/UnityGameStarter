@@ -1,6 +1,6 @@
 {
   "name": "com.nibour.unity-game-starter",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "displayName": "Unity Game Starter",
   "description": "A modular Unity Engine starter framework for both 2D and 3D game development.",
   "unity": "6000.5",
