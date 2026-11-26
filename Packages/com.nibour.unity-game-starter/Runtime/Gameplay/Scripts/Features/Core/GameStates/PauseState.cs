@@ -8,7 +8,7 @@ namespace UnityGameStarter.Gameplay
     {
         public PauseState(StateMachine stateMachine) : base(stateMachine) { }
 
-        public override void EnterState() 
+        internal override void EnterState() 
         {
             if (PauseManager.TryGetInstance(out var instance))
                 instance.SetPause(true);
@@ -16,7 +16,7 @@ namespace UnityGameStarter.Gameplay
             base.EnterState();
         }
 
-        public override void ExitState()
+        internal override void ExitState()
         {
             if (PauseManager.TryGetInstance(out var instance))
                 instance.SetPause(false);

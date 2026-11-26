@@ -8,18 +8,18 @@ namespace UnityGameStarter.TestOnlyScripts.FiniteStateMachine
     {
         public TestStateA(StateMachine stateMachine) : base(stateMachine) { }
 
-        public override void EnterState()
+        internal override void EnterState()
         {
             Debug.Log("Enter State A");
         }
 
-        public override void UpdateState()
+        internal override void UpdateState()
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
                 stateMachine.SetState<TestStateB>();
         }
 
-        public override void ExitState()
+        internal override void ExitState()
         {
             Debug.Log("Exit State A");
         }

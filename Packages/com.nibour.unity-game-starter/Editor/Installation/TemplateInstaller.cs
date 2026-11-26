@@ -15,8 +15,9 @@ namespace UnityGameStarter.EditorUtilities.Installation
         private static void Install(UnityEditor.PackageManager.PackageInfo info) 
         {
             if (info == null) return;
-            
-            string targetPath = Path.Combine(Application.dataPath, PackageCopier.starterTemplatesSource);
+
+            string projectPath = Directory.GetParent(Application.dataPath).FullName;
+            string targetPath = Path.Combine(projectPath, PackageCopier.starterTemplatesSource);
 
             if (Directory.Exists(targetPath)) return;
 

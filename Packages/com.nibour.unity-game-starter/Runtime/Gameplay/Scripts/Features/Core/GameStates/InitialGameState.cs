@@ -7,7 +7,7 @@ namespace UnityGameStarter.Gameplay
     {
         public InitialGameState(StateMachine stateMachine) : base(stateMachine) { }
 
-        public override void EnterState()
+        internal override void EnterState()
         {
             base.EnterState();
 

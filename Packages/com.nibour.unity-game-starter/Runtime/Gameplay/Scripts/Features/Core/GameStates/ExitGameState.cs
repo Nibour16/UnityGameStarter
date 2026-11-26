@@ -15,7 +15,7 @@ namespace UnityGameStarter.Gameplay
 
         public ExitGameState(StateMachine stateMachine) : base(stateMachine) { }
 
-        public override void EnterState()
+        internal override void EnterState()
         {
             if (PoolManager.TryGetInstance(out var instance))
                 instance.Clear();

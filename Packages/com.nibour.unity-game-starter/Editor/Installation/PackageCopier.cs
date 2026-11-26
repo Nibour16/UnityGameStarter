@@ -22,7 +22,7 @@ namespace UnityGameStarter.EditorUtilities.Installation
         private const string developmentMarker = ".unity-game-starter-dev";
         private const string packageName = "com.nibour.unity-game-starter";
 
-        internal const string starterTemplatesSource = "GameStarterTemplates";
+        internal const string starterTemplatesSource = "Assets/GameStarterTemplates";
         internal const string starterTemplatesPackage = "Templates~";
         internal const string projectSettingsSource = "ProjectSettings";
         internal const string projectSettingsPackage = "ProjectSettingsTemplates~";
