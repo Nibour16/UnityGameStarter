@@ -7,11 +7,11 @@ using UnityEngine;
 namespace UnityGameStarter.EditorUtilities.Installation
 {
     [InitializeOnLoad]
-    static class PackageCopier
+    static class PackageSynchronizer
     {
         private static FileSystemWatcher[] _watchers;
-        private static int _copyPending;
-        private static bool _isCoping;
+        private static int _syncPending;
+        private static bool _isSync;
 
         private static readonly (string source, string target)[] _directories =
         {
@@ -27,14 +27,14 @@ namespace UnityGameStarter.EditorUtilities.Installation
         internal const string projectSettingsSource = "ProjectSettings";
         internal const string projectSettingsPackage = "ProjectSettingsTemplates~";
 
-        static PackageCopier()
+        static PackageSynchronizer()
         {
             if (!IsDevelopmentProject(out string projectPath)) return;
             
             InitializeWatchers(projectPath);
 
             EditorApplication.update += OnEditorUpdate;
-            EditorApplication.delayCall += Copy;
+            EditorApplication.delayCall += Sync;
         }
 
         private static bool IsDevelopmentProject(out string projectPath)
@@ -44,7 +44,7 @@ namespace UnityGameStarter.EditorUtilities.Installation
             if (!File.Exists(Path.Combine(projectPath, developmentMarker))) return false;
 
             var info = UnityEditor.PackageManager.PackageInfo.FindForAssembly(
-                typeof(PackageCopier).Assembly);
+                typeof(PackageSynchronizer).Assembly);
 
             return info != null && info.name == packageName;
         }
@@ -77,30 +77,30 @@ namespace UnityGameStarter.EditorUtilities.Installation
         }
 
         private static void OnSourceChanged(object sender, FileSystemEventArgs args)
-            => Interlocked.Exchange(ref _copyPending, 1);
+            => Interlocked.Exchange(ref _syncPending, 1);
 
         private static void OnSourceRenamed(object sender, RenamedEventArgs args)
-            => Interlocked.Exchange(ref _copyPending, 1);
+            => Interlocked.Exchange(ref _syncPending, 1);
 
         private static void OnEditorUpdate()
         {
-            if (Interlocked.Exchange(ref _copyPending, 0) == 0) return;
+            if (Interlocked.Exchange(ref _syncPending, 0) == 0) return;
 
-            EditorApplication.delayCall += Copy;
+            EditorApplication.delayCall += Sync;
         }
 
-        private static void Copy()
+        private static void Sync()
         {
-            if (_isCoping) return;
+            if (_isSync) return;
 
             if (!IsDevelopmentProject(out string projectPath)) return;
 
-            _isCoping = true;
+            _isSync = true;
 
             try
             {
                 var info = UnityEditor.PackageManager.PackageInfo.FindForAssembly(
-                    typeof(PackageCopier).Assembly);
+                    typeof(PackageSynchronizer).Assembly);
 
                 if (info == null)
                 {
@@ -115,7 +115,7 @@ namespace UnityGameStarter.EditorUtilities.Installation
                     string sourcePath = Path.Combine(projectPath, source);
                     string targetPath = Path.Combine(packagePath, target);
 
-                    CopyDirectory(sourcePath, targetPath);
+                    SyncDirectory(sourcePath, targetPath);
                 }
             }
             catch (Exception exception)
@@ -124,13 +124,19 @@ namespace UnityGameStarter.EditorUtilities.Installation
             }
             finally
             {
-                _isCoping = false;
+                _isSync = false;
             }
         }
 
-        private static void CopyDirectory(string source, string target)
+        private static void SyncDirectory(string source, string target)
         {
-            if (!Directory.Exists(source)) return;
+            if (!Directory.Exists(source))
+            {
+                if (Directory.Exists(target))
+                    Directory.Delete(target, true);
+
+                return;
+            }
 
             Directory.CreateDirectory(target);
 
@@ -140,10 +146,26 @@ namespace UnityGameStarter.EditorUtilities.Installation
                 File.Copy(file, targetFile, true);
             }
 
+            foreach (string file in Directory.GetFiles(target))
+            {
+                string sourceFile = Path.Combine(source, Path.GetFileName(file));
+
+                if (!File.Exists(sourceFile))
+                    File.Delete(file);
+            }
+
             foreach (string directory in Directory.GetDirectories(source))
             {
                 string targetDirectory = Path.Combine(target, Path.GetFileName(directory));
-                CopyDirectory(directory, targetDirectory);
+                SyncDirectory(directory, targetDirectory);
+            }
+
+            foreach (string directory in Directory.GetDirectories(target))
+            {
+                string sourceDirectory = Path.Combine(source, Path.GetFileName(directory));
+
+                if (!Directory.Exists(sourceDirectory))
+                    Directory.Delete(directory, true);
             }
         }
     }

@@ -17,11 +17,11 @@ namespace UnityGameStarter.EditorUtilities.Installation
             if (info == null) return;
 
             string projectPath = Directory.GetParent(Application.dataPath).FullName;
-            string targetPath = Path.Combine(projectPath, PackageCopier.starterTemplatesSource);
+            string targetPath = Path.Combine(projectPath, PackageSynchronizer.starterTemplatesSource);
 
             if (Directory.Exists(targetPath)) return;
 
-            string sourcePath = Path.Combine(info.resolvedPath, PackageCopier.starterTemplatesPackage);
+            string sourcePath = Path.Combine(info.resolvedPath, PackageSynchronizer.starterTemplatesPackage);
 
             if (!Directory.Exists(sourcePath))
             {

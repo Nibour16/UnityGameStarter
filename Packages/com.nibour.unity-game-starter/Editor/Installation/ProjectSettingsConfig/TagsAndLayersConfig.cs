@@ -22,13 +22,13 @@ namespace UnityGameStarter.EditorUtilities.Installation
         }
 
         private static string GetTemplatePath(UnityEditor.PackageManager.PackageInfo info)
-            => Path.Combine(info.resolvedPath, PackageCopier.projectSettingsPackage, _tagManagerAsset);
+            => Path.Combine(info.resolvedPath, PackageSynchronizer.projectSettingsPackage, _tagManagerAsset);
 
         private static void Initialize(UnityEditor.PackageManager.PackageInfo info) 
         {
             string templatePath = GetTemplatePath(info);
             string targetPath = Path.Combine(Directory.GetParent(Application.dataPath).FullName,
-                PackageCopier.projectSettingsSource, _tagManagerAsset);
+                PackageSynchronizer.projectSettingsSource, _tagManagerAsset);
             
             var templateAssets = InternalEditorUtility.LoadSerializedFileAndForget(templatePath);
             var targetAssets = InternalEditorUtility.LoadSerializedFileAndForget(targetPath);
