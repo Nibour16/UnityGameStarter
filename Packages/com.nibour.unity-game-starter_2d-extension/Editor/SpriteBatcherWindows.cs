@@ -6,7 +6,7 @@ namespace UnityGameStarter.TwoDExtension.EditorUtilities
 {
     public class SpriteBatcherWindows : EditorWindowWithInputs
     {
-        protected override string Title => "Sprite Batch Slicer";
+        protected override string Title => "Sprite Batcher";
 
         protected override Vector2 MinimumWindowSize => new(500f, 400f);
 
