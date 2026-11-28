@@ -1,8 +1,9 @@
 {
     "name": "UnityGameStarter.2DExtension.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "UnityGameStarter.TwoDExtension.EditorUtilities",
     "references": [
-        "UnityGameStarter.2DExtension.Runtime"
+        "UnityGameStarter.2DExtension.Runtime",
+        "UnityGameStarter.Editor"
     ],
     "includePlatforms": [
         "Editor"
