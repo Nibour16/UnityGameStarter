@@ -1,0 +1,20 @@
+{
+    "name": "UnityGameStarter.Editor.Gameplay",
+    "rootNamespace": "",
+    "references": [
+        "GUID:65c07b408919c0a42b12c64e14dea86e",
+        "GUID:0994967a131297a4e9166924ea4a48b3",
+        "GUID:29427c75fc527de4fb59524eeb39c6da"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

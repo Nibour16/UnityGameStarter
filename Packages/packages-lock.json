@@ -18,6 +18,14 @@
         "com.unity.2d.tooling": "3.0.1"
       }
     },
+    "com.nibour.unity-game-starter_2d-extension": {
+      "version": "file:com.nibour.unity-game-starter_2d-extension",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.nibour.unity-game-starter": "0.4.4"
+      }
+    },
     "com.unity.2d.animation": {
       "version": "15.1.0",
       "depth": 1,

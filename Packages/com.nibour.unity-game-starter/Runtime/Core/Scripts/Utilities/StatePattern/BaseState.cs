@@ -18,8 +18,12 @@ namespace UnityGameStarter.FiniteStateMachine
         protected bool GetStateMachine<T>(out T stateMachine) where T : StateMachine
             => TypeLibrary.TryCast(this.stateMachine, out stateMachine);
 
-        internal abstract void EnterState();
-        internal virtual void UpdateState() { }
-        internal virtual void ExitState() { }
+        protected abstract void OnEnter();
+        protected virtual void OnUpdate() { }
+        protected virtual void OnExit() { }
+
+        internal void EnterState() => OnEnter();
+        internal void UpdateState() => OnUpdate();
+        internal void ExitState() => OnExit();
     }
 }

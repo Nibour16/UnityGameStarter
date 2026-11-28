@@ -1,0 +1,18 @@
+{
+  "name": "com.nibour.unity-game-starter_2d-extension",
+  "displayName": "Unity Game Starter 2D Extension",
+  "version": "0.1.0",
+  "unity": "6000.5",
+  "description": "Extension of Unity Game Starter for 2D game development",
+  "dependencies": {
+    "com.nibour.unity-game-starter": "0.4.4"
+  },
+  "author": {
+    "name": "Nibour",
+    "url": "https://github.com/Nibour16",
+    "email": "ruobinh3@hotmail.com"
+  },
+  "documentationUrl": "https://github.com/Nibour16/UnityGameStarter/blob/main/README.md",
+  "licensesUrl": "https://www.gnu.org/licenses/gpl-3.0.html",
+  "hideInEditor": false
+}

@@ -7,17 +7,17 @@ namespace UnityGameStarter.FiniteStateMachine.EventState
     {
         public BaseEventState(StateMachine stateMachine) : base(stateMachine) { }
 
-        internal override void EnterState()
+        protected override void OnEnter()
         {
             EventManager.Instance.Publish(new EnterStateEvent<T>());
         }
 
-        internal override void UpdateState()
+        protected override void OnUpdate()
         {
             EventManager.Instance.Publish(new UpdateStateEvent<T>());
         }
 
-        internal override void ExitState()
+        protected override void OnExit()
         {
             EventManager.Instance.Publish(new ExitStateEvent<T>());
         }

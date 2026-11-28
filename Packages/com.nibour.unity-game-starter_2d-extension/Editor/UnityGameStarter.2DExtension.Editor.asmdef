@@ -1,0 +1,18 @@
+{
+    "name": "UnityGameStarter.2DExtension.Editor",
+    "rootNamespace": "",
+    "references": [
+        "UnityGameStarter.2DExtension.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
